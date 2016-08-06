@@ -1,0 +1,6 @@
+{
+	"resources": "resources",
+	"alias": "jquery-ui",
+	"path": "jquery-ui.min.js",
+	"version": "none"
+}

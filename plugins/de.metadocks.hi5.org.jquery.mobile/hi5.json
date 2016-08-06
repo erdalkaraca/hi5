@@ -1,0 +1,6 @@
+{
+	"resources": "resources",
+	"alias": "jquery-mobile",
+	"path": "jquery.mobile-1.4.5.min.js",
+	"version": "none"
+}

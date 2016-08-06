@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: App
+Bundle-SymbolicName: de.metadocks.hi5.demo.app;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime

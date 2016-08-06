@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Emf
+Bundle-SymbolicName: de.metadocks.hi5.jaxrs.emf
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: javax.ws.rs,
+ javax.ws.rs.core;version="2.0.1",
+ javax.ws.rs.ext;version="2.0.1",
+ org.osgi.service.component.annotations;version="1.2.0"
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.texo.json,
+ org.json
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/de.metadocks.hi5.jaxrs.emf.EMFMessageBodyWriter.xml

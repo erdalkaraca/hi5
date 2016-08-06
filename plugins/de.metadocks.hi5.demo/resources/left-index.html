@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="us">
+<head>
+<meta charset="utf-8">
+<link href="demo/demo.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h2>Widget Categories</h2>
+	<div id="widget-categories">
+		<h3>jQuery widgets</h3>
+		<div>On the right side you can try the various jQuery UI
+			widgets.</div>
+		<h3>Other</h3>
+		<div>Phasellus mattis tincidunt nibh.</div>
+	</div>
+
+	<script type="text/javascript">
+		requirejs([ 'jquery', 'jquery-ui' ], function() {
+			$("#widget-categories").accordion();
+		});
+	</script>
+</body>
+</html>

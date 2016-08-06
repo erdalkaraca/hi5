@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="Hi5 Demo App"
+            application="de.metadocks.hi5.e4.app">
+         <property
+               name="appName"
+               value="Hi5 Demo App">
+         </property>
+         <property
+               name="entryPoint"
+               value="hi5-demo">
+         </property>
+      </product>
+   </extension>
+
+</plugin>

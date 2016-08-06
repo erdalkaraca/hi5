@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Goldenlayout
+Bundle-SymbolicName: de.metadocks.hi5.com.goldenlayout
+Bundle-Version: 1.5.1
+Require-Bundle: de.metadocks.hi5.org.jquery;bundle-version="1.0.0"

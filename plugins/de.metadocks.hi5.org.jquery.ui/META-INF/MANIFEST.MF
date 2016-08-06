@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: jQuery UI
+Bundle-SymbolicName: de.metadocks.hi5.org.jquery.ui
+Bundle-Version: 1.12.0
