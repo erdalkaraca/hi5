@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Erdal Karaca.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Erdal Karaca <erdal.karaca.de@gmail.com> - initial API and implementation
+ *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
 import java.io.File;
