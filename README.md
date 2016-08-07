@@ -20,3 +20,20 @@ local mode: Eclipse RCP backend runs locally and the client runs in a JavaFX Web
 The following screenshot is a demo showing the various jQuery UI widgets running in a JavaFX WebView instance.
 
 ![jQuery UI widgets](plugins/de.metadocks.hi5.demo/screenshots/hi5-jquery-widgets-demo.png "jQuery UI widgets")
+
+# Current Status
+[x] means supported, [ ] means not yet implemented
+
+| E4 API | Hi5 |
+| --- | --- |
+| App model, fragments | [x] |
+| Addons | [x] |
+| Window Menu | [ ] |
+| IEclipseContext/Scoping | [ ] |
+| DI | [ ] |
+| Data Binding | [ ] |
+| Key Bindings | [ ] |
+| ECommandService/EHandlerService (commands, handlers) | [ ] |
+| ESelectionService (part selections) | [ ] |
+| EMenuService (context menus) | [ ] |
+
