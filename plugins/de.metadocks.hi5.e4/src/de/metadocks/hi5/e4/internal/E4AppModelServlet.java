@@ -10,10 +10,12 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -52,6 +54,7 @@ import org.json.JSONObject;
 import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 @SuppressWarnings("unchecked")
@@ -128,6 +131,34 @@ public class E4AppModelServlet extends HttpServlet {
 		Element head = (Element) doc.getElementsByTagName("head").item(0);
 		Element body = (Element) doc.getElementsByTagName("body").item(0);
 
+		// 3 x 3 table cells for structuring the window area
+		{
+			Element table = doc.createElement("div");
+			table.setAttribute("style", "width:100%;height:100%;");
+			
+			for (int i = 0; i < 3; i++) {
+				Element tr = doc.createElement("div");
+				
+				if (i == 1) {
+					tr.setAttribute("style", "width:100%;height:100%;");
+				}
+
+				for (int j = 0; j < 3; j++) {
+					Element td = doc.createElement("div");
+					td.setAttribute("id", "hi5_content_" + i + "_" + j);
+					td.setIdAttribute("id", true);
+					tr.appendChild(td);
+				}
+
+				table.appendChild(tr);
+			}
+			
+			body.appendChild(table);
+		}
+
+		Element windowContainer = doc.getElementById("hi5_content_1_1");
+		windowContainer.setAttribute("style", "width:100%;height:100%;");
+
 		// it is important to provide the RequireJS library
 		createScript(head, "requirejs/require.js");
 
@@ -149,18 +180,16 @@ public class E4AppModelServlet extends HttpServlet {
 
 		JSONObject appModelConfig = new JSONObject();
 		JSONObject settings = new JSONObject();
-		settings.put("showPopoutIcon", "false");
-		// settings.put("hasHeaders", "false");
-		settings.put("showMaximiseIcon", "false");
-		settings.put("showCloseIcon", "false");
 		appModelConfig.put("settings", settings);
+		settings.put("headerHeight", 0);
+		// settings.put("hasHeaders", false);
 		appModelConfig.put("content", new ArrayList<>());
-		modelTransformer.transform(body, appModel, appModelConfig);
+		modelTransformer.transform(windowContainer, appModel, appModelConfig);
 
 		StringBuilder config = new StringBuilder();
 		config.append("require(['goldenlayout'], function(GoldenLayout){\n");
 		config.append("var config=").append(appModelConfig.toString()).append(";\n");
-		config.append("var layout = new GoldenLayout(config);\n");
+		config.append("var layout = new GoldenLayout(config,'#hi5_content_1_1');\n");
 
 		stream(MPart.class, ((EObject) appModel).eAllContents()).forEach(part -> {
 			String index = part.getPersistedState().get("index");

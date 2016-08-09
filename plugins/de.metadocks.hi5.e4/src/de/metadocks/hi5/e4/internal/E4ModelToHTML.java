@@ -20,11 +20,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
+import org.eclipse.e4.ui.model.application.ui.MGenericStack;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.advanced.MArea;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainer;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
@@ -38,7 +40,7 @@ import org.w3c.dom.Element;
 
 public class E4ModelToHTML {
 	private static final List<EAttribute> PUBLIC_ATTRS = Arrays.asList();
-	
+
 	private Map<Class<? extends MUIElement>, Rule<? extends MUIElement>> grammar = new HashMap<>();
 	{
 		registerRule(MElementContainer.class, ctx -> {
@@ -50,6 +52,7 @@ public class E4ModelToHTML {
 		registerRule(MPartStack.class, ctx -> {
 			handleElementContainer(ctx, childContentConfig -> {
 				childContentConfig.put("type", "stack");
+				childContentConfig.put("showHeader", "true");
 			});
 		});
 
@@ -65,6 +68,8 @@ public class E4ModelToHTML {
 			handleContentItem(ctx, childContentConfig -> {
 				childContentConfig.put("componentName", ctx.modelElement.getElementId());
 				childContentConfig.put("title", ctx.modelElement.getLabel());
+				childContentConfig.put("isClosable", ctx.modelElement.isCloseable());
+				childContentConfig.put("hasHeader", ctx.modelElement.getParent() instanceof MGenericStack<?>);
 			});
 		});
 
@@ -101,6 +106,7 @@ public class E4ModelToHTML {
 			handleContentItem(ctx, childContentConfig -> {
 				childContentConfig.put("componentName", ctx.modelElement.getElementId());
 				childContentConfig.put("title", ctx.modelElement.getElementId());
+				childContentConfig.put("isClosable", false);
 			});
 		});
 	}
@@ -113,7 +119,8 @@ public class E4ModelToHTML {
 		childContentConfig.put("type", "component");
 		childContentConfig.put("id", ctx.modelElement.getElementId());
 		childContentConfig.put("cssClass", ((EObject) ctx.modelElement).eClass().getName());
-
+		childContentConfig.put("hasHeader", true);
+		
 		try {
 			consumer.accept(childContentConfig);
 		} catch (Exception e) {
@@ -130,6 +137,8 @@ public class E4ModelToHTML {
 		JSONObject childContentConfig = new JSONObject();
 		childContentConfig.put("id", ctx.modelElement.getElementId());
 		childContentConfig.put("content", new ArrayList<Object>());
+		childContentConfig.put("cssClass", ((EObject) ctx.modelElement).eClass().getName());
+		childContentConfig.put("hasHeader", true);
 		contentCols.put(childContentConfig);
 
 		try {

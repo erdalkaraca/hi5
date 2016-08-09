@@ -28,7 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Component;
 
-@Component(service = MessageBodyWriter.class, immediate = true, property={"jaxRsExtension=true"})
+@Component(service = MessageBodyWriter.class, immediate = true)
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
 	private EMFJSONConverter converter = new EMFJSONConverter();

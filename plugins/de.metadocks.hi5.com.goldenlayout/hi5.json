@@ -1,6 +1,6 @@
 {
 	"resources": "resources",
 	"alias": "goldenlayout",
-	"path": "js/goldenlayout.min.js",
+	"path": "js/goldenlayout.js",
 	"version": "none"
 }
