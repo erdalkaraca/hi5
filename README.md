@@ -9,7 +9,7 @@ On the server side (backend) the infrastructure of the Eclipse RCP platform is h
 With the Eclipse Communication Framework (ECF) there is also great support for a service driven development approach as OSGi services can serve as web services, for example, using ECF's JAX-RS integration.
 
 # Client side
-On the client side you can use your favorite framework/library to provide a smooth and reactive/responsive UI. By default, jQuery, jQuery UI and jQuery mobile are used.
+On the client side you can use your favorite framework/library to provide a smooth and reactive/responsive UI.
 
 # Deployment modes
 The application can be deployed in several modes:
