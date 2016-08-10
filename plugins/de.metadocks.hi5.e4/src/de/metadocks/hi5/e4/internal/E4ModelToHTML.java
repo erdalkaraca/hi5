@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -28,6 +29,7 @@ import org.eclipse.e4.ui.model.application.impl.ApplicationPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.MUILabel;
+import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
@@ -57,12 +59,25 @@ public class E4ModelToHTML {
 		});
 
 		registerRule(MTrimmedWindow.class, ctx -> {
-			Element parent = handleElementContainer(ctx);
-			List<MTrimBar> trimBars = ctx.modelElement.getTrimBars();
+			Element newParent = createDiv(ctx.parent, ctx.modelElement);
 
-			for (MTrimBar mTrimBar : trimBars) {
-				transform(parent, mTrimBar, ctx.appModelConfig);
+			Consumer<? super MTrimBar> action = tb -> {
+				try {
+					transform(newParent, tb, ctx.appModelConfig);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			ctx.modelElement.getTrimBars().stream().filter(tb -> tb.getSide() == SideValue.TOP).forEach(action);
+			ctx.modelElement.getTrimBars().stream().filter(tb -> tb.getSide() == SideValue.LEFT).forEach(action);
+
+			for (MUIElement child : ctx.modelElement.getChildren()) {
+				transform(newParent, child, ctx.appModelConfig);
 			}
+
+			ctx.modelElement.getTrimBars().stream().filter(tb -> tb.getSide() == SideValue.RIGHT).forEach(action);
+			ctx.modelElement.getTrimBars().stream().filter(tb -> tb.getSide() == SideValue.BOTTOM).forEach(action);
 		});
 
 		registerRule(MTrimBar.class, ctx -> {
