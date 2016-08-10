@@ -10,154 +10,101 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.MApplicationElement;
+import org.eclipse.e4.ui.model.application.MContribution;
+import org.eclipse.e4.ui.model.application.impl.ApplicationPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
-import org.eclipse.e4.ui.model.application.ui.MGenericStack;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
-import org.eclipse.e4.ui.model.application.ui.SideValue;
-import org.eclipse.e4.ui.model.application.ui.advanced.MArea;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainer;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.MUILabel;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
+import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
+import org.eclipse.e4.ui.model.application.ui.menu.MItem;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Element;
 
 public class E4ModelToHTML {
-	private static final List<EAttribute> PUBLIC_ATTRS = Arrays.asList();
+	@SuppressWarnings("restriction")
+	private static final List<EAttribute> PUBLIC_ATTRS = Arrays.asList(
+			ApplicationPackageImpl.Literals.CONTRIBUTION__CONTRIBUTION_URI,
+			ApplicationPackageImpl.Literals.APPLICATION_ELEMENT__ELEMENT_ID,
+			UiPackageImpl.Literals.UI_ELEMENT__CONTAINER_DATA, UiPackageImpl.Literals.UI_LABEL__LABEL,
+			UiPackageImpl.Literals.UI_LABEL__ICON_URI);
 
-	private Map<Class<? extends MUIElement>, Rule<? extends MUIElement>> grammar = new HashMap<>();
+	private Map<Class<? extends MApplicationElement>, Rule<? extends MApplicationElement>> grammar = new HashMap<>();
+
+	private Hi5WebResourcesAutoRegComponent resReg;
 	{
 		registerRule(MElementContainer.class, ctx -> {
-			handleElementContainer(ctx, childContentConfig -> {
-				childContentConfig.put("type", "column");
-			});
-		});
-
-		registerRule(MPartStack.class, ctx -> {
-			handleElementContainer(ctx, childContentConfig -> {
-				childContentConfig.put("type", "stack");
-				childContentConfig.put("showHeader", "true");
-			});
-		});
-
-		Rule<MPartSashContainer> partSashContainerRule = ctx -> {
-			handleElementContainer(ctx, childContentConfig -> {
-				childContentConfig.put("type", ctx.modelElement.isHorizontal() ? "row" : "column");
-			});
-		};
-		registerRule(MPartSashContainer.class, partSashContainerRule);
-		registerRule(MArea.class, partSashContainerRule);
-
-		registerRule(MPart.class, ctx -> {
-			handleContentItem(ctx, childContentConfig -> {
-				childContentConfig.put("componentName", ctx.modelElement.getElementId());
-				childContentConfig.put("title", ctx.modelElement.getLabel());
-				childContentConfig.put("isClosable", ctx.modelElement.isCloseable());
-				childContentConfig.put("hasHeader", ctx.modelElement.getParent() instanceof MGenericStack<?>);
-			});
+			handleElementContainer(ctx);
 		});
 
 		registerRule(MTrimmedWindow.class, ctx -> {
+			Element parent = handleElementContainer(ctx);
 			List<MTrimBar> trimBars = ctx.modelElement.getTrimBars();
 
-			Consumer<? super MTrimBar> horizontalTrimBarConsumer = tb -> {
-				RuleContext<MUIElement> childCtx = new RuleContext<>();
-				childCtx.appModelConfig = ctx.appModelConfig;
-				childCtx.parent = ctx.parent;
-				childCtx.modelElement = tb;
-
-				try {
-					callRule(MTrimBar.class, childCtx);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			};
-
-			// TODO left and right trimbars
-
-			trimBars.stream().filter(tb -> tb.getSide() == SideValue.TOP).forEach(horizontalTrimBarConsumer);
-			callRule(MElementContainer.class, ctx);
-			trimBars.stream().filter(tb -> tb.getSide() == SideValue.BOTTOM).forEach(horizontalTrimBarConsumer);
+			for (MTrimBar mTrimBar : trimBars) {
+				transform(parent, mTrimBar, ctx.appModelConfig);
+			}
 		});
 
 		registerRule(MTrimBar.class, ctx -> {
-			handleElementContainer(ctx, childContentConfig -> {
-				childContentConfig.put("type", "row");
-			});
+			Element trimBarElement = handleElementContainer(ctx);
+			String direction = ctx.modelElement.getSide().name();
+			trimBarElement.setAttribute("direction", direction);
 		});
 
-		registerRule(MToolBar.class, ctx -> {
-			handleContentItem(ctx, childContentConfig -> {
-				childContentConfig.put("componentName", ctx.modelElement.getElementId());
-				childContentConfig.put("title", ctx.modelElement.getElementId());
-				childContentConfig.put("isClosable", false);
-			});
+		registerRule(MApplicationElement.class, ctx -> {
+			handleLeaf(ctx);
 		});
 	}
 
-	private void handleContentItem(RuleContext<? extends MUIElement> ctx, CheckedConumser<JSONObject> consumer)
-			throws JSONException {
-		JSONArray contentCols = ctx.appModelConfig.getJSONArray("content");
-		JSONObject childContentConfig = new JSONObject();
-		contentCols.put(childContentConfig);
-		childContentConfig.put("type", "component");
-		childContentConfig.put("id", ctx.modelElement.getElementId());
-		childContentConfig.put("cssClass", ((EObject) ctx.modelElement).eClass().getName());
-		childContentConfig.put("hasHeader", true);
-		
-		try {
-			consumer.accept(childContentConfig);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		JSONObject componentState = new JSONObject();
-		childContentConfig.put("componentState", componentState);
+	private void handleLeaf(RuleContext<? extends MApplicationElement> ctx) throws JSONException {
+		createDiv(ctx.parent, ctx.modelElement);
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void handleElementContainer(RuleContext<? extends MElementContainer> ctx,
-			CheckedConumser<JSONObject> consumer) throws JSONException {
-		JSONArray contentCols = ctx.appModelConfig.getJSONArray("content");
-		JSONObject childContentConfig = new JSONObject();
-		childContentConfig.put("id", ctx.modelElement.getElementId());
-		childContentConfig.put("content", new ArrayList<Object>());
-		childContentConfig.put("cssClass", ((EObject) ctx.modelElement).eClass().getName());
-		childContentConfig.put("hasHeader", true);
-		contentCols.put(childContentConfig);
-
-		try {
-			consumer.accept(childContentConfig);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	private Element handleElementContainer(RuleContext<? extends MElementContainer> ctx) throws JSONException {
+		Element newParent = createDiv(ctx.parent, ctx.modelElement);
 		List<MUIElement> children = ctx.modelElement.getChildren();
 
 		for (MUIElement child : children) {
-			transform(ctx.parent, child, childContentConfig);
+			transform(newParent, child, ctx.appModelConfig);
 		}
+
+		return newParent;
 	}
 
-	private Element createElement(Element xParent, String elementName, String elementClass, Map<String, String> atts) {
+	private Element createElement(Element xParent, String elementName, EClass eClass, Map<String, String> atts) {
 		Element element = xParent.getOwnerDocument().createElement(elementName);
-		element.setAttribute("class", elementClass);
+		element.setAttribute("etype", eClass.getName());
+
+		Set<String> classes = new HashSet<>();
+		classes.add(eClass.getName());
+
+		for (EClass ecls : eClass.getEAllSuperTypes()) {
+			classes.add(ecls.getName());
+		}
+
+		String htmlClass = classes.stream().collect(Collectors.joining(" "));
+		element.setAttribute("class", htmlClass);
 
 		for (Entry<String, String> e : atts.entrySet()) {
 			element.setAttribute(e.getKey(), e.getValue());
@@ -184,7 +131,7 @@ public class E4ModelToHTML {
 		div.setAttribute("class", newClass);
 	}
 
-	private Element createDiv(Element xParent, MUIElement modelElement) {
+	private Element createDiv(Element xParent, MApplicationElement modelElement) {
 		Map<String, String> atts = new HashMap<>();
 		EObject eo = (EObject) modelElement;
 
@@ -211,14 +158,27 @@ public class E4ModelToHTML {
 		}
 
 		// bind MUIElement elementId to DOM id
-		atts.put("id", modelElement.getElementId());
-		Element element = createElement(xParent, "div", ((EObject) modelElement).eClass().getName(), atts);
-		return element;
-	}
+		String elementId = modelElement.getElementId();
 
-	private <T extends MUIElement> void callRule(Class<?> type, RuleContext<T> ctx) throws JSONException {
-		Rule<T> rule = (Rule<T>) grammar.get(type);
-		rule.apply(ctx);
+		if (elementId != null && !elementId.isEmpty()) {
+			elementId = elementId.replace('.', '_');
+			atts.put("id", elementId);
+		}
+
+		String contributorURI = modelElement.getContributorURI();
+
+		if (contributorURI != null && !contributorURI.isEmpty()) {
+			contributorURI = getBundleAlias(modelElement);
+			atts.put(ApplicationPackageImpl.Literals.APPLICATION_ELEMENT__CONTRIBUTOR_URI.getName(), contributorURI);
+		}
+
+		Element element = createElement(xParent, "div", ((EObject) modelElement).eClass(), atts);
+
+		for (Entry<String, String> e : modelElement.getPersistedState().entrySet()) {
+			element.setAttribute("state_" + e.getKey(), e.getValue());
+		}
+
+		return element;
 	}
 
 	public <T extends MUIElement> void transform(Element xParent, T modelElement, JSONObject appModelConfig)
@@ -227,6 +187,10 @@ public class E4ModelToHTML {
 
 		if (consumer == null && modelElement instanceof MElementContainer<?>) {
 			consumer = (Rule<T>) grammar.get(MElementContainer.class);
+		}
+
+		if (consumer == null && modelElement instanceof MApplicationElement) {
+			consumer = (Rule<T>) grammar.get(MApplicationElement.class);
 		}
 
 		if (consumer == null) {
@@ -241,17 +205,42 @@ public class E4ModelToHTML {
 		consumer.apply(ctx);
 	}
 
-	private <T extends MUIElement, S extends T> void registerRule(Class<S> type, Rule<T> rule) {
+	private <T extends MApplicationElement, S extends T> void registerRule(Class<S> type, Rule<T> rule) {
 		grammar.put(type, rule);
 	}
 
-	private static class RuleContext<T extends MUIElement> {
+	private String withBundleAlias(MApplicationElement appElement, String relativePath) {
+		String bundleAliasMapping = getBundleAlias(appElement);
+		// this assumes the part content is accessible via the alias
+		// being the part's contributor ID or an explicit alias set via
+		// the web resource manifest header
+		String path = String.format("%s/%s", bundleAliasMapping, relativePath);
+		return path;
+	}
+
+	private String getBundleAlias(MApplicationElement appElement) {
+		String contributorURI = appElement.getContributorURI();
+		String contributorId = new File(contributorURI).getName();
+		String bundleAliasMapping = resReg.getBundleAliasMapping(contributorId);
+
+		if (bundleAliasMapping == null) {
+			bundleAliasMapping = contributorId;
+		}
+
+		return bundleAliasMapping;
+	}
+
+	public void setResourcesRegistry(Hi5WebResourcesAutoRegComponent resReg) {
+		this.resReg = resReg;
+	}
+
+	private static class RuleContext<T extends MApplicationElement> {
 		T modelElement;
 		Element parent;
 		JSONObject appModelConfig;
 	}
 
-	private static interface Rule<T extends MUIElement> {
+	private static interface Rule<T extends MApplicationElement> {
 		void apply(RuleContext<T> ctx) throws JSONException;
 	}
 

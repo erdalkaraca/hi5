@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.equinox.app,
  org.apache.commons.io,
  de.metadocks.hi5.org.requirejs;bundle-version="2.2.0",
  de.metadocks.hi5.org.jquery;bundle-version="1.12.4",
- de.metadocks.hi5.com.goldenlayout;bundle-version="1.0.0"
+ de.metadocks.hi5.org.jquery.ui;bundle-version="1.12.0",
+ de.metadocks.hi5.org.jquery.layout;bundle-version="1.4.3"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.osgi.service.datalocation;version="1.3.0",
  org.osgi.framework;version="1.8.0",

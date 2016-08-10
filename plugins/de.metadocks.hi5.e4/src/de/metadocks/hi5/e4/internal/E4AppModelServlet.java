@@ -10,14 +10,10 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Spliterator;
@@ -40,7 +36,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.MApplicationElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -51,10 +46,8 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 @SuppressWarnings("unchecked")
@@ -68,6 +61,7 @@ public class E4AppModelServlet extends HttpServlet {
 	public E4AppModelServlet(E4Runtime e4Runtime, Hi5WebResourcesAutoRegComponent resReg) {
 		this.e4Runtime = e4Runtime;
 		this.resReg = resReg;
+		modelTransformer.setResourcesRegistry(resReg);
 	}
 
 	private DocumentBuilder builder;
@@ -131,34 +125,6 @@ public class E4AppModelServlet extends HttpServlet {
 		Element head = (Element) doc.getElementsByTagName("head").item(0);
 		Element body = (Element) doc.getElementsByTagName("body").item(0);
 
-		// 3 x 3 table cells for structuring the window area
-		{
-			Element table = doc.createElement("div");
-			table.setAttribute("style", "width:100%;height:100%;");
-			
-			for (int i = 0; i < 3; i++) {
-				Element tr = doc.createElement("div");
-				
-				if (i == 1) {
-					tr.setAttribute("style", "width:100%;height:100%;");
-				}
-
-				for (int j = 0; j < 3; j++) {
-					Element td = doc.createElement("div");
-					td.setAttribute("id", "hi5_content_" + i + "_" + j);
-					td.setIdAttribute("id", true);
-					tr.appendChild(td);
-				}
-
-				table.appendChild(tr);
-			}
-			
-			body.appendChild(table);
-		}
-
-		Element windowContainer = doc.getElementById("hi5_content_1_1");
-		windowContainer.setAttribute("style", "width:100%;height:100%;");
-
 		// it is important to provide the RequireJS library
 		createScript(head, "requirejs/require.js");
 
@@ -179,74 +145,9 @@ public class E4AppModelServlet extends HttpServlet {
 		}
 
 		JSONObject appModelConfig = new JSONObject();
-		JSONObject settings = new JSONObject();
-		appModelConfig.put("settings", settings);
-		settings.put("headerHeight", 0);
-		// settings.put("hasHeaders", false);
-		appModelConfig.put("content", new ArrayList<>());
-		modelTransformer.transform(windowContainer, appModel, appModelConfig);
+		modelTransformer.transform(body, appModel, appModelConfig);
 
-		StringBuilder config = new StringBuilder();
-		config.append("require(['goldenlayout'], function(GoldenLayout){\n");
-		config.append("var config=").append(appModelConfig.toString()).append(";\n");
-		config.append("var layout = new GoldenLayout(config,'#hi5_content_1_1');\n");
-
-		stream(MPart.class, ((EObject) appModel).eAllContents()).forEach(part -> {
-			String index = part.getPersistedState().get("index");
-
-			if (index == null) {
-				index = "index.html";
-			}
-
-			String path = withBundleAlias(part, index);
-			config.append(String.format("layout.registerComponent('%s',"
-					+ "function(container, componentState){var el=container.getElement();"//
-					+ "el.load('%s')});\n", part.getElementId(), path));
-		});
-
-		stream(MToolBar.class, ((EObject) appModel).eAllContents()).forEach(toolBar -> {
-			StringBuilder renderTBScript = new StringBuilder("var el=container.getElement();\n");
-			renderTBScript.append("$('.lm_header').each(function(){$(this).css('display','none');});\n");
-			for (MToolBarElement tbElement : toolBar.getChildren()) {
-				if (tbElement instanceof MHandledToolItem) {
-					MHandledToolItem mHandledToolItem = (MHandledToolItem) tbElement;
-					String iconURI = withBundleAlias(mHandledToolItem, mHandledToolItem.getIconURI());
-					String button = "<button class='ui-button ui-widget ui-corner-all'>" + "<img src='" + iconURI
-							+ "'></img><br>" + mHandledToolItem.getLabel() + "</button>";
-					renderTBScript.append(String.format("el.append(\"%s\");\n", button));
-				}
-			}
-			String regComponentScript = String.format(
-					"layout.registerComponent('%s',function(container, componentState){%s});\n", toolBar.getElementId(),
-					renderTBScript);
-			config.append(regComponentScript);
-		});
-
-		// config.append("$(document).ready(function(){$('.lm_header').each(function(){$(this).css('display','none')})});");
-		config.append("layout.init();\n");
-		config.append("});\n");
-		createScriptContent(body, config.toString());
-	}
-
-	private String withBundleAlias(MApplicationElement appElement, String relativePath) {
-		String bundleAliasMapping = getBundleAlias(appElement);
-		// this assumes the part content is accessible via the alias
-		// being the part's contributor ID or an explicit alias set via
-		// the web resource manifest header
-		String path = String.format("%s/%s", bundleAliasMapping, relativePath);
-		return path;
-	}
-
-	private String getBundleAlias(MApplicationElement appElement) {
-		String contributorURI = appElement.getContributorURI();
-		String contributorId = new File(contributorURI).getName();
-		String bundleAliasMapping = resReg.getBundleAliasMapping(contributorId);
-
-		if (bundleAliasMapping == null) {
-			bundleAliasMapping = contributorId;
-		}
-
-		return bundleAliasMapping;
+		createScriptContent(body, "require(['hi5-e4']);");
 	}
 
 	private <T> Stream<T> stream(Class<T> type, TreeIterator<EObject> iter) {
