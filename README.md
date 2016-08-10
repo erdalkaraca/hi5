@@ -27,7 +27,6 @@ The following screenshot is a demo showing the various jQuery UI widgets running
 | E4 API | Hi5 |
 | --- | --- |
 | App model, fragments | [x] |
-| Addons | [x] |
 | Window Menu | [ ] |
 | IEclipseContext/Scoping | [ ] |
 | DI | [ ] |
@@ -36,6 +35,7 @@ The following screenshot is a demo showing the various jQuery UI widgets running
 | ECommandService/EHandlerService (commands, handlers) | [ ] |
 | ESelectionService (part selections) | [ ] |
 | EMenuService (context menus) | [ ] |
+| EPartService (parts management) | [ ] |
 
 # Dependencies
 
@@ -43,10 +43,11 @@ The following screenshot is a demo showing the various jQuery UI widgets running
 | --- | --- | --- | --- |
 | [Eclipse 4](https://wiki.eclipse.org/Eclipse4) | EPL | defining/managing contributions of the single-page web application | yes |
 | [Eclipse Modeling Framework](https://eclipse.org/modeling/emf/) | EPL | used by Eclipse 4 to model the workbench | yes |
-| [GoldenLayout](https://www.golden-layout.com) | MIT | docking framework on client side | yes |
+| [RequireJS](http://requirejs.org) | MIT | client side dependencies management (AMD compliant implementation) | yes |
+| [w3.css](http://www.w3schools.com/w3css/) | No Licence | responsive layout | yes |
 | [jQuery](https://jquery.com) | MIT | client side DOM manipulation | yes |
-| [jQuery UI](https://jqueryui.com) | MIT | client side UI widgets | no |
-| [jQuery mobile](https://jquerymobile.com) | MIT | optimizations for mobiledevices | no |
 | [Eclipse Communications Framework](https://www.eclipse.org/ecf/) | EPL | web services support | no |
 | [Eclipse Texo](https://wiki.eclipse.org/Texo) | EPL | de/serialization of EMF models from/to server/client in JSON format | no |
 
+# Licence
+This project is EPL (Eclipse Public Licence)
