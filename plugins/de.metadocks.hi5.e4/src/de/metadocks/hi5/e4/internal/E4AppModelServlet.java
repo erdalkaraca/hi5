@@ -10,7 +10,6 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -37,11 +36,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.MApplicationElement;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.menu.MHandledToolItem;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.json.JSONException;
@@ -125,6 +119,7 @@ public class E4AppModelServlet extends HttpServlet {
 		Element head = (Element) doc.getElementsByTagName("head").item(0);
 		Element body = (Element) doc.getElementsByTagName("body").item(0);
 
+		createLink(head, "w3schools/w3.css");
 		// it is important to provide the RequireJS library
 		createScript(head, "requirejs/require.js");
 

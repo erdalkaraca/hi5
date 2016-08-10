@@ -162,19 +162,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="de.metadocks.hi5.org.jquery.mobile"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="de.metadocks.hi5.org.jquery.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="de.metadocks.hi5.org.jquery.layout"
+         id="de.metadocks.hi5.com.w3schools.w3css"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
