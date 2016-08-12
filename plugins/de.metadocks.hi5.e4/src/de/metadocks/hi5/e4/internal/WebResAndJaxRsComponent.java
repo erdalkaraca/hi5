@@ -15,20 +15,29 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 
 import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.http.HttpContext;
@@ -36,8 +45,8 @@ import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.osgi.service.log.LogService;
 
-@Component(service = Hi5WebResourcesAutoRegComponent.class)
-public class Hi5WebResourcesAutoRegComponent {
+@Component(service = WebResAndJaxRsComponent.class, immediate = true)
+public class WebResAndJaxRsComponent {
 
 	private LogService logService;
 
@@ -59,10 +68,12 @@ public class Hi5WebResourcesAutoRegComponent {
 	/**
 	 * TODO listen to bundle changes for unregistering resources
 	 * 
-	 * @param e4Runtime
+	 * @throws IOException
+	 * @throws ConfigurationException
+	 * 
 	 */
-	public void registerResources(E4Runtime e4Runtime, String entryPoint) {
-		BundleContext bundleContext = FrameworkUtil.getBundle(Hi5WebResourcesAutoRegComponent.class).getBundleContext();
+	public void registerResources(String entryPoint) throws ConfigurationException {
+		BundleContext bundleContext = FrameworkUtil.getBundle(WebResAndJaxRsComponent.class).getBundleContext();
 		Bundle[] bundles = bundleContext.getBundles();
 
 		for (Bundle bundle : bundles) {
@@ -97,9 +108,13 @@ public class Hi5WebResourcesAutoRegComponent {
 		// this allows to request resources by giving a relative path
 		alias = entryPoint + alias;
 
-		HttpContext delegate = createHttpContext(bundle);
+		if (alias.endsWith("/")) {
+			alias = alias.substring(0, alias.length() - 1);
+		}
+
+		HttpContext delegateHttpContext = createHttpContext(bundle);
 		try {
-			httpService.registerResources(alias, webResource, delegate);
+			httpService.registerResources(alias, webResource, delegateHttpContext);
 			registeredResource.add(alias);
 			bundleNameToAlias.put(bundle.getSymbolicName(), alias);
 
@@ -110,9 +125,45 @@ public class Hi5WebResourcesAutoRegComponent {
 						+ (path.endsWith(".js") ? path.substring(0, path.length() - 3) : path);
 				aliasToPath.put(moduleAlias, requirejsPath);
 			}
-		} catch (NamespaceException e) {
+
+			registerWebservices(alias, delegateHttpContext, bundle);
+		} catch (NamespaceException | ServletException e) {
 			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
 		}
+	}
+
+	private void registerWebservices(String alias, HttpContext delegateHttpContext, Bundle bundle)
+			throws ServletException, NamespaceException {
+		ServiceReference<?>[] registeredServices = bundle.getRegisteredServices();
+
+		if (registeredServices == null) {
+			return;
+		}
+
+		BundleContext bundleContext = bundle.getBundleContext();
+		Set<Object> services = new HashSet<>();
+
+		for (ServiceReference<?> serviceReference : registeredServices) {
+			Object service = bundleContext.getService(serviceReference);
+
+			if (service.getClass().isAnnotationPresent(Path.class)
+					|| service.getClass().isAnnotationPresent(Produces.class)) {
+				services.add(service);
+			}
+		}
+
+		if (services.isEmpty()) {
+			return;
+		}
+
+		String wsAlias = alias + "/ws";
+		Application application = new Application() {
+			public Set<Object> getSingletons() {
+				return services;
+			};
+		};
+		ServletContainer servletContainer = new ServletContainer(ResourceConfig.forApplication(application));
+		httpService.registerServlet(wsAlias, servletContainer, null, delegateHttpContext);
 	}
 
 	public void unregisterAll(String entryPoint) {

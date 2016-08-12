@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="de.metadocks.hi5.e4.internal.E4Runtime">
+   <service>
+      <provide interface="de.metadocks.hi5.e4.internal.E4Runtime"/>
+   </service>
+   <implementation class="de.metadocks.hi5.e4.internal.E4Runtime"/>
+</scr:component>

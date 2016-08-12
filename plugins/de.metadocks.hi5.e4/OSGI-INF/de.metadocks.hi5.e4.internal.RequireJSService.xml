@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.metadocks.hi5.e4.internal.RequireJSService">
+   <service>
+      <provide interface="de.metadocks.hi5.e4.internal.RequireJSService"/>
+   </service>
+   <reference bind="setResReg" cardinality="1..1" interface="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent" name="ResReg" policy="static"/>
+   <implementation class="de.metadocks.hi5.e4.internal.RequireJSService"/>
+</scr:component>

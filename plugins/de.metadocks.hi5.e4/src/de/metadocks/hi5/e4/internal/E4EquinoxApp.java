@@ -30,7 +30,6 @@ public class E4EquinoxApp implements IApplication {
 	IApplicationContext applicationContext;
 	Object returnValue;
 
-	private E4Runtime e4Runtime;
 	private String alias;
 	private HttpService httpService;
 	private String base;
@@ -59,19 +58,18 @@ public class E4EquinoxApp implements IApplication {
 		Bundle bundle = FrameworkUtil.getBundle(E4EquinoxApp.class);
 		BundleContext bundleContext = bundle.getBundleContext();
 		httpService = getService(bundleContext, HttpService.class);
-		Hi5WebResourcesAutoRegComponent resReg = getService(bundleContext, Hi5WebResourcesAutoRegComponent.class);
+		WebResAndJaxRsComponent resReg = getService(bundleContext, WebResAndJaxRsComponent.class);
 		String entryPoint = applicationContext.getBrandingProperty("entryPoint");
 		base = "/" + entryPoint;
 		alias = base + "/index.html";
 
-		e4Runtime = new E4Runtime(base);
-		e4Runtime.createE4Workbench(context);
+		resReg.registerResources(base);
 
-		httpService.registerServlet(alias, new E4AppModelServlet(e4Runtime, resReg), null, null);
-		resReg.registerResources(e4Runtime, base);
+		E4Runtime e4runtime = getService(bundleContext, E4Runtime.class);
+		e4runtime.createE4Workbench(context);
+		
 		context.applicationRunning();
 		Application.launch(JFXApp.class);
-
 		resReg.unregisterAll(entryPoint);
 
 		try {
@@ -90,7 +88,8 @@ public class E4EquinoxApp implements IApplication {
 		primaryStage.setTitle(applicationContext.getBrandingName());
 		StackPane root = new StackPane();
 		WebView webview = new WebView();
-		webview.getEngine().load(String.format("http://localhost:8080%s", alias));
+		String url = String.format("http://localhost:8080%s", alias);
+		webview.getEngine().load(url);
 		root.getChildren().add(webview);
 		primaryStage.setScene(new Scene(root, 800, 600));
 		primaryStage.show();

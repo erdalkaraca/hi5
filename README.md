@@ -1,5 +1,13 @@
 # hi5
-HTML5 Renderer for Eclipse 4 applications
+HTML5 Renderer for Eclipse 4 applications.
+The aim is not to be able to run your existing Eclipse RCP code with minor changes in a web browser. Instead this is a complete paradigm shift in Eclipse RCP development allowing to adapt the latest web development trends and technologies.
+
+These are the major assumptions driving the development of this project:
+
+- Eclipse RCP and OSGi form a stable/robust and highly modular and enduring technology stack for back end logic (server side programming)
+- even if the life time of web frameworks is very short (compared to, for example, Eclipse frameworks and projects), they reflect the latest trends in the IT regarding, for example, UX design
+- web development technologies are generally much faster to master than, for example, getting started with SWT or JavaFX, this allows for more rapid recruitment of new team members in (running projects) [my subjective observation]
+- web development tooling is sufficient (for example, all major browsers have built-in support for JavaScript debugging)
 
 ![Hi5 Architecture Overview](docs/overview-architecture.png "Hi5 Architecture Overview")
 
@@ -39,15 +47,16 @@ The following screenshot is a demo showing the various jQuery UI widgets running
 
 # Dependencies
 
-| Project | Licence | Used for | Required? |
+| Project | License | Used for | Required? |
 | --- | --- | --- | --- |
 | [Eclipse 4](https://wiki.eclipse.org/Eclipse4) | EPL | defining/managing contributions of the single-page web application | yes |
 | [Eclipse Modeling Framework](https://eclipse.org/modeling/emf/) | EPL | used by Eclipse 4 to model the workbench | yes |
 | [RequireJS](http://requirejs.org) | MIT | client side dependencies management (AMD compliant implementation) | yes |
 | [w3.css](http://www.w3schools.com/w3css/) | No Licence | responsive layout | yes |
 | [jQuery](https://jquery.com) | MIT | client side DOM manipulation | yes |
+| [Jersey](https://jersey.java.net) | CDDL 1.1 | JAX-RS OSGi integration | yes |
 | [Eclipse Communications Framework](https://www.eclipse.org/ecf/) | EPL | web services support | no |
 | [Eclipse Texo](https://wiki.eclipse.org/Texo) | EPL | de/serialization of EMF models from/to server/client in JSON format | no |
 
-# Licence
-This project is EPL (Eclipse Public Licence)
+# License
+This project is licensed under the Eclipse Public License (EPL).

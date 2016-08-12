@@ -18,28 +18,24 @@ import java.util.Optional;
 
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.contexts.RunAndTrack;
 import org.eclipse.e4.core.services.contributions.IContributionFactory;
-import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.ModelServiceImpl;
 import org.eclipse.e4.ui.internal.workbench.PlaceholderResolver;
 import org.eclipse.e4.ui.internal.workbench.ReflectionContributionFactory;
 import org.eclipse.e4.ui.internal.workbench.ResourceHandler;
 import org.eclipse.e4.ui.internal.workbench.SelectionAggregator;
-import org.eclipse.e4.ui.internal.workbench.SelectionServiceImpl;
 import org.eclipse.e4.ui.internal.workbench.URIHelper;
 import org.eclipse.e4.ui.internal.workbench.WorkbenchLogger;
 import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.model.application.ui.basic.impl.BasicPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
-import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.IModelResourceHandler;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
@@ -47,7 +43,6 @@ import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
 import org.eclipse.e4.ui.workbench.lifecycle.ProcessRemovals;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPlaceholderResolver;
-import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
@@ -61,9 +56,12 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 import org.osgi.util.tracker.ServiceTracker;
 
 @SuppressWarnings("restriction")
+@Component(service = E4Runtime.class)
 public class E4Runtime {
 	static final private String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
 
@@ -73,12 +71,6 @@ public class E4Runtime {
 	private ServiceTracker<?, Location> locationTracker;
 	private IModelResourceHandler handler;
 	private IApplicationContext applicationContext;
-
-	private String base;
-
-	public E4Runtime(String base) {
-		this.base = base;
-	}
 
 	public MApplication copyApplicationModel() {
 		if (workbench == null) {
@@ -173,7 +165,8 @@ public class E4Runtime {
 		// E4Application.APPLICATION_CONTEXT_KEY key
 		appContext.set(IWorkbench.APPLICATION_CONTEXT_KEY, appContext);
 
-		appContext.set(Logger.class, ContextInjectionFactory.make(WorkbenchLogger.class, appContext));
+		appContext.set("org.eclipse.e4.core.services.log.Logger",
+				ContextInjectionFactory.make(WorkbenchLogger.class, appContext));
 		appContext.set(EModelService.class, new ModelServiceImpl(appContext));
 		appContext.set(EPlaceholderResolver.class, new PlaceholderResolver());
 
@@ -277,7 +270,7 @@ public class E4Runtime {
 			if (brandingBundle != null) {
 				return brandingBundle.getSymbolicName() + "/" + "Application.e4xmi";
 			} else {
-				Logger logger = new WorkbenchLogger(getBundleContext().getBundle().getSymbolicName());
+				WorkbenchLogger logger = new WorkbenchLogger(getBundleContext().getBundle().getSymbolicName());
 				logger.error(new Exception(), "applicationXMI parameter not set and no branding plugin defined. "); //$NON-NLS-1$
 			}
 			return null;
@@ -319,7 +312,7 @@ public class E4Runtime {
 		if (appContext.containsKey(CONTEXT_INITIALIZED))
 			return;
 		appContext.set(CONTEXT_INITIALIZED, "true");
-		initializeApplicationServices(appContext);
+		// initializeApplicationServices(appContext);
 		List<MWindow> windows = appModel.getChildren();
 		for (MWindow childWindow : windows) {
 			initializeWindowServices(childWindow);
@@ -337,31 +330,33 @@ public class E4Runtime {
 		});
 	}
 
-	static public void initializeApplicationServices(IEclipseContext appContext) {
-		final IEclipseContext theContext = appContext;
-		// we add a special tracker to bring up current selection from
-		// the active window to the application level
-		appContext.runAndTrack(new RunAndTrack() {
-			@Override
-			public boolean changed(IEclipseContext context) {
-				IEclipseContext activeChildContext = context.getActiveChild();
-				if (activeChildContext != null) {
-					Object selection = activeChildContext.get(IServiceConstants.ACTIVE_SELECTION);
-					theContext.set(IServiceConstants.ACTIVE_SELECTION, selection);
-				}
-				return true;
-			}
-		});
-
-		// we create a selection service handle on every node that we are asked
-		// about as handle needs to know its context
-		appContext.set(ESelectionService.class.getName(), new ContextFunction() {
-			@Override
-			public Object compute(IEclipseContext context, String contextKey) {
-				return ContextInjectionFactory.make(SelectionServiceImpl.class, context);
-			}
-		});
-	}
+	// static public void initializeApplicationServices(IEclipseContext
+	// appContext) {
+	// final IEclipseContext theContext = appContext;
+	// // we add a special tracker to bring up current selection from
+	// // the active window to the application level
+	// appContext.runAndTrack(new RunAndTrack() {
+	// @Override
+	// public boolean changed(IEclipseContext context) {
+	// IEclipseContext activeChildContext = context.getActiveChild();
+	// if (activeChildContext != null) {
+	// Object selection =
+	// activeChildContext.get(IServiceConstants.ACTIVE_SELECTION);
+	// theContext.set(IServiceConstants.ACTIVE_SELECTION, selection);
+	// }
+	// return true;
+	// }
+	// });
+	//
+	// // we create a selection service handle on every node that we are asked
+	// // about as handle needs to know its context
+	// appContext.set(ESelectionService.class.getName(), new ContextFunction() {
+	// @Override
+	// public Object compute(IEclipseContext context, String contextKey) {
+	// return ContextInjectionFactory.make(SelectionServiceImpl.class, context);
+	// }
+	// });
+	// }
 
 	static public void initializeWindowServices(MWindow childWindow) {
 		IEclipseContext windowContext = childWindow.getContext();
@@ -396,5 +391,11 @@ public class E4Runtime {
 
 		URL entry = applicationContext.getBrandingBundle().getEntry(indexPath);
 		return entry.openStream();
+	}
+
+	public MUIElement getModelElement(String id) {
+		EModelService modelService = workbench.getContext().get(EModelService.class);
+		MUIElement element = modelService.find(id, workbench.getApplication());
+		return element;
 	}
 }

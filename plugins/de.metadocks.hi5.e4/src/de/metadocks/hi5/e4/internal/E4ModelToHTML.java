@@ -11,6 +11,7 @@
 package de.metadocks.hi5.e4.internal;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,29 +20,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import org.eclipse.e4.ui.model.application.MApplication;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.e4.ui.model.application.MApplicationElement;
-import org.eclipse.e4.ui.model.application.MContribution;
 import org.eclipse.e4.ui.model.application.impl.ApplicationPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
-import org.eclipse.e4.ui.model.application.ui.MUILabel;
 import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
-import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
-import org.eclipse.e4.ui.model.application.ui.menu.MItem;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
+@Component(immediate = true, service = E4ModelToHTML.class)
 public class E4ModelToHTML {
 	@SuppressWarnings("restriction")
 	private static final List<EAttribute> PUBLIC_ATTRS = Arrays.asList(
@@ -50,10 +68,25 @@ public class E4ModelToHTML {
 			UiPackageImpl.Literals.UI_ELEMENT__CONTAINER_DATA, UiPackageImpl.Literals.UI_LABEL__LABEL,
 			UiPackageImpl.Literals.UI_LABEL__ICON_URI);
 
+	private WebResAndJaxRsComponent resReg;
 	private Map<Class<? extends MApplicationElement>, Rule<? extends MApplicationElement>> grammar = new HashMap<>();
+	private DocumentBuilder builder;
+	private Transformer transformer;
 
-	private Hi5WebResourcesAutoRegComponent resReg;
-	{
+	@Activate
+	public void activate() throws ParserConfigurationException, TransformerConfigurationException {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setValidating(false);
+		dbf.setNamespaceAware(true);
+		dbf.setIgnoringComments(false);
+		dbf.setIgnoringElementContentWhitespace(false);
+		dbf.setExpandEntityReferences(false);
+
+		builder = dbf.newDocumentBuilder();
+		TransformerFactory tf = TransformerFactory.newInstance();
+		transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+
 		registerRule(MElementContainer.class, ctx -> {
 			handleElementContainer(ctx);
 		});
@@ -89,6 +122,69 @@ public class E4ModelToHTML {
 		registerRule(MApplicationElement.class, ctx -> {
 			handleLeaf(ctx);
 		});
+	}
+
+	@Reference(unbind = "-")
+	public void setResReg(WebResAndJaxRsComponent resReg) {
+		this.resReg = resReg;
+	}
+
+	public String toHTML(MUIElement element) throws JSONException {
+		JSONObject appModelConfig = new JSONObject();
+		Document doc = builder.newDocument();
+		Element container = doc.createElement("div");
+		doc.appendChild(container);
+		transform(container, element, appModelConfig);
+		Node firstChild = container.getFirstChild();
+		StringWriter writer = new StringWriter();
+
+		try {
+			transformer.transform(new DOMSource(firstChild), new StreamResult(writer));
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return writer.toString();
+	}
+
+	private <T> Stream<T> stream(Class<T> type, TreeIterator<EObject> iter) {
+		return (Stream<T>) StreamSupport.stream(Spliterators.spliteratorUnknownSize(iter, Spliterator.ORDERED), false)
+				.filter(eo -> type.isAssignableFrom(eo.eClass().getInstanceClass()));
+	}
+
+	private void createMeta(Element head, String name, String content) {
+		Element meta = head.getOwnerDocument().createElement("meta");
+		meta.setAttribute("name", name);
+		meta.setAttribute("content", content);
+		head.appendChild(meta);
+	}
+
+	private void createLink(Element parent, String href) {
+		Document doc = parent.getOwnerDocument();
+		Element link = doc.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", href);
+		parent.appendChild(link);
+	}
+
+	private Element createScriptContent(Element parent, String content) {
+		Document doc = parent.getOwnerDocument();
+		Element script = doc.createElement("script");
+		script.setAttribute("type", "text/javascript");
+		script.setTextContent(content);
+		parent.appendChild(script);
+		return script;
+	}
+
+	private Element createScript(Element parent, String src) {
+		Document doc = parent.getOwnerDocument();
+		Element script = doc.createElement("script");
+		script.setAttribute("type", "text/javascript");
+		script.setAttribute("src", src);
+		parent.appendChild(script);
+		return script;
 	}
 
 	private void handleLeaf(RuleContext<? extends MApplicationElement> ctx) throws JSONException {
@@ -245,7 +341,7 @@ public class E4ModelToHTML {
 		return bundleAliasMapping;
 	}
 
-	public void setResourcesRegistry(Hi5WebResourcesAutoRegComponent resReg) {
+	public void setResourcesRegistry(WebResAndJaxRsComponent resReg) {
 		this.resReg = resReg;
 	}
 
