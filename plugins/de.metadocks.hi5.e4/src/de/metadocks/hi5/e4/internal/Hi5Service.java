@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 @Component(immediate = true, service = Hi5Service.class)
-@Path("/app")
+@Path("/")
 public class Hi5Service {
 	private E4Runtime e4Runtime;
 	private E4ModelToHTML modelTransformer;
@@ -25,6 +25,21 @@ public class Hi5Service {
 	@Reference(unbind = "-")
 	public void setE4Runtime(E4Runtime e4Runtime) {
 		this.e4Runtime = e4Runtime;
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/json-children/{parentId}")
+	public String jsonChildren(@PathParam("parentId") String parentId) {
+		MUIElement element = e4Runtime.getModelElement(parentId);
+		String html = "";
+		try {
+			html = modelTransformer.toHTML(element);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return html;
 	}
 
 	@GET

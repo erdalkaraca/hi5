@@ -1,100 +1,152 @@
-define(
-		[ 'jquery' ],
-		function(jquery) {
-			var grammar = {};
+define([ 'jquery' ], function(jquery) {
+	var hi5 = {
+		version : "0.7.0"
+	};
+	var grammar = {};
 
-			grammar["Application"] = function($e) {
-				handleChildren($e);
-			};
+	grammar["Application"] = function($e) {
+		handleUIElements($e);
+	};
 
-			grammar["TrimmedWindow"] = function($e) {
-				handleChildren($e);
-				handleChildren($e, "TrimBar");
-			};
+	grammar["TrimmedWindow"] = function($e) {
+		handleUIElements($e);
+		handleUIElements($e, ".TrimBar");
+	};
 
-			grammar["PerspectiveStack"] = function($e) {
-				$e.addClass("ui-layout-center");
-				$e.css("display", "block");
+	grammar["GenericStack"] = function($e, stackElementsType) {
+		if (stackElementsType == null) {
+			stackElementsType = $e.children().eq(0).attr("etype");
+		}
 
-				var $ul = $("<nav class='w3-sidenav w3-white w3-card-2 w3-animate-right' style='display:none;right:0;' id='perspectiveStackMenu'></nav>");
-				$ul
-						.append("<a href='javascript:void(0)' class='w3-closenav w3-large'>Close &times;</a>");
-				$e.children(".Perspective").each(function() {
+		var $ul = $("<ul class='w3-navbar w3-white'></ul>");
+		$e.children("." + stackElementsType).css("display", "none").each(
+				function() {
 					var $p = $(this);
 					var $a = $("<a href='#'>" + $p.attr("label") + "</a>");
-					$ul.append($a);
+					var $li = $("<li></li>");
+					$a.click(function() {
+						var $pers = $e.children("." + stackElementsType);
+						$pers.css("display", "none");
+						$pers.eq($li.index()).css("display", "block");
+						$ul.children().attr("active", "false");
+						$li.attr("active", "true");
+					});
+					$li.append($a);
+					$ul.append($li);
 				});
-				$e.prepend($ul);
-				$e
-						.prepend("<header class='w3-container w3-teal'><span class='w3-opennav w3-xlarge w3-right'>&#9776;</span></header>");
-				handleChildren($e);
-				$e.children(".Perspective").css("display", "block");
-			};
+		$e.prepend($ul);
+		handleUIElements($e);
+	};
 
-			function showTab() {
+	grammar["PerspectiveStack"] = function($e) {
+		grammar["GenericStack"]($e, "Perspective");
+	};
 
-			}
+	grammar["Perspective"] = function($e) {
+		handleUIElements($e);
+	};
 
-			grammar["Perspective"] = function($e) {
-				$e.css("display", "block");
-				handleChildren($e);
-			};
+	grammar["PartStack"] = function($e) {
+		grammar["GenericStack"]($e, "Part");
+	};
 
-			grammar["PartStack"] = function($e) {
-				handleChildren($e);
-			};
+	grammar["Part"] = function($e) {
+		$e.addClass("w3-panel");
+		$e.addClass("w3-light-grey");
+		$e.addClass("w3-border");
+		var url = toUrl($e, $e.attr("state_index"));
+		$e.load(url);
+	};
 
-			grammar["Part"] = function($e) {
-				$e.addClass("w3-panel");
-				$e.addClass("w3-light-grey");
-				$e.addClass("w3-border");
-				$e.css("display", "block");
-				handleChildren($e);
+	grammar["TrimBar"] = function($e) {
+		var dir = $e.attr("direction");
+		handleUIElements($e);
+	};
 
-				var url = toUrl($e, $e.attr("state_index"));
-				$e.load(url);
-			};
+	grammar["ToolBar"] = function($e) {
+		handleUIElements($e);
+	};
 
-			grammar["TrimBar"] = function($e) {
-				var dir = $e.attr("direction");
-				handleChildren($e);
-			};
+	grammar["HandledToolItem"] = function($e) {
+		$e.html("<button class='w3-btn w3-white'><img src='"
+				+ toUrl($e, $e.attr("iconURI")) + "'></img><br>"
+				+ $e.attr("label") + "</button>");
+		$e.css("float", "left");
+	};
 
-			grammar["ToolBar"] = function($e) {
-				handleChildren($e);
-			};
+	function applyRule($e) {
+		var etype = $e.attr("etype");
+		var rule = grammar[etype];
 
-			grammar["HandledToolItem"] = function($e) {
-				$e.html("<button class='w3-btn w3-white'><img src='"
-						+ toUrl($e, $e.attr("iconURI")) + "'></img><br>"
-						+ $e.attr("label") + "</button>");
-				$e.css("float", "left");
-			};
+		if (rule == null) {
+			console.log("No rule found for: " + etype);
+		} else {
+			rule($e);
+		}
+	}
 
-			function applyRule($e) {
-				var etype = $e.attr("etype");
-				var rule = grammar[etype];
-
-				if (rule == null) {
-					console.log("No rule found for: " + etype);
-				} else {
-					rule($e);
-				}
-			}
-
-			function handleChildren($e, filter) {
-				$e.children(filter).each(function() {
-					applyRule($(this));
-				});
-			}
-
-			function toUrl($e, relativePath) {
-				return $e.attr("contributoruri") + "/" + relativePath;
-			}
-
-			var hi5 = {};
-			hi5.version = "v0.7.0";
-			hi5.grammar = grammar;
-			hi5.process = applyRule;
-			return hi5;
+	function handleUIElements($e, filter) {
+		$(".UIElement " + (filter == null ? "" : filter), $e).each(function() {
+			applyRule($(this));
 		});
+	}
+
+	function toUrl($e, relativePath) {
+		return $e.attr("contributoruri") + "/" + relativePath;
+	}
+
+	function getParamNames(fn) {
+		var fstr = fn.toString();
+		return fstr.match(/\(.*?\)/)[0].replace(/[()]/gi, '').replace(/\s/gi,
+				'').split(',');
+	}
+
+	function getData($element, key) {
+		var context = $element.data("hi5_context");
+
+		if (context == null) {
+			var $parent = $element.parent();
+
+			// document.body is defined as highest context
+			if ($parent == null || $parent.length == 0
+					|| $parent[0] == document.body) {
+				return hi5[key];
+			}
+
+			return getData($parent, key);
+		}
+
+		return context[key];
+	}
+
+	var PartService = function($container) {
+		this.$container = $container;
+	};
+	PartService.prototype.loadUIElement = function(id) {
+		this.$container.load("hi5/ws/element/" + id, function() {
+			$uiElement = $("[elementid='" + id + "']", this);
+			applyRule($uiElement);
+		});
+	};
+
+	$.fn.hi5 = function(fn) {
+		var names = getParamNames(fn);
+		this.each(function() {
+			var $this = $(this);
+			$this.data("hi5_context", {
+				partService : new PartService($this)
+			});
+			var args = new Array();
+
+			for (var i = 0; i < names.length; i++) {
+				var name = names[i];
+				var arg = getData($this, name);
+				args.push(arg);
+			}
+
+			fn.apply(this, args);
+		})
+	};
+
+	return hi5;
+});

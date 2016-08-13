@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: E4
+Bundle-Name: Hi5 E4 Web API
 Bundle-SymbolicName: de.metadocks.hi5.e4;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.common,
  org.json,
@@ -17,6 +17,7 @@ Import-Package: javax.servlet;version="3.1.0",
  javax.servlet.http;version="3.1.0",
  javax.ws.rs;version="2.0.1",
  javax.ws.rs.core;version="2.0.1",
+ javax.ws.rs.ext;version="2.0.1",
  org.eclipse.core.runtime;version="3.5.0",
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.core.di,
@@ -47,3 +48,4 @@ Service-Component: OSGI-INF/de.metadocks.hi5.e4.internal.E4ModelToHTML.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.E4Runtime.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.RequireJSService.xml
+Bundle-Vendor: Erdal Karaca

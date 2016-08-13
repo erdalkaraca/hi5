@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -40,6 +41,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
@@ -54,6 +57,7 @@ public class WebResAndJaxRsComponent {
 	private HttpService httpService;
 	private Map<String, String> bundleNameToAlias = new HashMap<>();
 	private Map<String, String> aliasToPath = new HashMap<>();
+	private Set<Object> jaxRsComponents = new HashSet<>();
 
 	@Reference(unbind = "-")
 	public void setHttpService(HttpService httpService) {
@@ -63,6 +67,17 @@ public class WebResAndJaxRsComponent {
 	@Reference(unbind = "-")
 	public void setLogService(LogService logService) {
 		this.logService = logService;
+	}
+
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addMessageBodyWriter(MessageBodyWriter<?> writer) {
+		jaxRsComponents.add(writer);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeMessageBodyWriter(MessageBodyWriter<?> writer) {
+		jaxRsComponents.remove(writer);
 	}
 
 	/**
@@ -162,7 +177,11 @@ public class WebResAndJaxRsComponent {
 				return services;
 			};
 		};
-		ServletContainer servletContainer = new ServletContainer(ResourceConfig.forApplication(application));
+		ResourceConfig config = ResourceConfig.forApplication(application);
+		jaxRsComponents.forEach(cmp -> {
+			config.register(cmp);
+		});
+		ServletContainer servletContainer = new ServletContainer(config);
 		httpService.registerServlet(wsAlias, servletContainer, null, delegateHttpContext);
 	}
 
