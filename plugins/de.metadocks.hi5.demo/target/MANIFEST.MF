@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: de.metadocks.hi5.demo;singleton:=true
+Bundle-Name: Demo
+Bundle-Version: 1.0.0.201608141536
+Require-Bundle: org.eclipse.e4.ui.model.workbench
+Bundle-ManifestVersion: 2
+

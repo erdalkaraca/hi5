@@ -260,56 +260,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.ecf.provider.jaxrs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.provider.jaxrs.server"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.provider.jersey.server"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="javax.ws.rs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.remoteservice"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.identity"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.remoteservice.asyncproxy"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -344,35 +295,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.glassfish.jersey.media.jersey-media-json-jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="javax.annotation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.core.jackson-core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-base"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -440,32 +363,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.core.jackson-annotations"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.core.jackson-databind"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.metadocks.hi5.org.jquery.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>

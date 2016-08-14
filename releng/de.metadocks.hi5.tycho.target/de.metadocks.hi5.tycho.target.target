@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="hi5-target" sequenceNumber="33">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.12.0.v20160526-0356"/>
+<unit id="org.eclipse.ecf.remoteservice.sdk.feature.feature.group" version="3.13.1.v20160405-1820"/>
+<unit id="org.eclipse.ecf.core.feature.group" version="3.13.1.v20160405-1820"/>
+<repository location="http://download.eclipse.org/releases/neon"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20160606-1311"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.6.0.v20160606-1342"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.6.0.v20160606-1342"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.6"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="javax.ws.rs" version="2.0.1.v201504171603"/>
+<unit id="org.apache.commons.io.source" version="2.2.0.v201405211200"/>
+<unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
+<unit id="javax.xml.rpc" version="1.1.0.v201209140446"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.texo.sdk.feature.group" version="0.9.0.v201606022133"/>
+<repository location="http://download.eclipse.org/modeling/emft/texo/updates/interim"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="de.metdocks.hi5.externals.feature.feature.group" version="0.7.0.201608141632"/>
+<repository location="file:./externals/"/>
+</location>
+</locations>
+</target>

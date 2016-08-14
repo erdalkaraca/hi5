@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.metadocks.hi5.feature"
+      label="Hi5 Eclipse 4 Web API Feature"
+      version="0.7.0.201608141536">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="de.metadocks.hi5.e4"
+         download-size="34"
+         install-size="69"
+         version="0.7.0.201608141536"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.model.workbench"
+         download-size="376"
+         install-size="1171"
+         version="1.2.0.v20160229-1459"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.commands"
+         download-size="25"
+         install-size="45"
+         version="0.11.100.v20160506-0804"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.contexts"
+         download-size="47"
+         install-size="91"
+         version="1.5.0.v20160504-0909"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.di"
+         download-size="53"
+         install-size="108"
+         version="1.6.0.v20160319-0612"
+         unpack="false"/>
+
+   <plugin
+         id="javax.inject"
+         download-size="16"
+         install-size="28"
+         version="1.0.0.v20091030"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.commands"
+         download-size="112"
+         install-size="213"
+         version="3.8.0.v20160316-1921"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.expressions"
+         download-size="89"
+         install-size="174"
+         version="3.5.100.v20160418-1621"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.services"
+         download-size="53"
+         install-size="94"
+         version="2.0.100.v20160509-1032"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.di.annotations"
+         download-size="11"
+         install-size="14"
+         version="1.5.0.v20151127-1241"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.emf.xpath"
+         download-size="48"
+         install-size="95"
+         version="0.1.200.v20160506-0804"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.jxpath"
+         download-size="308"
+         install-size="642"
+         version="1.3.0.v200911051830"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.services"
+         download-size="27"
+         install-size="43"
+         version="1.2.100.v20160506-0759"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.workbench"
+         download-size="243"
+         install-size="511"
+         version="1.4.0.v20160517-1624"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.core.di.extensions"
+         download-size="27"
+         install-size="47"
+         version="0.14.0.v20160211-1614"
+         unpack="false"/>
+
+   <plugin
+         id="com.ibm.icu"
+         download-size="11099"
+         install-size="24686"
+         version="56.1.0.v201601250100"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.di"
+         download-size="16"
+         install-size="23"
+         version="1.1.100.v20160506-0759"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.io"
+         download-size="189"
+         install-size="389"
+         version="2.2.0.v201405211200"
+         unpack="false"/>
+
+   <plugin
+         id="org.json"
+         download-size="56"
+         install-size="104"
+         version="1.0.0.v201011060100"
+         unpack="false"/>
+
+   <plugin
+         id="de.metadocks.hi5.org.jquery"
+         download-size="1"
+         install-size="0"
+         version="1.12.4"/>
+
+   <plugin
+         id="de.metadocks.hi5.org.requirejs"
+         download-size="1"
+         install-size="0"
+         version="2.2.0"/>
+
+   <plugin
+         id="de.metadocks.hi5.com.w3schools.w3css"
+         download-size="1"
+         install-size="0"
+         version="2.7.0"/>
+
+   <plugin
+         id="de.metadocks.hi5.jaxrs.emf"
+         download-size="6"
+         install-size="9"
+         version="1.0.0.201608141536"/>
+
+   <plugin
+         id="org.glassfish.jersey.containers.jersey-container-servlet-core"
+         download-size="55"
+         install-size="105"
+         version="2.14.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.jersey.core.jersey-common"
+         download-size="715"
+         install-size="1533"
+         version="2.14.0.201604161403"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.jersey.core.jersey-server"
+         download-size="902"
+         install-size="1929"
+         version="2.14.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.hk2.api"
+         download-size="178"
+         install-size="387"
+         version="2.4.0.b09"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.hk2.locator"
+         download-size="167"
+         install-size="376"
+         version="2.4.0.b09"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.hk2.osgi-resource-locator"
+         download-size="27"
+         install-size="58"
+         version="2.3.0.b10_201604161403"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.hk2.utils"
+         download-size="93"
+         install-size="186"
+         version="2.4.0.b09"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.jersey.bundles.repackaged.jersey-guava"
+         download-size="944"
+         install-size="2201"
+         version="2.14.0.201604161403"
+         unpack="false"/>
+
+   <plugin
+         id="javassist"
+         download-size="697"
+         install-size="1351"
+         version="3.18.2.GA"
+         unpack="false"/>
+
+   <plugin
+         id="org.glassfish.jersey.core.jersey-client"
+         download-size="158"
+         install-size="374"
+         version="2.14.0.201604161403"
+         unpack="false"/>
+
+   <plugin
+         id="org.aopalliance"
+         download-size="6"
+         install-size="5"
+         version="1.0.0.201604161403"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.cm"
+         download-size="72"
+         install-size="147"
+         version="1.1.200.v20160324-1850"
+         unpack="false"/>
+
+</feature>

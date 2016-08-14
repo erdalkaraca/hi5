@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.metadocks.hi5.feature_0.7.0.qualifier.jar" id="de.metadocks.hi5.feature" version="0.7.0.qualifier">
+      <category name="de.metadocks.hi5.category"/>
+   </feature>
+   <category-def name="de.metadocks.hi5.category" label="Hi5 Eclipse 4 Web API"/>
+</site>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='de.metadocks.hi5.demo.app' version='1.0.0.201608141536'>
+    <update id='de.metadocks.hi5.demo.app' range='[0.0.0,1.0.0.201608141536)' severity='0'/>
+    <properties size='4'>
+      <property name='org.eclipse.equinox.p2.name' value='App'/>
+      <property name='maven-groupId' value='de.metadocks.hi5'/>
+      <property name='maven-artifactId' value='de.metadocks.hi5.demo.app'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='de.metadocks.hi5.demo.app' version='1.0.0.201608141536'/>
+      <provided namespace='osgi.bundle' name='de.metadocks.hi5.demo.app' version='1.0.0.201608141536'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='1'>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='de.metadocks.hi5.demo.app' version='1.0.0.201608141536'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: de.metadocks.hi5.demo.app;singleton:=true&#xA;Bundle-Version: 1.0.0.201608141536&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

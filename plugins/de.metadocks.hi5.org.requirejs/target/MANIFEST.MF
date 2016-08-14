@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: de.metadocks.hi5.org.requirejs
+Bundle-Name: Requirejs
+Bundle-Version: 2.2.0
+Bundle-ManifestVersion: 2
+
