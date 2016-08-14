@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Feature;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.apache.commons.io.IOUtils;
@@ -78,6 +80,28 @@ public class WebResAndJaxRsComponent {
 
 	public void removeMessageBodyWriter(MessageBodyWriter<?> writer) {
 		jaxRsComponents.remove(writer);
+	}
+
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addMessageBodyReader(MessageBodyReader<?> writer) {
+		jaxRsComponents.add(writer);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeMessageBodyReader(MessageBodyReader<?> writer) {
+		jaxRsComponents.remove(writer);
+	}
+	
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addFeature(Feature feature) {
+		jaxRsComponents.add(feature);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeFeature(Feature feature) {
+		jaxRsComponents.remove(feature);
 	}
 
 	/**
@@ -178,9 +202,7 @@ public class WebResAndJaxRsComponent {
 			};
 		};
 		ResourceConfig config = ResourceConfig.forApplication(application);
-		jaxRsComponents.forEach(cmp -> {
-			config.register(cmp);
-		});
+		config.registerInstances(jaxRsComponents.toArray());
 		ServletContainer servletContainer = new ServletContainer(config);
 		httpService.registerServlet(wsAlias, servletContainer, null, delegateHttpContext);
 	}

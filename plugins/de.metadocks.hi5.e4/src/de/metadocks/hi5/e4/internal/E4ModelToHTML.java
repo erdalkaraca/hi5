@@ -20,12 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,7 +42,6 @@ import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -146,11 +141,6 @@ public class E4ModelToHTML {
 		}
 
 		return writer.toString();
-	}
-
-	private <T> Stream<T> stream(Class<T> type, TreeIterator<EObject> iter) {
-		return (Stream<T>) StreamSupport.stream(Spliterators.spliteratorUnknownSize(iter, Spliterator.ORDERED), false)
-				.filter(eo -> type.isAssignableFrom(eo.eClass().getInstanceClass()));
 	}
 
 	private void createMeta(Element head, String name, String content) {
