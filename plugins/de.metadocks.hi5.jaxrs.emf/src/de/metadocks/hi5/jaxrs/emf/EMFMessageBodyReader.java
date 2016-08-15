@@ -29,7 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Component;
 
-@Component(service = MessageBodyReader.class, immediate = true)
+@Component(service = { MessageBodyReader.class, EMFMessageBodyReader.class }, immediate = true)
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyReader implements MessageBodyReader<EObject> {

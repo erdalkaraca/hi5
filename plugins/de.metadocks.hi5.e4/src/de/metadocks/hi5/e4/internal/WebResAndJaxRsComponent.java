@@ -159,34 +159,40 @@ public class WebResAndJaxRsComponent {
 			registeredResource.add(alias);
 			bundleNameToAlias.put(bundle.getSymbolicName(), alias);
 
+			registerWebservices(alias, delegateHttpContext, bundle);
+		} catch (NamespaceException | ServletException e) {
+			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
+		}
+
+		// register main module path
+		{
 			String path = root.optString("path");
 
 			if (!path.isEmpty()) {
 				String requirejsPath = moduleAlias + "/" + trimJSExtension(path);
 				aliasToPath.put(moduleAlias, requirejsPath);
 			}
-
-			registerWebservices(alias, delegateHttpContext, bundle);
-		} catch (NamespaceException | ServletException e) {
-			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
 		}
 
-		JSONObject modules = root.optJSONObject("modules");
+		// register additional modules
+		{
+			JSONObject modules = root.optJSONObject("modules");
 
-		if (modules != null) {
-			Iterator keys = modules.keys();
+			if (modules != null) {
+				Iterator keys = modules.keys();
 
-			while (keys.hasNext()) {
-				String key = (String) keys.next();
-				String path = modules.getString(key);
-				String ma = alias;
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
+					String path = modules.getString(key);
+					String ma = alias;
 
-				if (!ma.endsWith("/")) {
-					ma += "/";
+					if (!ma.endsWith("/")) {
+						ma += "/";
+					}
+
+					String requirejsPath = ma + trimJSExtension(path);
+					aliasToPath.put(key, requirejsPath);
 				}
-
-				String requirejsPath = ma + trimJSExtension(path);
-				aliasToPath.put(key, requirejsPath);
 			}
 		}
 	}
