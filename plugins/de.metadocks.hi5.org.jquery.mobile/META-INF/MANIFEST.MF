@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Mobile
-Bundle-SymbolicName: de.metadocks.hi5.org.jquery.mobile
-Bundle-Version: 1.0.0.qualifier

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class WebResAndJaxRsComponent {
 	public void removeMessageBodyReader(MessageBodyReader<?> writer) {
 		jaxRsComponents.remove(writer);
 	}
-	
+
 	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
 	public void addFeature(Feature feature) {
 		jaxRsComponents.add(feature);
@@ -126,6 +127,7 @@ public class WebResAndJaxRsComponent {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void check(String entryPoint, Bundle bundle) throws IOException, JSONException {
 		URL packageJson = bundle.getEntry("hi5.json");
 
@@ -160,8 +162,7 @@ public class WebResAndJaxRsComponent {
 			String path = root.optString("path");
 
 			if (!path.isEmpty()) {
-				String requirejsPath = moduleAlias + "/"
-						+ (path.endsWith(".js") ? path.substring(0, path.length() - 3) : path);
+				String requirejsPath = moduleAlias + "/" + trimJSExtension(path);
 				aliasToPath.put(moduleAlias, requirejsPath);
 			}
 
@@ -169,6 +170,29 @@ public class WebResAndJaxRsComponent {
 		} catch (NamespaceException | ServletException e) {
 			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
 		}
+
+		JSONObject modules = root.optJSONObject("modules");
+
+		if (modules != null) {
+			Iterator keys = modules.keys();
+
+			while (keys.hasNext()) {
+				String key = (String) keys.next();
+				String path = modules.getString(key);
+				String ma = alias;
+
+				if (!ma.endsWith("/")) {
+					ma += "/";
+				}
+
+				String requirejsPath = ma + trimJSExtension(path);
+				aliasToPath.put(key, requirejsPath);
+			}
+		}
+	}
+
+	private String trimJSExtension(String path) {
+		return path.endsWith(".js") ? path.substring(0, path.length() - 3) : path;
 	}
 
 	private void registerWebservices(String alias, HttpContext delegateHttpContext, Bundle bundle)

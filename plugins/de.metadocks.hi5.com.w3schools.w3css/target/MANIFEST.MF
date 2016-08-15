@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-SymbolicName: de.metadocks.hi5.com.w3schools.w3css
-Bundle-Name: W3Schools W3.CSS
-Bundle-Version: 2.7.0
-Bundle-ManifestVersion: 2
-
