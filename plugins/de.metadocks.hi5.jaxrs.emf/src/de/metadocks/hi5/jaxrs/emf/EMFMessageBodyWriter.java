@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.texo.json.EMFJSONConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service = MessageBodyWriter.class, immediate = true)
@@ -34,6 +35,11 @@ import org.osgi.service.component.annotations.Component;
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
 	private EMFJSONConverter converter = new EMFJSONConverter();
+
+	@Activate
+	public void activate() {
+		converter.setConvertNonContainedReferencedObjects(true);
+	}
 
 	@Override
 	public long getSize(EObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {

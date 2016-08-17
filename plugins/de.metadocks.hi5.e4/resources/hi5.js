@@ -36,6 +36,8 @@ define([ 'jquery' ], function(jquery) {
 				});
 		$e.prepend($ul);
 		handleUIElements($e);
+		// select first stack element
+		$ul.find("a").eq(0).trigger('click');
 	};
 
 	grammar["PerspectiveStack"] = function($e) {
