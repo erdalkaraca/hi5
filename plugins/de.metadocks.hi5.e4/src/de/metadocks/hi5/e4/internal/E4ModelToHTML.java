@@ -39,9 +39,11 @@ import org.eclipse.e4.ui.model.application.impl.ApplicationPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.SideValue;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
+import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -88,6 +90,8 @@ public class E4ModelToHTML {
 
 		registerRule(MTrimmedWindow.class, ctx -> {
 			Element newParent = createDiv(ctx.parent, ctx.modelElement);
+			// process main menu
+			transform(newParent, ctx.modelElement.getMainMenu(), ctx.appModelConfig);
 
 			Consumer<? super MTrimBar> action = tb -> {
 				try {
@@ -116,6 +120,14 @@ public class E4ModelToHTML {
 
 		registerRule(MApplicationElement.class, ctx -> {
 			handleLeaf(ctx);
+		});
+
+		registerRule(MPart.class, ctx -> {
+			Element newParent = handleLeaf(ctx);
+
+			for (MMenu menu : ctx.modelElement.getMenus()) {
+				transform(newParent, menu, ctx.appModelConfig);
+			}
 		});
 	}
 
@@ -177,8 +189,9 @@ public class E4ModelToHTML {
 		return script;
 	}
 
-	private void handleLeaf(RuleContext<? extends MApplicationElement> ctx) throws JSONException {
-		createDiv(ctx.parent, ctx.modelElement);
+	private Element handleLeaf(RuleContext<? extends MApplicationElement> ctx) throws JSONException {
+		Element newParent = createDiv(ctx.parent, ctx.modelElement);
+		return newParent;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -277,6 +290,12 @@ public class E4ModelToHTML {
 
 		for (Entry<String, String> e : modelElement.getPersistedState().entrySet()) {
 			element.setAttribute("state_" + e.getKey(), e.getValue());
+		}
+
+		String tags = modelElement.getTags().stream().collect(Collectors.joining(" "));
+
+		if (!tags.isEmpty()) {
+			element.setAttribute("tags", tags);
 		}
 
 		return element;

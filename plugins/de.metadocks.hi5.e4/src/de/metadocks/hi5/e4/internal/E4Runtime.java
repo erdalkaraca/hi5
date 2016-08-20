@@ -32,6 +32,7 @@ import org.eclipse.e4.ui.internal.workbench.URIHelper;
 import org.eclipse.e4.ui.internal.workbench.WorkbenchLogger;
 import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.MApplicationElement;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.model.application.ui.basic.impl.BasicPackageImpl;
@@ -45,8 +46,10 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPlaceholderResolver;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -394,8 +397,18 @@ public class E4Runtime {
 	}
 
 	public MUIElement getModelElement(String id) {
-		EModelService modelService = workbench.getContext().get(EModelService.class);
-		MUIElement element = modelService.find(id, workbench.getApplication());
-		return element;
+		TreeIterator<EObject> iter = ((EObject) workbench.getApplication()).eAllContents();
+		while (iter.hasNext()) {
+			EObject eObject = (EObject) iter.next();
+
+			if (eObject instanceof MUIElement) {
+				String elementId = ((MApplicationElement) eObject).getElementId();
+				if (id.equals(elementId)) {
+					return (MUIElement) eObject;
+				}
+			}
+		}
+
+		return null;
 	}
 }
