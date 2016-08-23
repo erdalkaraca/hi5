@@ -31,6 +31,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
+import javax.ws.rs.ext.ParamConverterProvider;
 
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -59,7 +60,8 @@ public class WebResAndJaxRsComponent {
 	private List<String> registeredResource = new ArrayList<>();
 	private HttpService httpService;
 	private Map<String, String> bundleNameToAlias = new HashMap<>();
-	private Map<String, String> aliasToPath = new HashMap<>();
+	private JSONObject pathsConfig = new JSONObject();
+	private JSONObject shim = new JSONObject();
 	private Set<Object> jaxRsComponents = new HashSet<>();
 
 	@Reference(unbind = "-")
@@ -103,6 +105,17 @@ public class WebResAndJaxRsComponent {
 
 	public void removeFeature(Feature feature) {
 		jaxRsComponents.remove(feature);
+	}
+
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addParamConverterProvider(ParamConverterProvider provider) {
+		jaxRsComponents.add(provider);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeParamConverterProvider(ParamConverterProvider provider) {
+		jaxRsComponents.remove(provider);
 	}
 
 	/**
@@ -170,7 +183,7 @@ public class WebResAndJaxRsComponent {
 
 			if (!path.isEmpty()) {
 				String requirejsPath = moduleAlias + "/" + trimJSExtension(path);
-				aliasToPath.put(moduleAlias, requirejsPath);
+				pathsConfig.put(moduleAlias, requirejsPath);
 			}
 		}
 
@@ -191,7 +204,22 @@ public class WebResAndJaxRsComponent {
 					}
 
 					String requirejsPath = ma + trimJSExtension(path);
-					aliasToPath.put(key, requirejsPath);
+					pathsConfig.put(key, requirejsPath);
+				}
+			}
+		}
+
+		// collect bundle shim and merge with main shim object
+		{
+			JSONObject bundleShim = root.optJSONObject("shim");
+
+			if (bundleShim != null) {
+				Iterator keys = bundleShim.keys();
+
+				while (keys.hasNext()) {
+					String key = (String) keys.next();
+					Object object = bundleShim.get(key);
+					shim.put(key, object);
 				}
 			}
 		}
@@ -278,7 +306,11 @@ public class WebResAndJaxRsComponent {
 		return bundleNameToAlias.get(bundleSymbolicName);
 	}
 
-	public Map<String, String> getAliasToPathMap() {
-		return Collections.unmodifiableMap(aliasToPath);
+	public JSONObject getPathsConfig() {
+		return pathsConfig;
+	}
+
+	public JSONObject getShimConfig() {
+		return shim;
 	}
 }

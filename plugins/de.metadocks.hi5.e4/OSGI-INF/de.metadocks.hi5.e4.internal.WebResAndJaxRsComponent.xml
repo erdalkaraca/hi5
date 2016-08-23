@@ -8,5 +8,6 @@
    <reference bind="setLogService" cardinality="1..1" interface="org.osgi.service.log.LogService" name="LogService" policy="static"/>
    <reference bind="addMessageBodyReader" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyReader" name="MessageBodyReader" policy="dynamic" unbind="removeMessageBodyReader"/>
    <reference bind="addMessageBodyWriter" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyWriter" name="MessageBodyWriter" policy="dynamic" unbind="removeMessageBodyWriter"/>
+   <reference bind="addParamConverterProvider" cardinality="0..n" interface="javax.ws.rs.ext.ParamConverterProvider" name="ParamConverterProvider" policy="dynamic" unbind="removeParamConverterProvider"/>
    <implementation class="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent"/>
 </scr:component>

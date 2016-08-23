@@ -27,23 +27,9 @@ public class RequireJSService {
 	@Path("/config.js")
 	public String getRequirejsConfig() {
 		String script = "";
-		Map<String, String> aliasToPathMap = resReg.getAliasToPathMap();
-
-		if (!aliasToPathMap.isEmpty()) {
-			JSONObject requirejsConfig = new JSONObject();
-
-			for (Entry<String, String> e : aliasToPathMap.entrySet()) {
-				try {
-					requirejsConfig.put(e.getKey(), e.getValue());
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			script = "requirejs.config({\"paths\":" + requirejsConfig.toString() + "});";
-		}
-
+		JSONObject pathsConfig = resReg.getPathsConfig();
+		JSONObject shimConfig = resReg.getShimConfig();
+		script = "requirejs.config({\"paths\":" + pathsConfig.toString() + ",\"shim\":" + shimConfig + "});";
 		return script;
 	}
 }
