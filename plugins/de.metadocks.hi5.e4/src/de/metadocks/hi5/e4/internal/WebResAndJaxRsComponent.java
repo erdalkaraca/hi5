@@ -13,7 +13,6 @@ package de.metadocks.hi5.e4.internal;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,10 +22,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -116,6 +117,17 @@ public class WebResAndJaxRsComponent {
 
 	public void removeParamConverterProvider(ParamConverterProvider provider) {
 		jaxRsComponents.remove(provider);
+	}
+
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addContainerRequestFilter(ContainerRequestFilter filter) {
+		jaxRsComponents.add(filter);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeContainerRequestFilter(ContainerRequestFilter filter) {
+		jaxRsComponents.remove(filter);
 	}
 
 	/**
@@ -261,8 +273,9 @@ public class WebResAndJaxRsComponent {
 		};
 		ResourceConfig config = ResourceConfig.forApplication(application);
 		config.registerInstances(jaxRsComponents.toArray());
-		ServletContainer servletContainer = new ServletContainer(config);
-		httpService.registerServlet(wsAlias, servletContainer, null, delegateHttpContext);
+		HttpServlet servlet = new ServletContainer(config);
+		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
+		registeredResource.add(wsAlias);
 	}
 
 	public void unregisterAll(String entryPoint) {
