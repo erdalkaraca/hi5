@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 @Component(immediate = true, service = Hi5Service.class)
-@Path("/")
+@Path("/model")
 public class Hi5Service {
 	private E4Runtime e4Runtime;
 	private E4ModelToHTML modelTransformer;

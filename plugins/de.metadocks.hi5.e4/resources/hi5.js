@@ -157,7 +157,7 @@ define([ 'jquery' ], function(jquery) {
 		this.$context = $context;
 	};
 	PartService.prototype.loadUIElement = function(id) {
-		this.$context.load("hi5/ws/element/" + id, function() {
+		this.$context.load("hi5/ws/model/element/" + id, function() {
 			$uiElement = $("[elementid='" + id + "']", this);
 			applyRule($uiElement);
 		});

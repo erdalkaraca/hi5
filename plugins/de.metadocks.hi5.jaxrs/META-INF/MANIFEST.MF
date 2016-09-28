@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JAX-RS APIs
+Bundle-SymbolicName: de.metadocks.hi5.jaxrs
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: javax.annotation.security;version="1.2.0",
+ javax.servlet.http;version="3.1.0",
+ javax.ws.rs,
+ javax.ws.rs.core;version="2.0.1",
+ javax.ws.rs.ext;version="2.0.1",
+ org.json
+Export-Package: de.metadocks.hi5.jaxrs

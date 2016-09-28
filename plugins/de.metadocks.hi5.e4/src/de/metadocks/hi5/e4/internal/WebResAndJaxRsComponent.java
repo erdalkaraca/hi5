@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -128,6 +129,17 @@ public class WebResAndJaxRsComponent {
 
 	public void removeContainerRequestFilter(ContainerRequestFilter filter) {
 		jaxRsComponents.remove(filter);
+	}
+	
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addDynamicFeature(DynamicFeature feature) {
+		jaxRsComponents.add(feature);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeDynamicFeature(DynamicFeature feature) {
+		jaxRsComponents.remove(feature);
 	}
 
 	/**
@@ -273,7 +285,7 @@ public class WebResAndJaxRsComponent {
 		};
 		ResourceConfig config = ResourceConfig.forApplication(application);
 		config.registerInstances(jaxRsComponents.toArray());
-		HttpServlet servlet = new ServletContainer(config);
+		ServletContainer servlet = new ServletContainer(config);
 		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
 		registeredResource.add(wsAlias);
 	}

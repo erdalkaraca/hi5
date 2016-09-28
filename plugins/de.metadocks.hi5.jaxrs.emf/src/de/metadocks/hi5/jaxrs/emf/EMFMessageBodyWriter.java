@@ -39,6 +39,7 @@ public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
 	@Activate
 	public void activate() {
 		converter.setConvertNonContainedReferencedObjects(true);
+		converter.setResolveProxies(true);
 	}
 
 	@Override

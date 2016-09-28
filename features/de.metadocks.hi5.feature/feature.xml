@@ -257,4 +257,11 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.metadocks.hi5.jaxrs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

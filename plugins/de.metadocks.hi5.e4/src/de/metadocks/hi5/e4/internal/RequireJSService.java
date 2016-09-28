@@ -1,13 +1,10 @@
 package de.metadocks.hi5.e4.internal;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -25,6 +22,7 @@ public class RequireJSService {
 	@GET
 	@Produces("application/javascript")
 	@Path("/config.js")
+	@PermitAll
 	public String getRequirejsConfig() {
 		String script = "";
 		JSONObject pathsConfig = resReg.getPathsConfig();
