@@ -171,6 +171,11 @@ define([ 'jquery' ], function(jquery) {
 			callback.apply($this);
 		});
 	};
+	PartService.prototype.select = function(selector) {
+		// first find the enclosing Part div, then start searching from that
+		// context downwards
+		return this.$context.closest(".Part").find(selector);
+	};
 
 	$.fn.hi5 = function(fn) {
 		var names = getParamNames(fn);
