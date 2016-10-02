@@ -14,57 +14,42 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.DynamicFeature;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Feature;
-import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
-import javax.ws.rs.ext.ParamConverterProvider;
 
 import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.servlet.ServletContainer;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.osgi.service.log.LogService;
 
-@Component(service = WebResAndJaxRsComponent.class, immediate = true)
-public class WebResAndJaxRsComponent {
+import de.metadocks.hi5.jaxrs.JaxRSComponentsRegistry;
+
+@Component(service = WebResourcesRegistry.class, immediate = true)
+public class WebResourcesRegistry {
 
 	private LogService logService;
-
-	private List<String> registeredResource = new ArrayList<>();
 	private HttpService httpService;
+	private JaxRSComponentsRegistry jaxRsComponentsRegistry;
+
+	private List<String> registeredResources = new ArrayList<>();
 	private Map<String, String> bundleNameToAlias = new HashMap<>();
 	private JSONObject pathsConfig = new JSONObject();
 	private JSONObject shim = new JSONObject();
-	private Set<Object> jaxRsComponents = new HashSet<>();
 
 	@Reference(unbind = "-")
 	public void setHttpService(HttpService httpService) {
@@ -76,70 +61,9 @@ public class WebResAndJaxRsComponent {
 		this.logService = logService;
 	}
 
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addMessageBodyWriter(MessageBodyWriter<?> writer) {
-		jaxRsComponents.add(writer);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeMessageBodyWriter(MessageBodyWriter<?> writer) {
-		jaxRsComponents.remove(writer);
-	}
-
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addMessageBodyReader(MessageBodyReader<?> writer) {
-		jaxRsComponents.add(writer);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeMessageBodyReader(MessageBodyReader<?> writer) {
-		jaxRsComponents.remove(writer);
-	}
-
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addFeature(Feature feature) {
-		jaxRsComponents.add(feature);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeFeature(Feature feature) {
-		jaxRsComponents.remove(feature);
-	}
-
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addParamConverterProvider(ParamConverterProvider provider) {
-		jaxRsComponents.add(provider);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeParamConverterProvider(ParamConverterProvider provider) {
-		jaxRsComponents.remove(provider);
-	}
-
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addContainerRequestFilter(ContainerRequestFilter filter) {
-		jaxRsComponents.add(filter);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeContainerRequestFilter(ContainerRequestFilter filter) {
-		jaxRsComponents.remove(filter);
-	}
-	
-	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addDynamicFeature(DynamicFeature feature) {
-		jaxRsComponents.add(feature);
-
-		// TODO handle dynamic JAX-RS component registration
-	}
-
-	public void removeDynamicFeature(DynamicFeature feature) {
-		jaxRsComponents.remove(feature);
+	@Reference(unbind = "-")
+	public void setJaxRsComponentsRegistry(JaxRSComponentsRegistry jaxRsComponentsRegistry) {
+		this.jaxRsComponentsRegistry = jaxRsComponentsRegistry;
 	}
 
 	/**
@@ -150,7 +74,7 @@ public class WebResAndJaxRsComponent {
 	 * 
 	 */
 	public void registerResources(String entryPoint) throws ConfigurationException {
-		BundleContext bundleContext = FrameworkUtil.getBundle(WebResAndJaxRsComponent.class).getBundleContext();
+		BundleContext bundleContext = FrameworkUtil.getBundle(WebResourcesRegistry.class).getBundleContext();
 		Bundle[] bundles = bundleContext.getBundles();
 
 		for (Bundle bundle : bundles) {
@@ -193,10 +117,13 @@ public class WebResAndJaxRsComponent {
 		HttpContext delegateHttpContext = createHttpContext(bundle);
 		try {
 			httpService.registerResources(alias, webResource, delegateHttpContext);
-			registeredResource.add(alias);
+			registeredResources.add(alias);
 			bundleNameToAlias.put(bundle.getSymbolicName(), alias);
-
-			registerWebservices(alias, delegateHttpContext, bundle);
+			String wsAlias = jaxRsComponentsRegistry.registerRestServices(httpService, alias, delegateHttpContext,
+					bundle);
+			if (wsAlias != null) {
+				registeredResources.add(wsAlias);
+			}
 		} catch (NamespaceException | ServletException e) {
 			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
 		}
@@ -253,52 +180,12 @@ public class WebResAndJaxRsComponent {
 		return path.endsWith(".js") ? path.substring(0, path.length() - 3) : path;
 	}
 
-	private void registerWebservices(String alias, HttpContext delegateHttpContext, Bundle bundle)
-			throws ServletException, NamespaceException {
-		ServiceReference<?>[] registeredServices = bundle.getRegisteredServices();
-
-		if (registeredServices == null) {
-			return;
-		}
-
-		BundleContext bundleContext = bundle.getBundleContext();
-		Set<Object> services = new HashSet<>();
-
-		for (ServiceReference<?> serviceReference : registeredServices) {
-			Object service = bundleContext.getService(serviceReference);
-
-			if (service.getClass().isAnnotationPresent(Path.class)
-					|| service.getClass().isAnnotationPresent(Produces.class)) {
-				services.add(service);
-			}
-		}
-
-		if (services.isEmpty()) {
-			return;
-		}
-
-		String wsAlias = alias + "/ws";
-		Application application = new Application() {
-			public Set<Object> getSingletons() {
-				return services;
-			};
-		};
-		ResourceConfig config = ResourceConfig.forApplication(application);
-		config.registerInstances(jaxRsComponents.toArray());
-		ServletContainer servlet = new ServletContainer(config);
-		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
-		registeredResource.add(wsAlias);
-	}
-
 	public void unregisterAll(String entryPoint) {
 		Predicate<? super String> predicate = res -> res.startsWith(entryPoint);
 
-		registeredResource.stream().filter(predicate).forEach(alias -> {
+		registeredResources.stream().filter(predicate).forEach(alias -> {
 			httpService.unregister(alias);
-		});
-
-		registeredResource.stream().filter(predicate).forEach(alias -> {
-			registeredResource.remove(alias);
+			registeredResources.remove(alias);
 		});
 
 		bundleNameToAlias.keySet().stream().filter(predicate).forEach(alias -> {

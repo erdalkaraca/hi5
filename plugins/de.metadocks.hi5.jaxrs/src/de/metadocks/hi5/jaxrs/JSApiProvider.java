@@ -36,6 +36,10 @@ public interface JSApiProvider {
 	}
 
 	static String createJSStubs(UriInfo uriInfo, Class<?> jxComponentType) throws JSONException {
+		List<PathSegment> pathSegments = new ArrayList<>(uriInfo.getPathSegments());
+		pathSegments.remove(pathSegments.size() - 1);
+		String url = uriInfo.getBaseUri().toString()
+				+ pathSegments.stream().map(s -> s.getPath()).collect(Collectors.joining("/"));
 		StringBuilder sb = new StringBuilder();
 		Method[] declaredMethods = jxComponentType.getDeclaredMethods();
 
@@ -65,11 +69,8 @@ public interface JSApiProvider {
 			}
 
 			JSONObject settings = new JSONObject();
-			List<PathSegment> pathSegments = new ArrayList<>(uriInfo.getPathSegments());
-			pathSegments.remove(pathSegments.size() - 1);
-			String url = uriInfo.getBaseUri().toString()
-					+ pathSegments.stream().map(s -> s.getPath()).collect(Collectors.joining("/")) + path.value();
-			settings.put("url", url);
+			String methodUrl = path.value();
+			settings.put("url", methodUrl);
 			settings.put("method", httpMethod.getSimpleName());
 
 			if (produces != null) {
@@ -81,14 +82,15 @@ public interface JSApiProvider {
 			}
 
 			// map each settings object to a javascript method stub by
-			// delegating to the _ajax function
-			sb.append(String.format("%s:function(o){_ajax(%s,o);},\n", method.getName(), settings.toString()));
+			// delegating to the aj function
+			sb.append(String.format("%s:function(o){ax(%s,o);},\n", method.getName(), settings.toString()));
 		}
 
 		// transform the "params: {key='value'}" object into a query
 		// param string if available
 		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
-				+ "function _ajax(s,o){if(o.params)s.url=s.url+'?'+$.param(o.params);"//
+				+ "var u='" + url + "';\n"//
+				+ "function ax(s,o){s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
 				+ "$.ajax($.extend(s,o))};\n"//
 				+ "return {\n%s}});", sb.toString());
 		return moduleDefinition;

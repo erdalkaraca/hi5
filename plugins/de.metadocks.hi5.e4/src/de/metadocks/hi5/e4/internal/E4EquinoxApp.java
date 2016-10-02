@@ -58,7 +58,7 @@ public class E4EquinoxApp implements IApplication {
 		Bundle bundle = FrameworkUtil.getBundle(E4EquinoxApp.class);
 		BundleContext bundleContext = bundle.getBundleContext();
 		httpService = getService(bundleContext, HttpService.class);
-		WebResAndJaxRsComponent resReg = getService(bundleContext, WebResAndJaxRsComponent.class);
+		WebResourcesRegistry resReg = getService(bundleContext, WebResourcesRegistry.class);
 		String entryPoint = applicationContext.getBrandingProperty("entryPoint");
 		base = "/" + entryPoint;
 		alias = base + "/index.html";

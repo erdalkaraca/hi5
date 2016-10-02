@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.metadocks.hi5.jaxrs.JaxRSComponentsRegistry">
    <service>
-      <provide interface="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent"/>
+      <provide interface="de.metadocks.hi5.jaxrs.JaxRSComponentsRegistry"/>
    </service>
    <reference bind="addContainerRequestFilter" cardinality="0..n" interface="javax.ws.rs.container.ContainerRequestFilter" name="ContainerRequestFilter" policy="dynamic" unbind="removeContainerRequestFilter"/>
    <reference bind="addDynamicFeature" cardinality="0..n" interface="javax.ws.rs.container.DynamicFeature" name="DynamicFeature" policy="dynamic" unbind="removeDynamicFeature"/>
    <reference bind="addFeature" cardinality="0..n" interface="javax.ws.rs.core.Feature" name="Feature" policy="dynamic" unbind="removeFeature"/>
-   <reference bind="setHttpService" cardinality="1..1" interface="org.osgi.service.http.HttpService" name="HttpService" policy="static"/>
-   <reference bind="setLogService" cardinality="1..1" interface="org.osgi.service.log.LogService" name="LogService" policy="static"/>
+   <reference bind="setJaxRsFactory" cardinality="1..1" interface="de.metadocks.hi5.jaxrs.JaxRsServletFactory" name="JaxRsFactory" policy="static"/>
    <reference bind="addMessageBodyReader" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyReader" name="MessageBodyReader" policy="dynamic" unbind="removeMessageBodyReader"/>
    <reference bind="addMessageBodyWriter" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyWriter" name="MessageBodyWriter" policy="dynamic" unbind="removeMessageBodyWriter"/>
    <reference bind="addParamConverterProvider" cardinality="0..n" interface="javax.ws.rs.ext.ParamConverterProvider" name="ParamConverterProvider" policy="dynamic" unbind="removeParamConverterProvider"/>
-   <implementation class="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent"/>
+   <implementation class="de.metadocks.hi5.jaxrs.JaxRSComponentsRegistry"/>
 </scr:component>

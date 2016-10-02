@@ -3,6 +3,6 @@
    <service>
       <provide interface="de.metadocks.hi5.e4.internal.E4ModelToHTML"/>
    </service>
-   <reference bind="setResReg" cardinality="1..1" interface="de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent" name="ResReg" policy="static"/>
+   <reference bind="setResReg" cardinality="1..1" interface="de.metadocks.hi5.e4.internal.WebResourcesRegistry" name="ResReg" policy="static"/>
    <implementation class="de.metadocks.hi5.e4.internal.E4ModelToHTML"/>
 </scr:component>

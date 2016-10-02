@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.emf.common,
  org.eclipse.osgi,
  org.eclipse.e4.ui.model.workbench
 Bundle-ActivationPolicy: lazy
-Import-Package: javax.annotation.security;version="1.2.0",
+Import-Package: de.metadocks.hi5.jaxrs,
+ javax.annotation.security;version="1.2.0",
  javax.servlet;version="3.1.0",
  javax.servlet.http;version="3.1.0",
  javax.ws.rs;version="2.0.1",
@@ -31,8 +32,6 @@ Import-Package: javax.annotation.security;version="1.2.0",
  org.eclipse.e4.ui.workbench.modeling,
  org.eclipse.equinox.app;version="1.1.0",
  org.eclipse.osgi.service.datalocation;version="1.3.0",
- org.glassfish.jersey.server,
- org.glassfish.jersey.servlet,
  org.osgi.framework;version="1.8.0",
  org.osgi.service.cm;version="1.5.0",
  org.osgi.service.component;version="1.2.2",
@@ -44,5 +43,5 @@ Service-Component: OSGI-INF/de.metadocks.hi5.e4.internal.E4ModelToHTML.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.Hi5Service.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.E4Runtime.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.RequireJSService.xml,
- OSGI-INF/de.metadocks.hi5.e4.internal.WebResAndJaxRsComponent.xml
+ OSGI-INF/de.metadocks.hi5.e4.internal.WebResourcesRegistry.xml
 Bundle-Vendor: Erdal Karaca

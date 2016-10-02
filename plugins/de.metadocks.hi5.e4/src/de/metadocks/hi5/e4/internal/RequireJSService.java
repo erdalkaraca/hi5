@@ -12,10 +12,10 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = RequireJSService.class)
 @Path("/require")
 public class RequireJSService {
-	private WebResAndJaxRsComponent resReg;
+	private WebResourcesRegistry resReg;
 
 	@Reference(unbind = "-")
-	public void setResReg(WebResAndJaxRsComponent resReg) {
+	public void setResReg(WebResourcesRegistry resReg) {
 		this.resReg = resReg;
 	}
 

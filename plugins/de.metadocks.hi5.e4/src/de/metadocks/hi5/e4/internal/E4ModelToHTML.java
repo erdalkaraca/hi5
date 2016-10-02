@@ -65,7 +65,7 @@ public class E4ModelToHTML {
 			UiPackageImpl.Literals.UI_ELEMENT__CONTAINER_DATA, UiPackageImpl.Literals.UI_LABEL__LABEL,
 			UiPackageImpl.Literals.UI_LABEL__ICON_URI);
 
-	private WebResAndJaxRsComponent resReg;
+	private WebResourcesRegistry resReg;
 	private Map<Class<? extends MApplicationElement>, Rule<? extends MApplicationElement>> grammar = new HashMap<>();
 	private DocumentBuilder builder;
 	private Transformer transformer;
@@ -132,7 +132,7 @@ public class E4ModelToHTML {
 	}
 
 	@Reference(unbind = "-")
-	public void setResReg(WebResAndJaxRsComponent resReg) {
+	public void setResReg(WebResourcesRegistry resReg) {
 		this.resReg = resReg;
 	}
 
@@ -350,7 +350,7 @@ public class E4ModelToHTML {
 		return bundleAliasMapping;
 	}
 
-	public void setResourcesRegistry(WebResAndJaxRsComponent resReg) {
+	public void setResourcesRegistry(WebResourcesRegistry resReg) {
 		this.resReg = resReg;
 	}
 
