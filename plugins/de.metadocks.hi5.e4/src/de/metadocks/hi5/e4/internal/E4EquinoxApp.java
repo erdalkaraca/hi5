@@ -62,14 +62,20 @@ public class E4EquinoxApp implements IApplication {
 		String entryPoint = applicationContext.getBrandingProperty("entryPoint");
 		base = "/" + entryPoint;
 		alias = base + "/index.html";
-
 		resReg.registerResources(base);
-
 		E4Runtime e4runtime = getService(bundleContext, E4Runtime.class);
 		e4runtime.createE4Workbench(context);
-		
+
 		context.applicationRunning();
-		Application.launch(JFXApp.class);
+		if (Boolean.getBoolean("hi5-start-jfx-client")) {
+			// the embedded jfx browser windows should be started
+			Application.launch(JFXApp.class);
+		} else {
+			// just wait until framework shuts down
+			synchronized (this) {
+				this.wait();
+			}
+		}
 		resReg.unregisterAll(entryPoint);
 
 		try {
@@ -98,5 +104,9 @@ public class E4EquinoxApp implements IApplication {
 	@Override
 	public final void stop() {
 		httpService.unregister(alias);
+
+		synchronized (this) {
+			this.notify();
+		}
 	}
 }

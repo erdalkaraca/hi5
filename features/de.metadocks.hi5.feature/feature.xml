@@ -153,25 +153,29 @@
          id="de.metadocks.hi5.org.jquery"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="de.metadocks.hi5.org.requirejs"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="de.metadocks.hi5.com.w3schools.w3css"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="de.metadocks.hi5.jaxrs.emf"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.glassfish.jersey.containers.jersey-container-servlet-core"
