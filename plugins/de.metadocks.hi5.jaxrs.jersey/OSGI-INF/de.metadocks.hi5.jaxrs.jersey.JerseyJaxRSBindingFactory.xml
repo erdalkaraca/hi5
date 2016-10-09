@@ -4,5 +4,6 @@
    <service>
       <provide interface="de.metadocks.hi5.jaxrs.JaxRsServletFactory"/>
    </service>
+   <reference bind="addDIProvider" cardinality="0..n" interface="de.metadocks.hi5.jaxrs.jersey.FactoryExt" name="DIProvider" policy="dynamic" unbind="removeDIProvider"/>
    <implementation class="de.metadocks.hi5.jaxrs.jersey.JerseyJaxRSBindingFactory"/>
 </scr:component>
