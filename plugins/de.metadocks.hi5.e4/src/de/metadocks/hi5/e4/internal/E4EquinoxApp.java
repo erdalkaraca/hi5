@@ -60,8 +60,6 @@ public class E4EquinoxApp implements IApplication {
 
 	@Override
 	public final void stop() {
-		httpService.unregister(alias);
-
 		synchronized (this) {
 			this.notify();
 		}
