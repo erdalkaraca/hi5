@@ -10,10 +10,20 @@ define([ 'jquery' ], function(jquery) {
 
 	grammar["TrimmedWindow"] = function($e) {
 		handleUIElements($e);
+		handleUIElements($e, ".Menu");
 		handleUIElements($e, ".TrimBar");
 	};
 
 	grammar["Menu"] = function($e) {
+		var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right'>&#9776;</span>");
+		$menuTrigger.click(function() {
+			// show the menu panel configured below
+			$e.show();
+		});
+		// add to container of the menu
+		$e.parent().prepend($menuTrigger);
+
+		// the menu panel which will be shown if the menu trigger is pressed
 		$e.addClass("w3-sidenav w3-white w3-card-2 w3-animate-right");
 		$e.hide();
 		$e.css("right", "0");
@@ -22,7 +32,7 @@ define([ 'jquery' ], function(jquery) {
 				+ "Close<span class='w3-right w3-large w3-margin-right'>&times;</span></a>");
 		$e.prepend($closeItem);
 		$closeItem.click(function() {
-			$e.css("display", "none");
+			$e.hide();
 		});
 
 		handleUIElements($e, ".MenuItem");
@@ -36,11 +46,24 @@ define([ 'jquery' ], function(jquery) {
 	grammar["DirectMenuItem"] = function($e) {
 		var $a = $("<a  href='#'></a>");
 		$a.text($e.attr("label"));
+
+		var iconSpanHtml = getIconSpanHtml($e, $e.attr("iconURI"));
+		if (iconSpanHtml) {
+			$a.prepend(iconSpanHtml);
+		}
+
 		$e.prepend($a);
 		var requireModule = toUrl($e, $e.attr("contributionuri"));
-		require([ requireModule ], function(handler) {
-			$a.click(function() {
-				handler();
+		$a.click(function() {
+			// hide the menu panel
+			$e.parent().hide();
+			require([ requireModule ], function(handler) {
+				if (typeof handler.execute === 'function') {
+					if (typeof handler.canExecute === 'function' && !handler.canExecute()) {
+						return;
+					}
+					handler.execute();
+				}
 			});
 		})
 	};
@@ -51,14 +74,20 @@ define([ 'jquery' ], function(jquery) {
 		}
 
 		var $ul = $("<ul class='w3-navbar w3-white'></ul>");
-		$e.children("." + stackElementsType).css("display", "none").each(function() {
+		$e.children("." + stackElementsType).hide().each(function() {
 			var $p = $(this);
 			var $a = $("<a href='#'>" + $p.attr("label") + "</a>");
+			
+			var iconSpanHtml = getIconSpanHtml($p, $p.attr("iconURI"));
+			if (iconSpanHtml) {
+				$a.prepend(iconSpanHtml);
+			}
+			
 			var $li = $("<li></li>");
 			var clickHandler = function() {
 				var $pers = $e.children("." + stackElementsType);
-				$pers.css("display", "none");
-				$pers.eq($li.index()).css("display", "block");
+				$pers.hide();
+				$pers.eq($li.index()).show();
 				$ul.children().attr("active", "false");
 				$li.attr("active", "true");
 			};
@@ -89,12 +118,6 @@ define([ 'jquery' ], function(jquery) {
 
 	grammar["Part"] = function($e) {
 		$("[tags~='ViewMenu']", $e).each(function() {
-			var $viewMenu = $(this);
-			var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right'>&#9776;</span>");
-			$menuTrigger.click(function() {
-				$viewMenu.css("display", "block");
-			});
-			$e.prepend($menuTrigger);
 			handleUIElements($e, ".Menu");
 		});
 
@@ -138,6 +161,17 @@ define([ 'jquery' ], function(jquery) {
 		}
 	}
 
+	function getIconSpanHtml($e, iconURI) {
+		if (iconURI) {
+			if (iconURI.startsWith('fa-')) {
+				return "<span class='w3-margin-right fa " + iconURI + "'></span>";
+			} else {
+				return toUrl($e, iconURI);
+			}
+		}
+		return false;
+	}
+
 	function handleUIElements($e, filter) {
 		$e.children(".UIElement " + (filter == null ? "" : filter)).each(function() {
 			applyRule($(this));
@@ -156,10 +190,13 @@ define([ 'jquery' ], function(jquery) {
 	var PartService = function($context) {
 		this.$context = $context;
 	};
-	PartService.prototype.loadUIElement = function(id) {
+	PartService.prototype.loadUIElement = function(id, fn) {
 		this.$context.load("hi5/ws/model/element/" + id, function() {
 			$uiElement = $("[elementid='" + id + "']", this);
 			applyRule($uiElement);
+			if (typeof fn === 'function') {
+				fn();
+			}
 		});
 	};
 	PartService.prototype.showPerspective = function(id, callback) {

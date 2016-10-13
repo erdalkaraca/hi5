@@ -83,7 +83,7 @@ public interface JSApiProvider {
 
 			// map each settings object to a javascript method stub by
 			// delegating to the aj function
-			sb.append(String.format("%s:function(o){ax(%s,o);},\n", method.getName(), settings.toString()));
+			sb.append(String.format("%s:function(o){o=o||{};ax(%s,o);},\n", method.getName(), settings.toString()));
 		}
 
 		// transform the "params: {key='value'}" object into a query
