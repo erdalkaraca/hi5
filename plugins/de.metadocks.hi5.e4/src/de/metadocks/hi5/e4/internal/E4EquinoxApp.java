@@ -10,6 +10,8 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.osgi.framework.Bundle;
@@ -22,6 +24,7 @@ public class E4EquinoxApp implements IApplication {
 	private String alias;
 	private HttpService httpService;
 	private String base;
+	private CountDownLatch stopLatch = new CountDownLatch(1);
 
 	@Override
 	public final Object start(IApplicationContext context) throws Exception {
@@ -40,14 +43,15 @@ public class E4EquinoxApp implements IApplication {
 		boolean startJfxClient = Boolean.getBoolean("hi5-start-jfx-client");
 		// startJfxClient = true;
 		if (startJfxClient) {
-			String url = String.format("http://localhost:8080%s", alias);
+			String server = System.getProperty("org.osgi.service.http.host", "localhost");
+			String port = System.getProperty("org.osgi.service.http.port", "80");
+			// TODO switch to HTTPS
+			String url = String.format("http://%s:%s%s", server, port, alias);
 			// the embedded jfx browser windows should be started
 			JFXBrowserApp.run(context.getBrandingName(), url);
 		} else {
 			// just wait until framework shuts down
-			synchronized (this) {
-				this.wait();
-			}
+			stopLatch.await();
 		}
 		resReg.unregisterAll(entryPoint);
 		return IApplication.EXIT_OK;
@@ -60,8 +64,6 @@ public class E4EquinoxApp implements IApplication {
 
 	@Override
 	public final void stop() {
-		synchronized (this) {
-			this.notify();
-		}
+		stopLatch.countDown();
 	}
 }

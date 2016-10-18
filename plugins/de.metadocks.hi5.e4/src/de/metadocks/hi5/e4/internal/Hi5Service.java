@@ -4,8 +4,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.e4.ui.model.application.MApplicationElement;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.json.JSONException;
 import org.osgi.service.component.annotations.Component;
@@ -30,11 +32,12 @@ public class Hi5Service {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/json-children/{parentId}")
-	public String jsonChildren(@PathParam("parentId") String parentId) {
-		MUIElement element = e4Runtime.getModelElement(parentId);
+	public String jsonChildren(ContainerRequestContext reqCtx, @PathParam("parentId") String parentId) {
+		MApplicationElement element = e4Runtime.getModelElement(parentId);
+		element = e4Runtime.process(reqCtx, element);
 		String html = "";
 		try {
-			html = modelTransformer.toHTML(element);
+			html = modelTransformer.toHTML((MUIElement) element);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,11 +48,12 @@ public class Hi5Service {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	@Path("/element/{id}")
-	public String getAppElement(@PathParam("id") String id) {
-		MUIElement element = e4Runtime.getModelElement(id);
+	public String getAppElement(ContainerRequestContext reqCtx, @PathParam("id") String id) {
+		MApplicationElement element = e4Runtime.getModelElement(id);
+		element = e4Runtime.process(reqCtx, element);
 		String html = "";
 		try {
-			html = modelTransformer.toHTML(element);
+			html = modelTransformer.toHTML((MUIElement) element);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

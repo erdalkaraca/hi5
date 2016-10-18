@@ -13,8 +13,13 @@ package de.metadocks.hi5.e4.internal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.ws.rs.container.ContainerRequestContext;
 
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -49,7 +54,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -59,14 +63,17 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.component.annotations.Activate;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.util.tracker.ServiceTracker;
+
+import de.metadocks.hi5.e4.IModelRequestProcessor;
 
 @SuppressWarnings("restriction")
 @Component(service = E4Runtime.class)
 public class E4Runtime {
-	static final private String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
+	private static final Logger LOG = Logger.getLogger(E4Runtime.class.getName());
+	private static final String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
 
 	private E4Workbench workbench;
 	private String[] args;
@@ -74,6 +81,7 @@ public class E4Runtime {
 	private ServiceTracker<?, Location> locationTracker;
 	private IModelResourceHandler handler;
 	private IApplicationContext applicationContext;
+	private IModelRequestProcessor modelRequestProcessor;
 
 	public MApplication copyApplicationModel() {
 		if (workbench == null) {
@@ -87,6 +95,28 @@ public class E4Runtime {
 
 	public E4Workbench createE4Workbench(IApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+
+		String modelRequestProcessorValue = applicationContext.getBrandingProperty("modelRequestProcessor");
+		if (modelRequestProcessorValue != null) {
+			BundleContext bundleContext = applicationContext.getBrandingBundle().getBundleContext();
+			try {
+				Collection<ServiceReference<IModelRequestProcessor>> serviceReferences = bundleContext
+						.getServiceReferences(IModelRequestProcessor.class,
+								"(component.name=" + modelRequestProcessorValue + ")");
+				if (serviceReferences != null && !serviceReferences.isEmpty()) {
+					ServiceReference<IModelRequestProcessor> next = serviceReferences.iterator().next();
+					modelRequestProcessor = bundleContext.getService(next);
+				}
+			} catch (InvalidSyntaxException e) {
+				LOG.log(Level.SEVERE, "Could not instantiate model request processor: " + modelRequestProcessorValue,
+						e);
+			}
+
+			if (modelRequestProcessor == null) {
+				LOG.log(Level.SEVERE, "Could not find model model request processor: " + modelRequestProcessorValue);
+			}
+		}
+
 		args = (String[]) applicationContext.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 
 		IEclipseContext appContext = createDefaultContext();
@@ -333,35 +363,7 @@ public class E4Runtime {
 		});
 	}
 
-	// static public void initializeApplicationServices(IEclipseContext
-	// appContext) {
-	// final IEclipseContext theContext = appContext;
-	// // we add a special tracker to bring up current selection from
-	// // the active window to the application level
-	// appContext.runAndTrack(new RunAndTrack() {
-	// @Override
-	// public boolean changed(IEclipseContext context) {
-	// IEclipseContext activeChildContext = context.getActiveChild();
-	// if (activeChildContext != null) {
-	// Object selection =
-	// activeChildContext.get(IServiceConstants.ACTIVE_SELECTION);
-	// theContext.set(IServiceConstants.ACTIVE_SELECTION, selection);
-	// }
-	// return true;
-	// }
-	// });
-	//
-	// // we create a selection service handle on every node that we are asked
-	// // about as handle needs to know its context
-	// appContext.set(ESelectionService.class.getName(), new ContextFunction() {
-	// @Override
-	// public Object compute(IEclipseContext context, String contextKey) {
-	// return ContextInjectionFactory.make(SelectionServiceImpl.class, context);
-	// }
-	// });
-	// }
-
-	static public void initializeWindowServices(MWindow childWindow) {
+	private static void initializeWindowServices(MWindow childWindow) {
 		IEclipseContext windowContext = childWindow.getContext();
 		initWindowContext(windowContext);
 		// Mostly MWindow contexts are lazily created by renderers and is not
@@ -396,7 +398,7 @@ public class E4Runtime {
 		return entry.openStream();
 	}
 
-	public MUIElement getModelElement(String id) {
+	public MApplicationElement getModelElement(String id) {
 		TreeIterator<EObject> iter = ((EObject) workbench.getApplication()).eAllContents();
 		while (iter.hasNext()) {
 			EObject eObject = (EObject) iter.next();
@@ -410,5 +412,12 @@ public class E4Runtime {
 		}
 
 		return null;
+	}
+
+	public MApplicationElement process(ContainerRequestContext reqCtx, MApplicationElement element) {
+		if (modelRequestProcessor != null) {
+			return modelRequestProcessor.process(reqCtx, element);
+		}
+		return element;
 	}
 }
