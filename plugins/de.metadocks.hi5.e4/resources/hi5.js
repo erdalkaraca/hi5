@@ -15,7 +15,7 @@ define([ 'jquery' ], function(jquery) {
 	};
 
 	grammar["Menu"] = function($e) {
-		var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right'>&#9776;</span>");
+		var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right w3-margin-right'>&#9776;</span>");
 		$menuTrigger.click(function() {
 			// show the menu panel configured below
 			$e.show();
