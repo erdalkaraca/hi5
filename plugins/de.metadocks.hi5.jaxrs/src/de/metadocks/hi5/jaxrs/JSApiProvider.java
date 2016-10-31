@@ -2,9 +2,13 @@ package de.metadocks.hi5.jaxrs;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.security.PermitAll;
@@ -40,6 +44,15 @@ public interface JSApiProvider {
 		pathSegments.remove(pathSegments.size() - 1);
 		String url = uriInfo.getBaseUri().toString()
 				+ pathSegments.stream().map(s -> s.getPath()).collect(Collectors.joining("/"));
+		try {
+			// take only the path of the URL into account as the base
+			// (host:port) is not needed and makes reverse proxies (nginx to
+			// embedded jetty, for example) not work properly
+			url = new URL(url).getPath();
+		} catch (MalformedURLException e) {
+			Logger.getLogger(jxComponentType.getName()).log(Level.SEVERE, e.getMessage(), e);
+		}
+
 		StringBuilder sb = new StringBuilder();
 		Method[] declaredMethods = jxComponentType.getDeclaredMethods();
 
@@ -83,14 +96,14 @@ public interface JSApiProvider {
 
 			// map each settings object to a javascript method stub by
 			// delegating to the aj function
-			sb.append(String.format("%s:function(o){o=o||{};ax(%s,o);},\n", method.getName(), settings.toString()));
+			sb.append(String.format("%s:function(o){ax(%s,o);},\n", method.getName(), settings.toString()));
 		}
 
 		// transform the "params: {key='value'}" object into a query
 		// param string if available
 		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
 				+ "var u='" + url + "';\n"//
-				+ "function ax(s,o){s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
+				+ "function ax(s,o){o=o||{};s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
 				+ "$.ajax($.extend(s,o))};\n"//
 				+ "return {\n%s}});", sb.toString());
 		return moduleDefinition;
