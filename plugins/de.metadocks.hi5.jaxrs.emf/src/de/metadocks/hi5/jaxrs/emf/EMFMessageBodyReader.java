@@ -33,7 +33,6 @@ import org.osgi.service.component.annotations.Component;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyReader implements MessageBodyReader<EObject> {
-	private JSONEMFConverter converter = new JSONEMFConverter();
 
 	@Override
 	public boolean isReadable(Class<?> arg0, Type arg1, Annotation[] arg2, MediaType arg3) {
@@ -52,6 +51,7 @@ public class EMFMessageBodyReader implements MessageBodyReader<EObject> {
 			throw new WebApplicationException(e);
 		}
 
+		JSONEMFConverter converter = new JSONEMFConverter();
 		EObject eo = converter.convert(json);
 		return eo;
 	}
