@@ -25,7 +25,7 @@ The application can be deployed in several modes:
 - local mode: Eclipse RCP backend runs locally and the client runs in a JavaFX WebView instance
 
 # Real world example
-The following screenshot shows a real world example in action (the website is in german and deals with mental self-coaching):
+The following screenshot shows a real world example in action (the website is in german and deals with [mental self-coaching](http://syflux.de "syflux.de")):
 
 ![syflux](http://syflux.de/img/timeline-event-mit-intervention.png "Syflux - a self-coaching web app")
 
