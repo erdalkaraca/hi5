@@ -24,26 +24,26 @@ The application can be deployed in several modes:
 - typical server/client mode: Eclipse RCP backend runs on a server and the client runs in a web browser
 - local mode: Eclipse RCP backend runs locally and the client runs in a JavaFX WebView instance
 
-# Demo
-The following screenshot is a demo showing the various jQuery UI widgets running in a JavaFX WebView instance.
+# Real world example
+The following screenshot shows a real world example in action (the website is in german and deals with mental self-coaching):
 
-![jQuery UI widgets](plugins/de.metadocks.hi5.demo/screenshots/hi5-jquery-widgets-demo.png "jQuery UI widgets")
+![syflux](http://syflux.de/img/timeline-event-mit-intervention.png "Syflux - a self-coaching web app")
 
 # Current Status
-[x] means supported, [ ] means not yet implemented
+[x] means supported, [ ] means not yet implemented, [~] means covered by third party lib
 
 | E4 API | Hi5 |
 | --- | --- |
 | App model, fragments | [x] |
-| Window Menu | [ ] |
+| Window Menu | [x] |
 | IEclipseContext/Scoping | [ ] |
 | DI | [ ] |
-| Data Binding | [ ] |
+| Data Binding | [~] |
 | Key Bindings | [ ] |
 | ECommandService/EHandlerService (commands, handlers) | [ ] |
 | ESelectionService (part selections) | [ ] |
 | EMenuService (context menus) | [ ] |
-| EPartService (parts management) | [ ] |
+| EPartService (parts management) | [x] |
 
 # Dependencies
 
@@ -57,6 +57,7 @@ The following screenshot is a demo showing the various jQuery UI widgets running
 | [Jersey](https://jersey.java.net) | CDDL 1.1 | JAX-RS OSGi integration | yes |
 | [Eclipse Communications Framework](https://www.eclipse.org/ecf/) | EPL | web services support | no |
 | [Eclipse Texo](https://wiki.eclipse.org/Texo) | EPL | de/serialization of EMF models from/to server/client in JSON format | no |
+| [rivets js](http://rivetsjs.com) | OS | JS data binding | no |
 
 # License
 This project is licensed under the Eclipse Public License (EPL).
