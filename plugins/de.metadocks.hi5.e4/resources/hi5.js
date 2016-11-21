@@ -44,29 +44,11 @@ define([ 'jquery' ], function(jquery) {
 	};
 
 	grammar["DirectMenuItem"] = function($e) {
-		var $a = $("<a  href='#'></a>");
-		$a.text($e.attr("label"));
-
-		var iconSpanHtml = getIconSpanHtml($e, $e.attr("iconURI"));
-		if (iconSpanHtml) {
-			$a.prepend(iconSpanHtml);
-		}
-
-		$e.prepend($a);
-		var requireModule = toUrl($e, $e.attr("contributionuri"));
-		$a.click(function() {
-			// hide the menu panel
-			$e.parent().hide();
-			require([ requireModule ], function(handler) {
-				if (typeof handler.execute === 'function') {
-					if (typeof handler.canExecute === 'function' && !handler.canExecute()) {
-						return;
-					}
-					handler.execute();
-				}
-			});
-		})
+		processDirectItem($e, true, true);
 	};
+	grammar["DirectToolItem"] = function($e) {
+		processDirectItem($e, false, false);
+	}
 
 	grammar["GenericStack"] = function($e, stackElementsType) {
 		if (stackElementsType == null) {
@@ -77,12 +59,12 @@ define([ 'jquery' ], function(jquery) {
 		$e.children("." + stackElementsType).hide().each(function() {
 			var $p = $(this);
 			var $a = $("<a href='#'>" + $p.attr("label") + "</a>");
-			
+
 			var iconSpanHtml = getIconSpanHtml($p, $p.attr("iconURI"));
 			if (iconSpanHtml) {
 				$a.prepend(iconSpanHtml);
 			}
-			
+
 			var $li = $("<li></li>");
 			var clickHandler = function() {
 				var $pers = $e.children("." + stackElementsType);
@@ -120,6 +102,7 @@ define([ 'jquery' ], function(jquery) {
 		$("[tags~='ViewMenu']", $e).each(function() {
 			handleUIElements($e, ".Menu");
 		});
+		handleUIElements($e, ".ToolBar");
 
 		$e.addClass("w3-panel");
 		$e.addClass("w3-border");
@@ -141,6 +124,7 @@ define([ 'jquery' ], function(jquery) {
 	};
 
 	grammar["ToolBar"] = function($e) {
+		$e.addClass("w3-right");
 		handleUIElements($e);
 	};
 
@@ -161,10 +145,48 @@ define([ 'jquery' ], function(jquery) {
 		}
 	}
 
+	function processDirectItem($e, hideParentOnClick, showLabel) {
+		var $a = $("<a  href='#' class='w3-btn w3-white w3-round'></a>");
+
+		var label = $e.attr("label");
+		if (showLabel) {
+			if (label !== "") {
+				$a.text(label);
+			}
+		} else {
+			$a.attr("title", label);
+		}
+
+		var iconSpanHtml = getIconSpanHtml($e, $e.attr("iconURI"));
+		if (iconSpanHtml) {
+			if (!showLabel) {
+				iconSpanHtml.removeClass("w3-margin-right");
+			}
+			$a.prepend(iconSpanHtml);
+		}
+
+		$e.prepend($a);
+		var requireModule = toUrl($e, $e.attr("contributionuri"));
+		$a.click(function() {
+			// hide the menu panel
+			if (hideParentOnClick) {
+				$e.parent().hide();
+			}
+			require([ requireModule ], function(handler) {
+				if (typeof handler.execute === 'function') {
+					if (typeof handler.canExecute === 'function' && !handler.canExecute()) {
+						return;
+					}
+					handler.execute();
+				}
+			});
+		})
+	}
+
 	function getIconSpanHtml($e, iconURI) {
 		if (iconURI) {
 			if (iconURI.startsWith('fa-')) {
-				return "<span class='w3-margin-right fa " + iconURI + "'></span>";
+				return $("<span class='w3-margin-right fa " + iconURI + "'></span>");
 			} else {
 				return toUrl($e, iconURI);
 			}

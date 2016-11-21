@@ -44,6 +44,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -127,6 +128,11 @@ public class E4ModelToHTML {
 
 			for (MMenu menu : ctx.modelElement.getMenus()) {
 				transform(newParent, menu, ctx.appModelConfig);
+			}
+
+			MToolBar toolbar = ctx.modelElement.getToolbar();
+			if (toolbar != null) {
+				transform(newParent, toolbar, ctx.appModelConfig);
 			}
 		});
 	}
