@@ -45,7 +45,7 @@ public class JSONObjectMessageBodyWriter implements MessageBodyWriter<JSONObject
 	public void writeTo(JSONObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4,
 			MultivaluedMap<String, Object> arg5, OutputStream arg6) throws IOException, WebApplicationException {
 		try {
-			OutputStreamWriter writer = new OutputStreamWriter(arg6, "UTF-8");
+			OutputStreamWriter writer = new OutputStreamWriter(arg6);
 			arg0.write(writer);
 			writer.flush();
 		} catch (JSONException e) {
