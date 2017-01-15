@@ -146,7 +146,7 @@ define([ 'jquery' ], function(jquery) {
 	}
 
 	function processDirectItem($e, hideParentOnClick, showLabel) {
-		var $a = $("<a  href='#' class='w3-btn w3-white w3-round'></a>");
+		var $a = $("<span class='w3-btn w3-white w3-round'></span>");
 
 		var label = $e.attr("label");
 		if (showLabel) {
