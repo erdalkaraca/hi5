@@ -185,7 +185,7 @@ define([ 'jquery' ], function(jquery) {
 
 	function getIconSpanHtml($e, iconURI) {
 		if (iconURI) {
-			if (iconURI.startsWith('fa-')) {
+			if (iconURI.match('^fa-')) {
 				return $("<span class='w3-margin-right fa " + iconURI + "'></span>");
 			} else {
 				return toUrl($e, iconURI);
