@@ -1,0 +1,6 @@
+{
+	"resources": "resources",
+	"alias": "api",
+	"path" : "api.js",
+	"version": "none"
+}

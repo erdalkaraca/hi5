@@ -103,7 +103,7 @@ public interface JSApiProvider {
 		// param string if available
 		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
 				+ "var u='" + url + "';\n"//
-				+ "function ax(s,o){o=o||{};s.url=u+s.url+'?_='+new Date().getTime();if(o.params)s.url=s.url+'?'+$.param(o.params);"//
+				+ "function ax(s,o){o=o||{};s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
 //				+ "if(typeof o.data!=='string')o.data=JSON.stringify(o.data);"//
 				+ "$.ajax($.extend(s,o))};\n"//
 				+ "return {\n%s}});", sb.toString());
