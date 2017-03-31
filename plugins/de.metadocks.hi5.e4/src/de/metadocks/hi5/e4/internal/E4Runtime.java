@@ -27,6 +27,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.contributions.IContributionFactory;
+import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.internal.workbench.ModelServiceImpl;
 import org.eclipse.e4.ui.internal.workbench.PlaceholderResolver;
@@ -187,6 +188,18 @@ public class E4Runtime {
 
 		// Instantiate the Workbench (which is responsible for
 		// 'running' the UI (if any)...
+		appContext.set(UISynchronize.class, new UISynchronize() {
+
+			@Override
+			public void syncExec(Runnable runnable) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void asyncExec(Runnable runnable) {
+				throw new UnsupportedOperationException();
+			}
+		});
 		workbench = new E4Workbench(appModel, appContext);
 		return workbench;
 	}

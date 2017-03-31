@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.emf.common,
  de.metadocks.hi5.com.w3schools.w3css;bundle-version="2.7.0",
  org.eclipse.emf.ecore,
  org.eclipse.osgi,
- org.eclipse.e4.ui.model.workbench
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.ui.di
 Bundle-ActivationPolicy: lazy
 Import-Package: de.metadocks.hi5.jaxrs,
  javax.annotation.security;version="1.2.0",
@@ -40,9 +41,9 @@ Import-Package: de.metadocks.hi5.jaxrs,
  org.osgi.util.tracker;version="1.5.1"
 Export-Package: de.metadocks.hi5.e4,
  de.metadocks.hi5.e4.internal
-Service-Component: OSGI-INF/de.metadocks.hi5.e4.internal.E4ModelToHTML.xml,
+Bundle-Vendor: Erdal Karaca
+Service-Component: OSGI-INF/de.metadocks.hi5.e4.internal.WebResourcesRegistry.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.Hi5Service.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.E4Runtime.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.RequireJSService.xml,
- OSGI-INF/de.metadocks.hi5.e4.internal.WebResourcesRegistry.xml
-Bundle-Vendor: Erdal Karaca
+ OSGI-INF/de.metadocks.hi5.e4.internal.E4ModelToHTML.xml

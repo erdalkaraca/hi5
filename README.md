@@ -27,7 +27,7 @@ The application can be deployed in several modes:
 # Real world example
 The following screenshot shows a real world example in action (the website is in german and deals with [mental self-coaching](http://syflux.de "syflux.de")):
 
-![syflux](http://syflux.de/img/timeline-event-mit-intervention.png "Syflux - a self-coaching web app")
+![syflux](https://github.com/erdalkaraca/hi5/raw/master/docs/syflux-example.jpg "Syflux - a self-coaching web app")
 
 # Current Status
 [x] means supported, [ ] means not yet implemented, [~] means covered by third party lib

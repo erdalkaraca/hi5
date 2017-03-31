@@ -6,7 +6,7 @@
    <reference bind="addContainerRequestFilter" cardinality="0..n" interface="javax.ws.rs.container.ContainerRequestFilter" name="ContainerRequestFilter" policy="dynamic" unbind="removeContainerRequestFilter"/>
    <reference bind="addDynamicFeature" cardinality="0..n" interface="javax.ws.rs.container.DynamicFeature" name="DynamicFeature" policy="dynamic" unbind="removeDynamicFeature"/>
    <reference bind="addFeature" cardinality="0..n" interface="javax.ws.rs.core.Feature" name="Feature" policy="dynamic" unbind="removeFeature"/>
-   <reference bind="setJaxRsFactory" cardinality="1..1" interface="de.metadocks.hi5.jaxrs.JaxRsServletFactory" name="JaxRsFactory" policy="static"/>
+   <reference bind="setJaxRsFactory" interface="de.metadocks.hi5.jaxrs.JaxRsServletFactory" name="JaxRsFactory"/>
    <reference bind="addMessageBodyReader" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyReader" name="MessageBodyReader" policy="dynamic" unbind="removeMessageBodyReader"/>
    <reference bind="addMessageBodyWriter" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyWriter" name="MessageBodyWriter" policy="dynamic" unbind="removeMessageBodyWriter"/>
    <reference bind="addParamConverterProvider" cardinality="0..n" interface="javax.ws.rs.ext.ParamConverterProvider" name="ParamConverterProvider" policy="dynamic" unbind="removeParamConverterProvider"/>

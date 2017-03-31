@@ -16,7 +16,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -32,7 +31,6 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(service = MessageBodyReader.class, immediate = true)
 @Provider
-//@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class JSONObjectMessageBodyReader implements MessageBodyReader<JSONObject> {
 

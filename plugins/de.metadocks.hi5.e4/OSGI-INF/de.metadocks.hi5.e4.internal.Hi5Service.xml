@@ -3,7 +3,7 @@
    <service>
       <provide interface="de.metadocks.hi5.e4.internal.Hi5Service"/>
    </service>
-   <reference bind="setE4Runtime" cardinality="1..1" interface="de.metadocks.hi5.e4.internal.E4Runtime" name="E4Runtime" policy="static"/>
-   <reference bind="setModelTransformer" cardinality="1..1" interface="de.metadocks.hi5.e4.internal.E4ModelToHTML" name="ModelTransformer" policy="static"/>
+   <reference bind="setE4Runtime" interface="de.metadocks.hi5.e4.internal.E4Runtime" name="E4Runtime"/>
+   <reference bind="setModelTransformer" interface="de.metadocks.hi5.e4.internal.E4ModelToHTML" name="ModelTransformer"/>
    <implementation class="de.metadocks.hi5.e4.internal.Hi5Service"/>
 </scr:component>

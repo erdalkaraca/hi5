@@ -15,6 +15,6 @@ Import-Package: de.metadocks.hi5.jaxrs,
  org.glassfish.jersey.server;version="2.14.0",
  org.glassfish.jersey.servlet;version="2.14.0",
  org.osgi.service.component.annotations;version="1.2.0"
-Service-Component: OSGI-INF/de.metadocks.hi5.jaxrs.jersey.JerseyJaxRSBindingFactory.xml
 Export-Package: de.metadocks.hi5.jaxrs.jersey
 Require-Bundle: org.glassfish.hk2.api;bundle-version="2.4.0";visibility:=reexport
+Service-Component: OSGI-INF/de.metadocks.hi5.jaxrs.jersey.JerseyJaxRSBindingFactory.xml

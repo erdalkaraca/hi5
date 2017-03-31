@@ -30,22 +30,6 @@ public class Hi5Service {
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/json-children/{parentId}")
-	public String jsonChildren(ContainerRequestContext reqCtx, @PathParam("parentId") String parentId) {
-		MApplicationElement element = e4Runtime.getModelElement(parentId);
-		element = e4Runtime.process(reqCtx, element);
-		String html = "";
-		try {
-			html = modelTransformer.toHTML((MUIElement) element);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return html;
-	}
-
-	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	@Path("/element/{id}")
 	public String getAppElement(ContainerRequestContext reqCtx, @PathParam("id") String id) {
