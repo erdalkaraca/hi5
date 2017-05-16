@@ -27,20 +27,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.texo.json.EMFJSONConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service = MessageBodyWriter.class, immediate = true)
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
-	private EMFJSONConverter converter = new EMFJSONConverter();
-
-	@Activate
-	public void activate() {
-		converter.setConvertReferences(true);
-		converter.setResolveProxies(true);
-	}
 
 	@Override
 	public long getSize(EObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {
@@ -55,6 +47,12 @@ public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
 	@Override
 	public void writeTo(EObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4,
 			MultivaluedMap<String, Object> arg5, OutputStream arg6) throws IOException, WebApplicationException {
+		EMFJSONConverter converter = new EMFJSONConverter();
+		converter.setConvertReferences(true);
+		converter.setResolveProxies(true);
+		converter.setSerializeTitleProperty(false);
+		converter.setConvertReferences(false);
+		converter.setMaxChildLevelsToConvert(1);
 		JSONObject jObj = (JSONObject) converter.convert((EObject) arg0);
 
 		try {

@@ -356,10 +356,6 @@ public class E4ModelToHTML {
 		return bundleAliasMapping;
 	}
 
-	public void setResourcesRegistry(WebResourcesRegistry resReg) {
-		this.resReg = resReg;
-	}
-
 	private static class RuleContext<T extends MApplicationElement> {
 		T modelElement;
 		Element parent;
@@ -368,9 +364,5 @@ public class E4ModelToHTML {
 
 	private static interface Rule<T extends MApplicationElement> {
 		void apply(RuleContext<T> ctx) throws JSONException;
-	}
-
-	private static interface CheckedConumser<T> {
-		void accept(T param) throws Exception;
 	}
 }
