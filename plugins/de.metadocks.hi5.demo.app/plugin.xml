@@ -13,7 +13,7 @@
          </property>
          <property
                name="entryPoint"
-               value="hi5-demo">
+               value="app">
          </property>
       </product>
    </extension>

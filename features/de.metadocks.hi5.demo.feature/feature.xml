@@ -101,13 +101,6 @@
          unpack="false"/>
 
    <plugin
-         id="javax.xml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.core.jobs"
          download-size="0"
          install-size="0"
@@ -248,47 +241,13 @@
          unpack="false"/>
 
    <plugin
-         id="de.metadocks.hi5.demo"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="de.metadocks.hi5.demo.app"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="javax.ws.rs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.concurrent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.glassfish.jersey.containers.jersey-container-servlet-core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.glassfish.jersey.core.jersey-common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.glassfish.jersey.core.jersey-server"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -302,63 +261,42 @@
          unpack="false"/>
 
    <plugin
-         id="org.glassfish.hk2.api"
+         id="org.eclipse.emf.texo"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.glassfish.hk2.locator"
+         id="org.eclipse.emf.texo.json"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.glassfish.hk2.osgi-resource-locator"
+         id="com.eclipsesource.jaxrs.jersey-min"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.glassfish.hk2.utils"
+         id="org.apache.felix.scr"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.aopalliance"
+         id="de.metadocks.hi5.demo.library"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="javassist"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.validation.api"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.glassfish.jersey.bundles.repackaged.jersey-guava"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.glassfish.jersey.core.jersey-client"
+         id="org.eclipse.emf.examples.library"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,5 +1,17 @@
 {
 	"resources": "resources",
-	"alias": "hi5-demo",
-	"version": "none"
+	"alias": "/",
+	"modules": {
+		"rivets": "rivets/rivets.js",
+		"sightglass": "sightglass/index.js",
+		"moment": "moment/moment.min.js",
+		"rivetsstdlib": "rivetsstdlib/rivetsstdlib.js"
+	},
+	"shim": {
+		"rivets": {
+			"deps": [
+				"jquery"
+			]
+		}
+	}
 }

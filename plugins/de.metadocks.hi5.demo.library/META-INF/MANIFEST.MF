@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Library
+Bundle-SymbolicName: de.metadocks.hi5.demo.library;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Erdal Karaca
+Require-Bundle: org.eclipse.emf.examples.library;bundle-version="2.6.0",
+ org.eclipse.e4.ui.model.workbench;bundle-version="2.0.0.v20170228-1842"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: de.metadocks.hi5.jaxrs,
+ javax.ws.rs;version="2.0.1",
+ org.osgi.service.component.annotations;resolution:=optional
+Service-Component: OSGI-INF/de.metadocks.hi5.demo.library.LibraryService.xml
+Bundle-ActivationPolicy: lazy

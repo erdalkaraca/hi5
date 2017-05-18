@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="ASCII"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_gOU5wFXVEea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.application">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_gOU5wFXVEea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.application">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_tZ9NkFXVEea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.trimmedwindow.0">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xH-XcFXVEea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.perspectivestack.0">
-      <children xsi:type="advanced:Perspective" xmi:id="_x2tFsFXVEea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.perspective.0">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_UZ1HoFY7Eea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.partsashcontainer.0" containerData="30,70" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_F5WewFszEeamNOcy3_EjWw" elementId="de.metadocks.hi5.demo.app.partstack.left"/>
-          <children xsi:type="basic:PartStack" xmi:id="_SnN6gFY7Eea19dPS3KUBjA" elementId="de.metadocks.hi5.demo.app.partstack.center"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_x2tFsFXVEea19dPS3KUBjA" elementId="app.perspective.home" label="Home">
+        <children xsi:type="basic:PartStack" xmi:id="_F5WewFszEeamNOcy3_EjWw" elementId="app.partstack.main">
+          <children xsi:type="basic:Part" xmi:id="_15LxkDswEeeiZIgrZQ9pnw" elementId="de.metadocks.hi5.demo.app.part.home" contributionURI="home.html" label="Home" iconURI="fa-home"/>
         </children>
       </children>
     </children>
+    <mainMenu xmi:id="_O-01wDswEeeiZIgrZQ9pnw" elementId="app.mainMenu">
+      <children xsi:type="menu:DirectMenuItem" xmi:id="_WA7mkDswEeeiZIgrZQ9pnw" elementId="de.metadocks.hi5.demo.app.directmenuitem.about" label="About" iconURI="fa-question" contributionURI="about.js"/>
+    </mainMenu>
   </children>
 </application:Application>
