@@ -24,6 +24,20 @@ The application can be deployed in several modes:
 - typical server/client mode: Eclipse RCP backend runs on a server and the client runs in a web browser
 - local mode: Eclipse RCP backend runs locally and the client runs in a JavaFX WebView instance
 
+# Maven Build
+- checkout repo
+- switch to repo's root folder
+- mvn clean install
+
+Update site is contained in folder:
+
+=> releng\de.metadocks.hi5.tycho.update\target\repository
+
+Platform specific demo products are contained in:
+
+=> releng\de.metadocks.hi5.tycho.product\target\products
+
+
 # Real world example
 The following screenshot shows a real world example in action (the website is in german and deals with [mental self-coaching](http://syflux.de "syflux.de")):
 
