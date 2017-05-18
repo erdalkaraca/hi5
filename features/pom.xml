@@ -13,5 +13,6 @@
 
     <modules>
         <module>de.metadocks.hi5.feature</module>
+        <module>de.metadocks.hi5.demo.feature</module>
     </modules>
 </project>

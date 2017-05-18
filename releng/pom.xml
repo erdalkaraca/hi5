@@ -14,5 +14,6 @@
     <modules>
         <module>de.metadocks.hi5.tycho.update</module>
         <module>de.metadocks.hi5.tycho.target</module>
+        <module>de.metadocks.hi5.tycho.product</module>
     </modules>
 </project>

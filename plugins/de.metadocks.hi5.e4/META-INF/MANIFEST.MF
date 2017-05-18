@@ -13,10 +13,10 @@ Require-Bundle: org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.osgi,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.di
+ org.eclipse.e4.ui.di,
+ de.metadocks.hi5.jaxrs
 Bundle-ActivationPolicy: lazy
-Import-Package: de.metadocks.hi5.jaxrs,
- javax.annotation.security;version="1.2.0",
+Import-Package: javax.annotation.security;version="1.2.0",
  javax.servlet;version="3.1.0",
  javax.servlet.http;version="3.1.0",
  javax.ws.rs;version="2.0.1",
