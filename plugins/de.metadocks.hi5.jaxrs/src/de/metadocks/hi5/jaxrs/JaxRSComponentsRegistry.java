@@ -130,7 +130,7 @@ public class JaxRSComponentsRegistry {
 		Application application = new Application() {
 			public Set<Object> getSingletons() {
 				return services;
-			};
+			}
 		};
 		HttpServlet servlet = jaxRsFactory.createServlet(application, jaxRsComponents);
 		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);

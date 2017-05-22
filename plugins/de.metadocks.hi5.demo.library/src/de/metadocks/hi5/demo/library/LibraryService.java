@@ -1,6 +1,5 @@
 package de.metadocks.hi5.demo.library;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -15,11 +14,9 @@ import org.eclipse.emf.examples.extlibrary.Library;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
-import de.metadocks.hi5.jaxrs.JSApiProvider;
-
 @Component(service = LibraryService.class)
 @Path("/library-service")
-public class LibraryService implements JSApiProvider {
+public class LibraryService {
 
 	private Library lib;
 
@@ -40,6 +37,6 @@ public class LibraryService implements JSApiProvider {
 	@Path("/get-books")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Book> getBooks() {
-		return new ArrayList<Book>(lib.getBooks());
+		return lib.getBooks();
 	}
 }

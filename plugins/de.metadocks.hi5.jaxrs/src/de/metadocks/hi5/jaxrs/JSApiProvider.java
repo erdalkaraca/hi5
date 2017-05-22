@@ -28,9 +28,12 @@ import org.json.JSONObject;
 
 public interface JSApiProvider {
 
+	public static final String APPLICATION_JAVASCRIPT = "application/javascript";
+	public static final String API_JS = "api.js";
+
 	@GET
-	@Path("api.js")
-	@Produces("application/javascript")
+	@Path(API_JS)
+	@Produces(APPLICATION_JAVASCRIPT)
 	// this method is considered static content, hence allowed to be called by
 	// unauthenticated requests
 	@PermitAll
@@ -104,7 +107,8 @@ public interface JSApiProvider {
 		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
 				+ "var u='" + url + "';\n"//
 				+ "function ax(s,o){o=o||{};s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
-//				+ "if(typeof o.data!=='string')o.data=JSON.stringify(o.data);"//
+				// + "if(typeof
+				// o.data!=='string')o.data=JSON.stringify(o.data);"//
 				+ "$.ajax($.extend(s,o))};\n"//
 				+ "return {\n%s}});", sb.toString());
 		return moduleDefinition;
