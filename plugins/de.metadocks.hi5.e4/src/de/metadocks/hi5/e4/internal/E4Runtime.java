@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +41,6 @@ import org.eclipse.e4.ui.internal.workbench.WorkbenchLogger;
 import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.MApplicationElement;
-import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.model.application.ui.basic.impl.BasicPackageImpl;
 import org.eclipse.e4.ui.model.application.ui.impl.UiPackageImpl;
@@ -83,6 +84,7 @@ public class E4Runtime {
 	private IModelResourceHandler handler;
 	private IApplicationContext applicationContext;
 	private IModelRequestProcessor modelRequestProcessor;
+	private Map<String, MApplicationElement> index = new HashMap<String, MApplicationElement>();
 
 	public MApplication copyApplicationModel() {
 		if (workbench == null) {
@@ -201,7 +203,25 @@ public class E4Runtime {
 			}
 		});
 		workbench = new E4Workbench(appModel, appContext);
+
+		indexElements();
 		return workbench;
+	}
+
+	private void indexElements() {
+		TreeIterator<EObject> iter = ((EObject) workbench.getApplication()).eAllContents();
+		while (iter.hasNext()) {
+			EObject eObject = (EObject) iter.next();
+
+			if (eObject instanceof MApplicationElement) {
+				MApplicationElement appElement = (MApplicationElement) eObject;
+				String elementId = appElement.getElementId();
+				MApplicationElement replaced = index.put(elementId, appElement);
+				if (replaced != null) {
+					LOG.severe("An existing element was replaced: " + elementId + " -> " + replaced);
+				}
+			}
+		}
 	}
 
 	public static IEclipseContext createDefaultContext() {
@@ -412,19 +432,7 @@ public class E4Runtime {
 	}
 
 	public MApplicationElement getModelElement(String id) {
-		TreeIterator<EObject> iter = ((EObject) workbench.getApplication()).eAllContents();
-		while (iter.hasNext()) {
-			EObject eObject = (EObject) iter.next();
-
-			if (eObject instanceof MUIElement) {
-				String elementId = ((MApplicationElement) eObject).getElementId();
-				if (id.equals(elementId)) {
-					return (MUIElement) eObject;
-				}
-			}
-		}
-
-		return null;
+		return index.get(id);
 	}
 
 	public MApplicationElement process(ContainerRequestContext reqCtx, MApplicationElement element) {

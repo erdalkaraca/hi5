@@ -30,25 +30,25 @@ package org.eclipse.emf.examples.extlibrary;
 public interface Employee extends Person
 {
   /**
-   * Returns the value of the '<em><b>Manager</b></em>' reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Manager</b></em>' reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Manager</em>' reference.
-   * @see #setManager(Employee)
-   * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getEmployee_Manager()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Manager</em>' reference.
+	 * @see #setManager(Employee)
+	 * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getEmployee_Manager()
+	 * @model
+	 * @generated
+	 */
   Employee getManager();
 
   /**
-   * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.Employee#getManager <em>Manager</em>}' reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.Employee#getManager <em>Manager</em>}' reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Manager</em>' reference.
-   * @see #getManager()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Manager</em>' reference.
+	 * @see #getManager()
+	 * @generated
+	 */
   void setManager(Employee value);
 
 } // Employee

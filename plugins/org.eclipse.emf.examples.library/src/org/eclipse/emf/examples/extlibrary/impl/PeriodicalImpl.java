@@ -37,205 +37,201 @@ import org.eclipse.emf.examples.extlibrary.Periodical;
 public abstract class PeriodicalImpl extends ItemImpl implements Periodical
 {
   /**
-   * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTitle()
-   * @generated
-   * @ordered
-   */
+	 * @see #getTitle()
+	 * @generated
+	 * @ordered
+	 */
   protected static final String TITLE_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getTitle() <em>Title</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTitle() <em>Title</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTitle()
-   * @generated
-   * @ordered
-   */
+	 * @see #getTitle()
+	 * @generated
+	 * @ordered
+	 */
   protected String title = TITLE_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getIssuesPerYear() <em>Issues Per Year</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getIssuesPerYear() <em>Issues Per Year</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getIssuesPerYear()
-   * @generated
-   * @ordered
-   */
+	 * @see #getIssuesPerYear()
+	 * @generated
+	 * @ordered
+	 */
   protected static final int ISSUES_PER_YEAR_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getIssuesPerYear() <em>Issues Per Year</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getIssuesPerYear() <em>Issues Per Year</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getIssuesPerYear()
-   * @generated
-   * @ordered
-   */
+	 * @see #getIssuesPerYear()
+	 * @generated
+	 * @ordered
+	 */
   protected int issuesPerYear = ISSUES_PER_YEAR_EDEFAULT;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected PeriodicalImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return EXTLibraryPackage.Literals.PERIODICAL;
-  }
+		return EXTLibraryPackage.Literals.PERIODICAL;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public String getTitle()
   {
-    return title;
-  }
+		return title;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void setTitle(String newTitle)
   {
-    String oldTitle = title;
-    title = newTitle;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.PERIODICAL__TITLE, oldTitle, title));
-  }
+		String oldTitle = title;
+		title = newTitle;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.PERIODICAL__TITLE, oldTitle, title));
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public int getIssuesPerYear()
   {
-    return issuesPerYear;
-  }
+		return issuesPerYear;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void setIssuesPerYear(int newIssuesPerYear)
   {
-    int oldIssuesPerYear = issuesPerYear;
-    issuesPerYear = newIssuesPerYear;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR, oldIssuesPerYear, issuesPerYear));
-  }
+		int oldIssuesPerYear = issuesPerYear;
+		issuesPerYear = newIssuesPerYear;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR, oldIssuesPerYear, issuesPerYear));
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.PERIODICAL__TITLE:
-        return getTitle();
-      case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
-        return getIssuesPerYear();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.PERIODICAL__TITLE:
+				return getTitle();
+			case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
+				return getIssuesPerYear();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.PERIODICAL__TITLE:
-        setTitle((String)newValue);
-        return;
-      case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
-        setIssuesPerYear((Integer)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.PERIODICAL__TITLE:
+				setTitle((String)newValue);
+				return;
+			case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
+				setIssuesPerYear((Integer)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.PERIODICAL__TITLE:
-        setTitle(TITLE_EDEFAULT);
-        return;
-      case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
-        setIssuesPerYear(ISSUES_PER_YEAR_EDEFAULT);
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.PERIODICAL__TITLE:
+				setTitle(TITLE_EDEFAULT);
+				return;
+			case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
+				setIssuesPerYear(ISSUES_PER_YEAR_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.PERIODICAL__TITLE:
-        return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
-      case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
-        return issuesPerYear != ISSUES_PER_YEAR_EDEFAULT;
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.PERIODICAL__TITLE:
+				return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
+			case EXTLibraryPackage.PERIODICAL__ISSUES_PER_YEAR:
+				return issuesPerYear != ISSUES_PER_YEAR_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (title: "); //$NON-NLS-1$
-    result.append(title);
-    result.append(", issuesPerYear: "); //$NON-NLS-1$
-    result.append(issuesPerYear);
-    result.append(')');
-    return result.toString();
-  }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (title: "); //$NON-NLS-1$
+		result.append(title);
+		result.append(", issuesPerYear: "); //$NON-NLS-1$
+		result.append(issuesPerYear);
+		result.append(')');
+		return result.toString();
+	}
 
 } //PeriodicalImpl

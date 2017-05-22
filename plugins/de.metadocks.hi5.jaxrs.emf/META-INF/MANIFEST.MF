@@ -16,4 +16,5 @@ Require-Bundle: org.eclipse.emf.ecore,
 Bundle-ActivationPolicy: lazy
 Export-Package: de.metadocks.hi5.jaxrs.emf
 Service-Component: OSGI-INF/de.metadocks.hi5.jaxrs.emf.EMFMessageBodyReader.xml,
- OSGI-INF/de.metadocks.hi5.jaxrs.emf.EMFMessageBodyWriter.xml
+ OSGI-INF/de.metadocks.hi5.jaxrs.emf.EMFMessageBodyWriter.xml,
+ OSGI-INF/de.metadocks.hi5.jaxrs.emf.EMFListMessageBodyWriter.xml

@@ -1,6 +1,13 @@
 <div>
-	<h1>Library</h1>
-	<div class="hi5-demo-library-container"></div>
+	<div class="hi5-demo-library-container">
+		<h1>My Books</h1>
+		<ul class="w3-ul">
+			<li rv-each-item="books">
+				<p>Title: {item.title}</p>
+				<p>Pages: {item.pages}</p>
+			</li>
+		</ul>
+	</div>
 	<script>
 		require([ 'library' ], function(lib) {
 			lib.loadLibrary($(".hi5-demo-library-container"));

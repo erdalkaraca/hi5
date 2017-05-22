@@ -32,69 +32,69 @@ package org.eclipse.emf.examples.extlibrary;
 public interface AudioVisualItem extends CirculatingItem
 {
   /**
-   * Returns the value of the '<em><b>Title</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Title</em>' attribute.
-   * @see #setTitle(String)
-   * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_Title()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Title</em>' attribute.
+	 * @see #setTitle(String)
+	 * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_Title()
+	 * @model
+	 * @generated
+	 */
   String getTitle();
 
   /**
-   * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#getTitle <em>Title</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#getTitle <em>Title</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Title</em>' attribute.
-   * @see #getTitle()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Title</em>' attribute.
+	 * @see #getTitle()
+	 * @generated
+	 */
   void setTitle(String value);
 
   /**
-   * Returns the value of the '<em><b>Minutes Length</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Minutes Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Minutes Length</em>' attribute.
-   * @see #setMinutesLength(int)
-   * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_MinutesLength()
-   * @model required="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Minutes Length</em>' attribute.
+	 * @see #setMinutesLength(int)
+	 * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_MinutesLength()
+	 * @model required="true"
+	 * @generated
+	 */
   int getMinutesLength();
 
   /**
-   * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#getMinutesLength <em>Minutes Length</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#getMinutesLength <em>Minutes Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Minutes Length</em>' attribute.
-   * @see #getMinutesLength()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Minutes Length</em>' attribute.
+	 * @see #getMinutesLength()
+	 * @generated
+	 */
   void setMinutesLength(int value);
 
   /**
-   * Returns the value of the '<em><b>Damaged</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Damaged</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Damaged</em>' attribute.
-   * @see #setDamaged(boolean)
-   * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_Damaged()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Damaged</em>' attribute.
+	 * @see #setDamaged(boolean)
+	 * @see org.eclipse.emf.examples.extlibrary.EXTLibraryPackage#getAudioVisualItem_Damaged()
+	 * @model
+	 * @generated
+	 */
   boolean isDamaged();
 
   /**
-   * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#isDamaged <em>Damaged</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.emf.examples.extlibrary.AudioVisualItem#isDamaged <em>Damaged</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Damaged</em>' attribute.
-   * @see #isDamaged()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Damaged</em>' attribute.
+	 * @see #isDamaged()
+	 * @generated
+	 */
   void setDamaged(boolean value);
 
 } // AudioVisualItem

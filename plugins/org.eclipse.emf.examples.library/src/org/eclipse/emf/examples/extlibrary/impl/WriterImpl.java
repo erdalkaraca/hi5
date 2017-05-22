@@ -45,45 +45,45 @@ import org.eclipse.emf.examples.extlibrary.Writer;
 public class WriterImpl extends PersonImpl implements Writer
 {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
   protected static final String NAME_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getBooks() <em>Books</em>}' reference list.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBooks() <em>Books</em>}' reference list.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBooks()
-   * @generated
-   * @ordered
-   */
+	 * @see #getBooks()
+	 * @generated
+	 * @ordered
+	 */
   protected EList<Book> books;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected WriterImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return EXTLibraryPackage.Literals.WRITER;
-  }
+		return EXTLibraryPackage.Literals.WRITER;
+	}
 
   /**
    * <!-- begin-user-doc -->
@@ -151,128 +151,121 @@ public class WriterImpl extends PersonImpl implements Writer
   }
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EList<Book> getBooks()
   {
-    if (books == null)
-    {
-      books = new EObjectWithInverseResolvingEList<Book>(Book.class, this, EXTLibraryPackage.WRITER__BOOKS, EXTLibraryPackage.BOOK__AUTHOR);
-    }
-    return books;
-  }
+		if (books == null) {
+			books = new EObjectWithInverseResolvingEList<Book>(Book.class, this, EXTLibraryPackage.WRITER__BOOKS, EXTLibraryPackage.BOOK__AUTHOR);
+		}
+		return books;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__BOOKS:
-        return ((InternalEList<InternalEObject>)(InternalEList<?>)getBooks()).basicAdd(otherEnd, msgs);
-    }
-    return super.eInverseAdd(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__BOOKS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getBooks()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__BOOKS:
-        return ((InternalEList<?>)getBooks()).basicRemove(otherEnd, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__BOOKS:
+				return ((InternalEList<?>)getBooks()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__NAME:
-        return getName();
-      case EXTLibraryPackage.WRITER__BOOKS:
-        return getBooks();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__NAME:
+				return getName();
+			case EXTLibraryPackage.WRITER__BOOKS:
+				return getBooks();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__NAME:
-        setName((String)newValue);
-        return;
-      case EXTLibraryPackage.WRITER__BOOKS:
-        getBooks().clear();
-        getBooks().addAll((Collection<? extends Book>)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__NAME:
+				setName((String)newValue);
+				return;
+			case EXTLibraryPackage.WRITER__BOOKS:
+				getBooks().clear();
+				getBooks().addAll((Collection<? extends Book>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__NAME:
-        setName(NAME_EDEFAULT);
-        return;
-      case EXTLibraryPackage.WRITER__BOOKS:
-        getBooks().clear();
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case EXTLibraryPackage.WRITER__BOOKS:
+				getBooks().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.WRITER__NAME:
-        return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-      case EXTLibraryPackage.WRITER__BOOKS:
-        return books != null && !books.isEmpty();
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.WRITER__NAME:
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case EXTLibraryPackage.WRITER__BOOKS:
+				return books != null && !books.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //WriterImpl

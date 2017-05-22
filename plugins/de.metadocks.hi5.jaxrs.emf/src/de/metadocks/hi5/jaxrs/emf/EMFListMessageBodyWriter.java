@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Erdal Karaca.
+ * Copyright (c) 2017 Erdal Karaca.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.Produces;
@@ -28,6 +26,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.texo.json.EMFJSONConverter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.Component;
@@ -35,30 +34,34 @@ import org.osgi.service.component.annotations.Component;
 @Component(service = MessageBodyWriter.class, immediate = true)
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
+public class EMFListMessageBodyWriter implements MessageBodyWriter<List<EObject>> {
 
 	@Override
-	public long getSize(EObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {
-		return -1;
+	public long getSize(List<EObject> arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {
+		return arg0.size();
 	}
 
 	@Override
 	public boolean isWriteable(Class<?> arg0, Type arg1, Annotation[] arg2, MediaType arg3) {
-		return EObject.class.isAssignableFrom(arg0) && MediaType.APPLICATION_JSON_TYPE.equals(arg3);
+		return MediaType.APPLICATION_JSON_TYPE.equals(arg3);
 	}
 
 	@Override
-	public void writeTo(EObject arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4,
+	public void writeTo(List<EObject> arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4,
 			MultivaluedMap<String, Object> arg5, OutputStream arg6) throws IOException, WebApplicationException {
 		EMFJSONConverter converter = new EMFJSONConverter();
 		converter.setConvertNonContainedReferencedObjects(true);
 		converter.setSerializeTitleProperty(false);
 		converter.setMaxChildLevelsToConvert(1);
-		JSONObject jObj = (JSONObject) converter.convert((EObject) arg0);
+		JSONArray array = new JSONArray();
+		for (EObject eObject : arg0) {
+			JSONObject jObj = (JSONObject) converter.convert((EObject) eObject);
+			array.put(jObj);
+		}
 
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(arg6);
-			jObj.write(writer);
+			array.write(writer);
 			writer.flush();
 		} catch (JSONException e) {
 			throw new IOException(e);

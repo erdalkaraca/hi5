@@ -11,6 +11,7 @@
 package de.metadocks.hi5.e4.internal;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +70,8 @@ public class E4ModelToHTML {
 	private WebResourcesRegistry resReg;
 	private Map<Class<? extends MApplicationElement>, Rule<? extends MApplicationElement>> grammar = new HashMap<>();
 	private DocumentBuilder builder;
-	private Transformer transformer;
+
+	private TransformerFactory tf;
 
 	@Activate
 	public void activate() throws ParserConfigurationException, TransformerConfigurationException {
@@ -81,9 +83,7 @@ public class E4ModelToHTML {
 		dbf.setExpandEntityReferences(false);
 
 		builder = dbf.newDocumentBuilder();
-		TransformerFactory tf = TransformerFactory.newInstance();
-		transformer = tf.newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		tf = TransformerFactory.newInstance();
 
 		registerRule(MElementContainer.class, ctx -> {
 			handleElementContainer(ctx);
@@ -142,23 +142,23 @@ public class E4ModelToHTML {
 		this.resReg = resReg;
 	}
 
-	public String toHTML(MUIElement element) throws JSONException {
+	public void toHTML(MUIElement element, OutputStream out) throws JSONException {
 		JSONObject appModelConfig = new JSONObject();
 		Document doc = builder.newDocument();
 		Element container = doc.createElement("div");
 		doc.appendChild(container);
 		transform(container, element, appModelConfig);
 		Node firstChild = container.getFirstChild();
-		StringWriter writer = new StringWriter();
-
+		
 		try {
-			transformer.transform(new DOMSource(firstChild), new StreamResult(writer));
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			DOMSource domSource = new DOMSource(firstChild);
+			transformer.transform(domSource, new StreamResult(out));
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return writer.toString();
 	}
 
 	private void createMeta(Element head, String name, String content) {

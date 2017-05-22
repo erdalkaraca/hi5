@@ -48,259 +48,248 @@ import org.eclipse.emf.examples.extlibrary.Lendable;
 public abstract class CirculatingItemImpl extends ItemImpl implements CirculatingItem
 {
   /**
-   * The default value of the '{@link #getCopies() <em>Copies</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getCopies() <em>Copies</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCopies()
-   * @generated
-   * @ordered
-   */
+	 * @see #getCopies()
+	 * @generated
+	 * @ordered
+	 */
   protected static final int COPIES_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getCopies() <em>Copies</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCopies() <em>Copies</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCopies()
-   * @generated
-   * @ordered
-   */
+	 * @see #getCopies()
+	 * @generated
+	 * @ordered
+	 */
   protected int copies = COPIES_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getBorrowers() <em>Borrowers</em>}' reference list.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBorrowers() <em>Borrowers</em>}' reference list.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBorrowers()
-   * @generated
-   * @ordered
-   */
+	 * @see #getBorrowers()
+	 * @generated
+	 * @ordered
+	 */
   protected EList<Borrower> borrowers;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected CirculatingItemImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return EXTLibraryPackage.Literals.CIRCULATING_ITEM;
-  }
+		return EXTLibraryPackage.Literals.CIRCULATING_ITEM;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public int getCopies()
   {
-    return copies;
-  }
+		return copies;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void setCopies(int newCopies)
   {
-    int oldCopies = copies;
-    copies = newCopies;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.CIRCULATING_ITEM__COPIES, oldCopies, copies));
-  }
+		int oldCopies = copies;
+		copies = newCopies;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.CIRCULATING_ITEM__COPIES, oldCopies, copies));
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EList<Borrower> getBorrowers()
   {
-    if (borrowers == null)
-    {
-      borrowers = new EObjectWithInverseResolvingEList.ManyInverse<Borrower>(Borrower.class, this, EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS, EXTLibraryPackage.BORROWER__BORROWED);
-    }
-    return borrowers;
-  }
+		if (borrowers == null) {
+			borrowers = new EObjectWithInverseResolvingEList.ManyInverse<Borrower>(Borrower.class, this, EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS, EXTLibraryPackage.BORROWER__BORROWED);
+		}
+		return borrowers;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        return ((InternalEList<InternalEObject>)(InternalEList<?>)getBorrowers()).basicAdd(otherEnd, msgs);
-    }
-    return super.eInverseAdd(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getBorrowers()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        return ((InternalEList<?>)getBorrowers()).basicRemove(otherEnd, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				return ((InternalEList<?>)getBorrowers()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
-        return getCopies();
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        return getBorrowers();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
+				return getCopies();
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				return getBorrowers();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
-        setCopies((Integer)newValue);
-        return;
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        getBorrowers().clear();
-        getBorrowers().addAll((Collection<? extends Borrower>)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
+				setCopies((Integer)newValue);
+				return;
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				getBorrowers().clear();
+				getBorrowers().addAll((Collection<? extends Borrower>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
-        setCopies(COPIES_EDEFAULT);
-        return;
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        getBorrowers().clear();
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
+				setCopies(COPIES_EDEFAULT);
+				return;
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				getBorrowers().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
-        return copies != COPIES_EDEFAULT;
-      case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
-        return borrowers != null && !borrowers.isEmpty();
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.CIRCULATING_ITEM__COPIES:
+				return copies != COPIES_EDEFAULT;
+			case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS:
+				return borrowers != null && !borrowers.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
   {
-    if (baseClass == Lendable.class)
-    {
-      switch (derivedFeatureID)
-      {
-        case EXTLibraryPackage.CIRCULATING_ITEM__COPIES: return EXTLibraryPackage.LENDABLE__COPIES;
-        case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS: return EXTLibraryPackage.LENDABLE__BORROWERS;
-        default: return -1;
-      }
-    }
-    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-  }
+		if (baseClass == Lendable.class) {
+			switch (derivedFeatureID) {
+				case EXTLibraryPackage.CIRCULATING_ITEM__COPIES: return EXTLibraryPackage.LENDABLE__COPIES;
+				case EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS: return EXTLibraryPackage.LENDABLE__BORROWERS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
   {
-    if (baseClass == Lendable.class)
-    {
-      switch (baseFeatureID)
-      {
-        case EXTLibraryPackage.LENDABLE__COPIES: return EXTLibraryPackage.CIRCULATING_ITEM__COPIES;
-        case EXTLibraryPackage.LENDABLE__BORROWERS: return EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS;
-        default: return -1;
-      }
-    }
-    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-  }
+		if (baseClass == Lendable.class) {
+			switch (baseFeatureID) {
+				case EXTLibraryPackage.LENDABLE__COPIES: return EXTLibraryPackage.CIRCULATING_ITEM__COPIES;
+				case EXTLibraryPackage.LENDABLE__BORROWERS: return EXTLibraryPackage.CIRCULATING_ITEM__BORROWERS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (copies: "); //$NON-NLS-1$
-    result.append(copies);
-    result.append(')');
-    return result.toString();
-  }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (copies: "); //$NON-NLS-1$
+		result.append(copies);
+		result.append(')');
+		return result.toString();
+	}
 
 } //CirculatingItemImpl

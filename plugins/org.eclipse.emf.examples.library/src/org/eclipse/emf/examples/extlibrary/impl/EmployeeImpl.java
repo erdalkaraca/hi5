@@ -38,144 +38,138 @@ import org.eclipse.emf.examples.extlibrary.Employee;
 public class EmployeeImpl extends PersonImpl implements Employee
 {
   /**
-   * The cached value of the '{@link #getManager() <em>Manager</em>}' reference.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getManager() <em>Manager</em>}' reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getManager()
-   * @generated
-   * @ordered
-   */
+	 * @see #getManager()
+	 * @generated
+	 * @ordered
+	 */
   protected Employee manager;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected EmployeeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return EXTLibraryPackage.Literals.EMPLOYEE;
-  }
+		return EXTLibraryPackage.Literals.EMPLOYEE;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Employee getManager()
   {
-    if (manager != null && manager.eIsProxy())
-    {
-      InternalEObject oldManager = (InternalEObject)manager;
-      manager = (Employee)eResolveProxy(oldManager);
-      if (manager != oldManager)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, EXTLibraryPackage.EMPLOYEE__MANAGER, oldManager, manager));
-      }
-    }
-    return manager;
-  }
+		if (manager != null && manager.eIsProxy()) {
+			InternalEObject oldManager = (InternalEObject)manager;
+			manager = (Employee)eResolveProxy(oldManager);
+			if (manager != oldManager) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EXTLibraryPackage.EMPLOYEE__MANAGER, oldManager, manager));
+			}
+		}
+		return manager;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Employee basicGetManager()
   {
-    return manager;
-  }
+		return manager;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void setManager(Employee newManager)
   {
-    Employee oldManager = manager;
-    manager = newManager;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.EMPLOYEE__MANAGER, oldManager, manager));
-  }
+		Employee oldManager = manager;
+		manager = newManager;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EXTLibraryPackage.EMPLOYEE__MANAGER, oldManager, manager));
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.EMPLOYEE__MANAGER:
-        if (resolve) return getManager();
-        return basicGetManager();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.EMPLOYEE__MANAGER:
+				if (resolve) return getManager();
+				return basicGetManager();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.EMPLOYEE__MANAGER:
-        setManager((Employee)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.EMPLOYEE__MANAGER:
+				setManager((Employee)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.EMPLOYEE__MANAGER:
-        setManager((Employee)null);
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.EMPLOYEE__MANAGER:
+				setManager((Employee)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case EXTLibraryPackage.EMPLOYEE__MANAGER:
-        return manager != null;
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case EXTLibraryPackage.EMPLOYEE__MANAGER:
+				return manager != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //EmployeeImpl

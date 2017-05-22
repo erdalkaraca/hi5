@@ -33,226 +33,220 @@ import org.eclipse.emf.examples.extlibrary.*;
 public class EXTLibraryFactoryImpl extends EFactoryImpl implements EXTLibraryFactory
 {
   /**
-   * Creates the default factory implementation.
-   * <!-- begin-user-doc -->
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public static EXTLibraryFactory init()
   {
-    try
-    {
-      EXTLibraryFactory theEXTLibraryFactory = (EXTLibraryFactory)EPackage.Registry.INSTANCE.getEFactory(EXTLibraryPackage.eNS_URI);
-      if (theEXTLibraryFactory != null)
-      {
-        return theEXTLibraryFactory;
-      }
-    }
-    catch (Exception exception)
-    {
-      EcorePlugin.INSTANCE.log(exception);
-    }
-    return new EXTLibraryFactoryImpl();
-  }
+		try {
+			EXTLibraryFactory theEXTLibraryFactory = (EXTLibraryFactory)EPackage.Registry.INSTANCE.getEFactory(EXTLibraryPackage.eNS_URI);
+			if (theEXTLibraryFactory != null) {
+				return theEXTLibraryFactory;
+			}
+		}
+		catch (Exception exception) {
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new EXTLibraryFactoryImpl();
+	}
 
   /**
-   * Creates an instance of the factory.
-   * <!-- begin-user-doc -->
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EXTLibraryFactoryImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public EObject create(EClass eClass)
   {
-    switch (eClass.getClassifierID())
-    {
-      case EXTLibraryPackage.BOOK: return createBook();
-      case EXTLibraryPackage.LIBRARY: return createLibrary();
-      case EXTLibraryPackage.WRITER: return createWriter();
-      case EXTLibraryPackage.BOOK_ON_TAPE: return createBookOnTape();
-      case EXTLibraryPackage.VIDEO_CASSETTE: return createVideoCassette();
-      case EXTLibraryPackage.BORROWER: return createBorrower();
-      case EXTLibraryPackage.PERSON: return createPerson();
-      case EXTLibraryPackage.EMPLOYEE: return createEmployee();
-      default:
-        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-  }
+		switch (eClass.getClassifierID()) {
+			case EXTLibraryPackage.BOOK: return createBook();
+			case EXTLibraryPackage.LIBRARY: return createLibrary();
+			case EXTLibraryPackage.WRITER: return createWriter();
+			case EXTLibraryPackage.BOOK_ON_TAPE: return createBookOnTape();
+			case EXTLibraryPackage.VIDEO_CASSETTE: return createVideoCassette();
+			case EXTLibraryPackage.BORROWER: return createBorrower();
+			case EXTLibraryPackage.PERSON: return createPerson();
+			case EXTLibraryPackage.EMPLOYEE: return createEmployee();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object createFromString(EDataType eDataType, String initialValue)
   {
-    switch (eDataType.getClassifierID())
-    {
-      case EXTLibraryPackage.BOOK_CATEGORY:
-        return createBookCategoryFromString(eDataType, initialValue);
-      default:
-        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-  }
+		switch (eDataType.getClassifierID()) {
+			case EXTLibraryPackage.BOOK_CATEGORY:
+				return createBookCategoryFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public String convertToString(EDataType eDataType, Object instanceValue)
   {
-    switch (eDataType.getClassifierID())
-    {
-      case EXTLibraryPackage.BOOK_CATEGORY:
-        return convertBookCategoryToString(eDataType, instanceValue);
-      default:
-        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-  }
+		switch (eDataType.getClassifierID()) {
+			case EXTLibraryPackage.BOOK_CATEGORY:
+				return convertBookCategoryToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Book createBook()
   {
-    BookImpl book = new BookImpl();
-    return book;
-  }
+		BookImpl book = new BookImpl();
+		return book;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Library createLibrary()
   {
-    LibraryImpl library = new LibraryImpl();
-    return library;
-  }
+		LibraryImpl library = new LibraryImpl();
+		return library;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Writer createWriter()
   {
-    WriterImpl writer = new WriterImpl();
-    return writer;
-  }
+		WriterImpl writer = new WriterImpl();
+		return writer;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public BookOnTape createBookOnTape()
   {
-    BookOnTapeImpl bookOnTape = new BookOnTapeImpl();
-    return bookOnTape;
-  }
+		BookOnTapeImpl bookOnTape = new BookOnTapeImpl();
+		return bookOnTape;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public VideoCassette createVideoCassette()
   {
-    VideoCassetteImpl videoCassette = new VideoCassetteImpl();
-    return videoCassette;
-  }
+		VideoCassetteImpl videoCassette = new VideoCassetteImpl();
+		return videoCassette;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Borrower createBorrower()
   {
-    BorrowerImpl borrower = new BorrowerImpl();
-    return borrower;
-  }
+		BorrowerImpl borrower = new BorrowerImpl();
+		return borrower;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Person createPerson()
   {
-    PersonImpl person = new PersonImpl();
-    return person;
-  }
+		PersonImpl person = new PersonImpl();
+		return person;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public Employee createEmployee()
   {
-    EmployeeImpl employee = new EmployeeImpl();
-    return employee;
-  }
+		EmployeeImpl employee = new EmployeeImpl();
+		return employee;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public BookCategory createBookCategoryFromString(EDataType eDataType, String initialValue)
   {
-    BookCategory result = BookCategory.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return result;
-  }
+		BookCategory result = BookCategory.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return result;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public String convertBookCategoryToString(EDataType eDataType, Object instanceValue)
   {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
+		return instanceValue == null ? null : instanceValue.toString();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EXTLibraryPackage getEXTLibraryPackage()
   {
-    return (EXTLibraryPackage)getEPackage();
-  }
+		return (EXTLibraryPackage)getEPackage();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @deprecated
-   * @generated
-   */
+	 * @deprecated
+	 * @generated
+	 */
   @Deprecated
   public static EXTLibraryPackage getPackage()
   {
-    return EXTLibraryPackage.eINSTANCE;
-  }
+		return EXTLibraryPackage.eINSTANCE;
+	}
 
 } //EXTLibraryFactoryImpl

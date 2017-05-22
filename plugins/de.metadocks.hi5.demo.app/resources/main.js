@@ -10,7 +10,7 @@ define([ 'jquery', 'hi5' ], function($, hi5) {
 		$menu.hi5(function(partService) {
 			partService.loadUIElement("app.mainMenu");
 		});
-
+		
 		var $contents = $("<div></div>");
 		$uiContainer.append($contents);
 		$contents.hi5(function(partService) {
