@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="hi5-target" sequenceNumber="36">
+<?pde version="3.8"?><target name="hi5-target" sequenceNumber="40">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170313-0823"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.0.v20170307-1429"/>
-<repository location="http://download.eclipse.org/releases/oxygen"/>
-</location>
-<location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rcp.feature.group" version="4.7.0.v20170308-2000"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.7milestones"/>
+<unit id="org.eclipse.emf.texo.runtime.core.feature.group" version="0.9.0.v201611141242"/>
+<repository location="http://download.eclipse.org/modeling/emft/texo/updates/interim"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="javax.activation" version="1.1.0.v201211130549"/>
@@ -40,10 +35,6 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.texo.runtime.core.feature.group" version="0.9.0.v201611141242"/>
-<repository location="http://download.eclipse.org/modeling/emft/texo/updates/interim"/>
-</location>
-<location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.eclipsesource.jaxrs.connector.feature.feature.group" version="5.3.1.201602281253"/>
 <unit id="com.eclipsesource.jaxrs.connector.feature.source.feature.group" version="5.3.1.201602281253"/>
 <unit id="com.eclipsesource.jaxrs.provider.gson.feature.feature.group" version="2.3.0.201602281253"/>
@@ -60,5 +51,12 @@
 <unit id="com.eclipsesource.jaxrs.provider.swagger.feature.source.feature.group" version="1.1.1.201602281253"/>
 <repository location="http://hstaudacher.github.io/osgi-jax-rs-connector/"/>
 </location>
+<location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170504-0807"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.0.v20170518-1049"/>
+<unit id="org.eclipse.rcp.sdk.id" version="4.7.0.I20170518-1030"/>
+<repository location="http://download.eclipse.org/releases/oxygen"/>
+</location>
 </locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 </target>

@@ -116,7 +116,7 @@ public class E4Runtime {
 			}
 
 			if (modelRequestProcessor == null) {
-				LOG.log(Level.SEVERE, "Could not find model model request processor: " + modelRequestProcessorValue);
+				LOG.log(Level.SEVERE, "Could not find model request processor: " + modelRequestProcessorValue);
 			}
 		}
 

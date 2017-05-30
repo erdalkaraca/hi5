@@ -11,5 +11,5 @@ Import-Package: de.metadocks.hi5.jaxrs,
  javax.ws.rs;version="2.0.1",
  javax.ws.rs.core;version="2.0.1",
  org.osgi.service.component.annotations;resolution:=optional
-Service-Component: OSGI-INF/de.metadocks.hi5.demo.library.LibraryService.xml
 Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/de.metadocks.hi5.demo.library.LibraryService.xml

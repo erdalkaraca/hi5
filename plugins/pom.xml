@@ -31,6 +31,7 @@
 		<module>de.metadocks.hi5.jaxrs.emf</module>
 		<module>de.metadocks.hi5.jaxrs.jersey</module>
 		<module>de.metadocks.hi5.com.w3schools.w3css</module>
+		<module>de.metadocks.hi5.pubsubjs</module>
 		<module>de.metadocks.hi5.org.jquery</module>
 		<module>de.metadocks.hi5.org.requirejs</module>
 		

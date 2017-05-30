@@ -53,7 +53,7 @@ public class EMFMessageBodyWriter implements MessageBodyWriter<EObject> {
 		EMFJSONConverter converter = new EMFJSONConverter();
 		converter.setConvertNonContainedReferencedObjects(true);
 		converter.setSerializeTitleProperty(false);
-		converter.setMaxChildLevelsToConvert(1);
+		converter.setMaxChildLevelsToConvert(3);
 		JSONObject jObj = (JSONObject) converter.convert((EObject) arg0);
 
 		try {

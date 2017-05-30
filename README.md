@@ -52,6 +52,7 @@ The following screenshot shows a real world example in action (the website is in
 | Window Menu | [x] |
 | IEclipseContext/Scoping | [ ] |
 | DI | [ ] |
+| EventBus | [~] |
 | Data Binding | [~] |
 | Key Bindings | [ ] |
 | ECommandService/EHandlerService (commands, handlers) | [ ] |
@@ -72,6 +73,7 @@ The following screenshot shows a real world example in action (the website is in
 | [Eclipse Communications Framework](https://www.eclipse.org/ecf/) | EPL | web services support | no |
 | [Eclipse Texo](https://wiki.eclipse.org/Texo) | EPL | de/serialization of EMF models from/to server/client in JSON format | no |
 | [rivets js](http://rivetsjs.com) | OS | JS data binding | no |
+| [PubSubJS](https://github.com/mroderick/PubSubJS) | MIT | JavaScript Publish/Subscribe Pattern (aka EventBus) | yes |
 
 # License
 This project is licensed under the Eclipse Public License (EPL).
