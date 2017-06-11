@@ -37,9 +37,30 @@ Platform specific demo products are contained in:
 
 => releng\de.metadocks.hi5.tycho.product\target\products
 
+Start one of the platform specific product and point your browser to 
+
+http://localhost:8080/app/index.html
+
+The simple library demo will start up:
+
+![Library Demo](docs/library-demo.png "Hi5 Simple Library Demo")
+
+You can also start the embedded browser (which will start a JavaFX WebView instance in a standalone window) by adding the following setting to the .ini file in the created platform specific product.
+For example, for the windows product navigate to 
+
+=> releng\de.metadocks.hi5.tycho.product\target\products\de.metadocks.hi5.demo.app.product\win32\win32\x86_64
+
+open the eclipse.ini file and make sure the following settings are provided:
+
+-Dorg.osgi.framework.bundle.parent=ext
+-Dhi5-start-jfx-client=true
+
+![Library Demo JavaFX](docs/library-demo-jfx-client.png "Hi5 Simple Library Demo run in JavaFX standalone WebView")
+
+The application is still available via your browser.
 
 # Real world example
-The following screenshot shows a real world example in action (the website is in german and deals with [mental self-coaching](http://syflux.de "syflux.de")):
+The following screenshot shows a real world example in action (the website is in german and deals with [mental self-coaching](http://syflux.de "syflux.de")) which was the initial trigger of creating this project:
 
 ![syflux](https://github.com/erdalkaraca/hi5/raw/master/docs/syflux-example.jpg "Syflux - a self-coaching web app")
 

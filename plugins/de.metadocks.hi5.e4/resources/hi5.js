@@ -106,15 +106,10 @@ define(
           handleUIElements($e, ".Menu");
         });
         handleUIElements($e, ".ToolBar");
-
-        $e.addClass("w3-panel");
-        $e.addClass("w3-border");
         var contribution = $e.attr("contributionuri");
-
         if (!contribution) {
           contribution = $e.attr("state_index");
         }
-
         var url = toUrl($e, contribution);
         var $contents = $("<div class='w3-container'></div>");
         $e.append($contents);
@@ -150,7 +145,7 @@ define(
       }
 
       function processDirectItem($e, hideParentOnClick, showLabel) {
-        var $a = $("<span class='w3-btn w3-white w3-round'></span>");
+        var $a = $("<div class='w3-btn w3-white w3-round w3-margin-left w3-margin-righ w3-hover'></div>");
 
         var label = $e.attr("label");
         if (showLabel) {

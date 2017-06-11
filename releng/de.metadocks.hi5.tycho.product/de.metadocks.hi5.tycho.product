@@ -21,7 +21,7 @@
 
    <windowImages/>
 
-   <launcher>
+   <launcher name="lib-demo">
       <win useIco="false">
          <bmp/>
       </win>
