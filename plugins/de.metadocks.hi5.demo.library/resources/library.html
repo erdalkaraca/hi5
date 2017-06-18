@@ -2,9 +2,10 @@
 	<div class="hi5-demo-library-container">
 		<h1>My Books</h1>
 		<ul class="w3-ul">
-			<li rv-each-item="books">
-				<p>Title: {item.title}</p>
-				<p>Pages: {item.pages}</p>
+			<li rv-each-book="books">
+				<p>Title: {book.title}</p>
+				<p>Author: {book.author.name}</p>
+				<p>Pages: {book.pages}</p>
 			</li>
 		</ul>
 	</div>
