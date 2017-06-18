@@ -37,6 +37,6 @@
 		
 		<module>de.metadocks.hi5.demo.app</module>
 		<module>de.metadocks.hi5.demo.library</module>
-		<module>org.eclipse.emf.examples.library</module>
+		<module>de.metadocks.hi5.demo.model</module>
 	</modules>
 </project>
