@@ -74,7 +74,7 @@ define(
             $pers.eq($li.index()).show();
             $ul.children().attr("active", "false");
             $li.attr("active", "true");
-            PubSub.publish('hi5.stackelement.activated', $e.attr("elementid"));
+            PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
           };
           $a.click(clickHandler);
           // install click handler also for stack element
