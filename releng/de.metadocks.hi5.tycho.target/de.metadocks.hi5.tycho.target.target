@@ -52,9 +52,9 @@
 <repository location="http://hstaudacher.github.io/osgi-jax-rs-connector/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170504-0807"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.0.v20170518-1049"/>
-<unit id="org.eclipse.rcp.sdk.id" version="4.7.0.I20170518-1030"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170609-0928"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.0.v20170531-1133"/>
+<unit id="org.eclipse.rcp.sdk.id" version="4.7.0.I20170612-0950"/>
 <repository location="http://download.eclipse.org/releases/oxygen"/>
 </location>
 </locations>
