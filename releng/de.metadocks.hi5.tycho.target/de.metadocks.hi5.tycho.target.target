@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="hi5-target" sequenceNumber="40">
+<?pde version="3.8"?><target name="hi5-target" sequenceNumber="45">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.texo.runtime.core.feature.group" version="0.9.0.v201611141242"/>
@@ -53,8 +53,10 @@
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170609-0928"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.0.v20170531-1133"/>
-<unit id="org.eclipse.rcp.sdk.id" version="4.7.0.I20170612-0950"/>
+<unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.10.1.v20170928-1405"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.1.v20170928-1405"/>
+<unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.13.1.v20170928-1405"/>
+<unit id="org.eclipse.rcp.sdk.id" version="4.7.1.M20171009-0410"/>
 <repository location="http://download.eclipse.org/releases/oxygen"/>
 </location>
 </locations>
