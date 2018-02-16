@@ -74,7 +74,15 @@ define(
             $pers.eq($li.index()).show();
             $ul.children().attr("active", "false");
             $li.attr("active", "true");
-            PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
+            var url = $p.attr("hi5-contents-url");
+            if (url) {
+            	$p.load(url, function() {
+            		$p.removeAttr("hi5-contents-url");
+            		PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
+            	});
+			} else {
+				PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
+			}
           };
           $a.click(clickHandler);
           // install click handler also for stack element
@@ -111,9 +119,11 @@ define(
           contribution = $e.attr("state_index");
         }
         var url = toUrl($e, contribution);
-        var $contents = $("<div class='w3-container'></div>");
-        $e.append($contents);
-        $contents.load(url);
+        if ($e.index() == 1) {
+        	$e.load(url);
+		} else {
+			$e.attr("hi5-contents-url", url);
+		}
       };
 
       grammar["TrimBar"] = function($e) {
