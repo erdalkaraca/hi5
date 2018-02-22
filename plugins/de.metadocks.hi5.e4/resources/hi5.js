@@ -78,10 +78,10 @@ define(
             if (url) {
             	$p.load(url, function() {
             		$p.removeAttr("hi5-contents-url");
-            		PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
+            		PubSub.publish('hi5.stackelement.activated', $e.attr("elementid"));
             	});
 			} else {
-				PubSub.publish('hi5.stackelement.activated', $pers.attr("elementid"));
+				PubSub.publish('hi5.stackelement.activated', $e.attr("elementid"));
 			}
           };
           $a.click(clickHandler);
