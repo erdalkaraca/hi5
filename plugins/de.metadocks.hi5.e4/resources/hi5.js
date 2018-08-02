@@ -1,6 +1,6 @@
 define(
-		[ 'jquery', 'pubsubjs' ],
-		function(jquery) {
+		[ 'jquery', 'api!hi5:model', 'pubsubjs' ],
+		function(jquery, hi5Api) {
 			var hi5 = {
 				version : "0.7.0"
 			};
@@ -84,7 +84,7 @@ define(
 									+ "</a>");
 
 							var iconSpanHtml = getIconSpanHtml($p, $p
-									.attr("iconURI"));
+									.attr("iconuri"));
 							if (iconSpanHtml) {
 								$a.prepend(iconSpanHtml);
 							}
@@ -136,11 +136,7 @@ define(
 					handleUIElements($e, ".Menu");
 				});
 				handleUIElements($e, ".ToolBar");
-				var contribution = $e.attr("contributionuri");
-				if (!contribution) {
-					contribution = $e.attr("state_index");
-				}
-				var url = toUrl($e, contribution);
+				var url = toUrl($e, $e.attr("resourcename"));
 				if ($e.index() == 1) {
 					loadPartContents($e, url);
 				} else {
@@ -160,7 +156,7 @@ define(
 
 			grammar["HandledToolItem"] = function($e) {
 				$e.html("<button class='w3-btn w3-white'><img src='"
-						+ toUrl($e, $e.attr("iconURI")) + "'></img><br>"
+						+ toUrl($e, $e.attr("iconuri")) + "'></img><br>"
 						+ $e.attr("label") + "</button>");
 				$e.css("float", "left");
 			};
@@ -188,7 +184,7 @@ define(
 					$a.attr("title", label);
 				}
 
-				var iconSpanHtml = getIconSpanHtml($e, $e.attr("iconURI"));
+				var iconSpanHtml = getIconSpanHtml($e, $e.attr("iconuri"));
 				if (iconSpanHtml) {
 					if (!showLabel) {
 						iconSpanHtml.removeClass("w3-margin-right");
@@ -197,7 +193,7 @@ define(
 				}
 
 				$e.prepend($a);
-				var requireModule = toUrl($e, $e.attr("contributionuri"));
+				var requireModule = toUrl($e, $e.attr("resourcename"));
 				$a.click(function() {
 					// hide the menu panel
 					if (hideParentOnClick) {
@@ -235,7 +231,7 @@ define(
 			}
 
 			function toUrl($e, relativePath) {
-				return $e.attr("contributoruri") + "/" + relativePath;
+				return $e.attr("bundlepath") + "/" + relativePath;
 			}
 
 			function getParamNames(fn) {
@@ -243,16 +239,57 @@ define(
 				return fstr.match(/\(.*?\)/)[0].replace(/[()]/gi, '').replace(
 						/\s/gi, '').split(',');
 			}
+			
+			function getState(modelElement, key) {
+				let entry = modelElement.persistedState.filter(ps => key == ps.key);
+				return entry !== undefined && entry.length > 0 ? entry[0].value : undefined;
+			}
+			
+			function toHTML($uiContainer, modelElement) {
+				let etype = getState(modelElement, "etype");
+				let div = document.createElement("div");
+				div.setAttribute("etype", etype);
+				div.setAttribute("elementid", modelElement.elementId);
+				div.setAttribute("iconuri", modelElement.iconURI);
+				div.setAttribute("label", modelElement.label);
+				div.setAttribute("bundlepath", getState(modelElement, "bundlePath"));
+				div.setAttribute("resourcename", modelElement.contributionURI);
+				
+				// elementId to DOM ID replacing all . with _
+				div.id = modelElement.elementId.replace(/\./g , "_");
+				
+				// all superTypes as html classes
+				let superTypes = getState(modelElement, "superTypes");
+				if (superTypes != undefined) {
+					div.className = superTypes;
+				}
+				
+				let $div = $(div);
+				$uiContainer.append($div);
+				if (modelElement.children) {
+					for (var i = 0; i < modelElement.children.length; i++) {
+						let childElement = modelElement.children[i];
+						toHTML($div, childElement);
+					}
+				}
+				return $div;
+			}
 
 			var PartService = function($context) {
 				this.$context = $context;
 			};
 			PartService.prototype.loadUIElement = function(id, fn) {
-				this.$context.load("hi5/ws/model/element/" + id, function() {
-					$uiElement = $("[elementid='" + id + "']", this);
-					applyRule($uiElement);
-					if (typeof fn === 'function') {
-						fn();
+				let $uiContainer = this.$context;
+				hi5Api.getModelElement({
+					params : {
+						id : id
+					},
+					success : function(model) {
+						let $root = toHTML($uiContainer, model);
+						applyRule($root);
+						if (typeof fn === 'function') {
+							fn();
+						}
 					}
 				});
 			};

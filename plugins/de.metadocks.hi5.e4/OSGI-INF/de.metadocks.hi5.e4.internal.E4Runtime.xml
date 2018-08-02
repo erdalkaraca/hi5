@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="de.metadocks.hi5.e4.internal.E4Runtime">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.3.0" name="de.metadocks.hi5.e4.internal.E4Runtime">
    <service>
       <provide interface="de.metadocks.hi5.e4.internal.E4Runtime"/>
    </service>
+   <reference cardinality="1..1" field="resReg" interface="de.metadocks.hi5.e4.internal.WebResourcesRegistry" name="resReg"/>
    <implementation class="de.metadocks.hi5.e4.internal.E4Runtime"/>
 </scr:component>

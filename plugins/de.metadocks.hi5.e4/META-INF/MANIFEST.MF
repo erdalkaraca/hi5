@@ -44,7 +44,8 @@ Export-Package: de.metadocks.hi5.e4,
  de.metadocks.hi5.e4.internal
 Bundle-Vendor: Erdal Karaca
 Service-Component: OSGI-INF/de.metadocks.hi5.e4.internal.WebResourcesRegistry.xml,
- OSGI-INF/de.metadocks.hi5.e4.internal.Hi5Service.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.E4Runtime.xml,
  OSGI-INF/de.metadocks.hi5.e4.internal.RequireJSService.xml,
- OSGI-INF/de.metadocks.hi5.e4.internal.E4ModelToHTML.xml
+ OSGI-INF/de.metadocks.hi5.e4.handlers.internal.HeadlessEntryPointHandler.xml,
+ OSGI-INF/de.metadocks.hi5.e4.handlers.internal.JFXEntryPointHandler.xml,
+ OSGI-INF/de.metadocks.hi5.e4.internal.E4EquinoxAppHandler.xml

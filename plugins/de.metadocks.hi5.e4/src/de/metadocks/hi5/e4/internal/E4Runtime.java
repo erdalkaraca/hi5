@@ -10,18 +10,25 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.MediaType;
 
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -55,9 +62,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
@@ -67,13 +74,16 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.metadocks.hi5.e4.IModelRequestProcessor;
+import de.metadocks.hi5.e4.ModelRequestProcessor;
+import de.metadocks.hi5.jaxrs.JSApiProvider;
 
 @SuppressWarnings("restriction")
 @Component(service = E4Runtime.class)
-public class E4Runtime {
+@Path("/model")
+public class E4Runtime implements JSApiProvider {
 	private static final Logger LOG = Logger.getLogger(E4Runtime.class.getName());
 	private static final String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
 
@@ -82,32 +92,22 @@ public class E4Runtime {
 	private Object lcManager;
 	private ServiceTracker<?, Location> locationTracker;
 	private IModelResourceHandler handler;
-	private IApplicationContext applicationContext;
-	private IModelRequestProcessor modelRequestProcessor;
+	private ModelRequestProcessor modelRequestProcessor;
 	private Map<String, MApplicationElement> index = new HashMap<String, MApplicationElement>();
 
-	public MApplication copyApplicationModel() {
-		if (workbench == null) {
-			throw new IllegalStateException("E4 runtime not initialized.");
-		}
-
-		MApplication application = workbench.getApplication();
-		MApplication copy = (MApplication) EcoreUtil.copy((EObject) application);
-		return (MApplication) copy;
-	}
+	@Reference
+	private WebResourcesRegistry resReg;
 
 	public E4Workbench createE4Workbench(IApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-
 		String modelRequestProcessorValue = applicationContext.getBrandingProperty("modelRequestProcessor");
 		if (modelRequestProcessorValue != null) {
 			BundleContext bundleContext = applicationContext.getBrandingBundle().getBundleContext();
 			try {
-				Collection<ServiceReference<IModelRequestProcessor>> serviceReferences = bundleContext
-						.getServiceReferences(IModelRequestProcessor.class,
+				Collection<ServiceReference<ModelRequestProcessor>> serviceReferences = bundleContext
+						.getServiceReferences(ModelRequestProcessor.class,
 								"(component.name=" + modelRequestProcessorValue + ")");
 				if (serviceReferences != null && !serviceReferences.isEmpty()) {
-					ServiceReference<IModelRequestProcessor> next = serviceReferences.iterator().next();
+					ServiceReference<ModelRequestProcessor> next = serviceReferences.iterator().next();
 					modelRequestProcessor = bundleContext.getService(next);
 				}
 			} catch (InvalidSyntaxException e) {
@@ -203,8 +203,9 @@ public class E4Runtime {
 			}
 		});
 		workbench = new E4Workbench(appModel, appContext);
-
 		indexElements();
+		process(appModel);
+
 		return workbench;
 	}
 
@@ -253,15 +254,12 @@ public class E4Runtime {
 	}
 
 	/**
-	 * Finds an argument's value in the app's command line arguments, branding,
-	 * and system properties
+	 * Finds an argument's value in the app's command line arguments, branding, and
+	 * system properties
 	 *
-	 * @param argName
-	 *            the argument name
-	 * @param appContext
-	 *            the application context
-	 * @param singledCmdArgValue
-	 *            whether it's a single-valued argument
+	 * @param argName            the argument name
+	 * @param appContext         the application context
+	 * @param singledCmdArgValue whether it's a single-valued argument
 	 * @return an {@link Optional} containing the value or an empty
 	 *         {@link Optional}, if no value could be found
 	 */
@@ -420,25 +418,74 @@ public class E4Runtime {
 		windowContext.set(SelectionAggregator.class, selectionAggregator);
 	}
 
-	public InputStream getIndexFile() throws IOException {
-		String indexPath = applicationContext.getBrandingProperty("index");
-
-		if (indexPath == null) {
-			indexPath = "resources/index.html";
-		}
-
-		URL entry = applicationContext.getBrandingBundle().getEntry(indexPath);
-		return entry.openStream();
-	}
-
 	public MApplicationElement getModelElement(String id) {
 		return index.get(id);
 	}
 
-	public MApplicationElement process(ContainerRequestContext reqCtx, MApplicationElement element) {
+	public MApplicationElement process(ContainerRequestContext reqCtx, String modelId) {
+		MApplicationElement modelElement = getModelElement(modelId);
+
 		if (modelRequestProcessor != null) {
-			return modelRequestProcessor.process(reqCtx, element);
+			modelElement = modelRequestProcessor.process(reqCtx, modelElement);
 		}
-		return element;
+
+		return modelElement;
+	}
+
+	private void process(MApplicationElement modelElement) {
+		// use a set to collect all updates to the model as changing it directly may
+		// lead to concurrent mod exceptions
+		Set<Runnable> pendingUpdates = new LinkedHashSet<>();
+		decorateElement(pendingUpdates, modelElement);
+		TreeIterator<EObject> iter = ((EObject) modelElement).eAllContents();
+		while (iter.hasNext()) {
+			EObject eObject = (EObject) iter.next();
+			if (eObject instanceof MApplicationElement) {
+				decorateElement(pendingUpdates, (MApplicationElement) eObject);
+			}
+		}
+		pendingUpdates.stream().forEach(Runnable::run);
+	}
+
+	private void decorateElement(Set<Runnable> pendingUpdates, MApplicationElement modelElement) {
+		setBasePath(pendingUpdates, modelElement);
+		setSuperTypes(pendingUpdates, modelElement);
+	}
+
+	private void setSuperTypes(Set<Runnable> pendingUpdates, MApplicationElement modelElement) {
+		EClass eClass = ((EObject) modelElement).eClass();
+		Set<String> classes = new HashSet<>();
+		classes.add(eClass.getName());
+
+		for (EClass ecls : eClass.getEAllSuperTypes()) {
+			classes.add(ecls.getName());
+		}
+
+		String superTypes = classes.stream().collect(Collectors.joining(" "));
+		pendingUpdates.add(() -> modelElement.getPersistedState().put("superTypes", superTypes));
+		pendingUpdates.add(() -> modelElement.getPersistedState().put("etype", eClass.getName()));
+	}
+
+	private void setBasePath(Set<Runnable> pendingUpdates, MApplicationElement appElement) {
+		String contributorURI = appElement.getContributorURI();
+		if (contributorURI == null || contributorURI.isEmpty()) {
+			return;
+		}
+		String contributorId = new File(contributorURI).getName();
+		String bundleAlias = resReg.getBundleAliasMapping(contributorId);
+
+		if (bundleAlias == null) {
+			bundleAlias = contributorId;
+		}
+
+		String alias = bundleAlias;
+		pendingUpdates.add(() -> appElement.getPersistedState().put("bundlePath", alias));
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/get-model-element")
+	public MApplicationElement getModelElement(ContainerRequestContext reqCtx, @QueryParam("id") String id) {
+		return process(reqCtx, id);
 	}
 }

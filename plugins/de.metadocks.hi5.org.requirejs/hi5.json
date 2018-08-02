@@ -1,5 +1,8 @@
 {
 	"resources": "resources",
 	"alias": "requirejs",
-	"version": "none"
+	"version": "none",
+	"modules": {
+		"css": "require-css/css.min.js"
+	}
 }

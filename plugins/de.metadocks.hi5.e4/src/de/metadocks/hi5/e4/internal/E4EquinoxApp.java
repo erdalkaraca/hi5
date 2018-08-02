@@ -10,60 +10,65 @@
  *******************************************************************************/
 package de.metadocks.hi5.e4.internal;
 
-import java.util.concurrent.CountDownLatch;
+import java.net.URL;
+import java.util.Collection;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.http.HttpService;
+
+import de.metadocks.hi5.e4.EntryPointHandler;
+import de.metadocks.hi5.e4.handlers.internal.HeadlessEntryPointHandler;
 
 public class E4EquinoxApp implements IApplication {
-	private String alias;
-	private HttpService httpService;
-	private String base;
-	private CountDownLatch stopLatch = new CountDownLatch(1);
+
+	private EntryPointHandler handler;
 
 	@Override
 	public final Object start(IApplicationContext context) throws Exception {
 		Bundle bundle = FrameworkUtil.getBundle(E4EquinoxApp.class);
 		BundleContext bundleContext = bundle.getBundleContext();
-		httpService = getService(bundleContext, HttpService.class);
-		WebResourcesRegistry resReg = getService(bundleContext, WebResourcesRegistry.class);
+		WebResourcesRegistry resReg = getService(bundleContext, WebResourcesRegistry.class, null);
 		String entryPoint = context.getBrandingProperty("entryPoint");
-		base = "/" + entryPoint;
-		alias = base + "/index.html";
+		String entryPointIndexFile = context.getBrandingProperty("entryPointIndexFile");
+		String base = "/" + entryPoint;
+		String alias = base + entryPointIndexFile;
 		resReg.registerResources(base);
-		E4Runtime e4runtime = getService(bundleContext, E4Runtime.class);
+		E4Runtime e4runtime = getService(bundleContext, E4Runtime.class, null);
 		e4runtime.createE4Workbench(context);
 
 		context.applicationRunning();
-		boolean startJfxClient = Boolean.getBoolean("hi5-start-jfx-client");
-		// startJfxClient = true;
-		if (startJfxClient) {
-			String server = System.getProperty("org.osgi.service.http.host", "localhost");
-			String port = System.getProperty("org.osgi.service.http.port", "80");
-			// TODO switch to HTTPS
-			String url = String.format("http://%s:%s%s", server, port, alias);
-			// the embedded jfx browser windows should be started
-			JFXBrowserApp.run(context.getBrandingName(), url);
-		} else {
-			// just wait until framework shuts down
-			stopLatch.await();
+		String server = System.getProperty("org.osgi.service.http.host", "localhost");
+		String port = System.getProperty("org.osgi.service.http.port", "80");
+		String urlStr = String.format("http://%s:%s%s", server, port, alias);
+		URL url = new URL(urlStr);
+		String entryPointHandler = context.getBrandingProperty(EntryPointHandler.KEY);
+		if (entryPointHandler == null) {
+			entryPointHandler = HeadlessEntryPointHandler.HEADLESS;
 		}
+		String filter = String.format("(%s=%s)", EntryPointHandler.KEY, entryPointHandler);
+		handler = getService(bundleContext, EntryPointHandler.class, filter);
+		handler.start(context, url);
 		resReg.unregisterAll(entryPoint);
 		return IApplication.EXIT_OK;
 	}
 
-	private static <T> T getService(BundleContext bundleContext, Class<T> serviceType) {
-		ServiceReference<T> ref = bundleContext.getServiceReference(serviceType);
-		return bundleContext.getService(ref);
+	private static <T> T getService(BundleContext bundleContext, Class<T> serviceType, String filter)
+			throws InvalidSyntaxException {
+		Collection<ServiceReference<T>> refs = bundleContext.getServiceReferences(serviceType, filter);
+		if (refs.isEmpty()) {
+			throw new IllegalArgumentException(
+					String.format("No service of type '%s' found using filters '%s'", serviceType.getName(), filter));
+		}
+		return bundleContext.getService(refs.iterator().next());
 	}
 
 	@Override
 	public final void stop() {
-		stopLatch.countDown();
+		handler.stop();
 	}
 }

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.Bundle;
@@ -50,6 +51,7 @@ public class WebResourcesRegistry {
 	private Map<String, String> bundleNameToAlias = new HashMap<>();
 	private JSONObject pathsConfig = new JSONObject();
 	private JSONObject shim = new JSONObject();
+	private JSONArray cssPaths = new JSONArray();
 
 	@Reference(unbind = "-")
 	public void setHttpService(HttpService httpService) {
@@ -148,7 +150,7 @@ public class WebResourcesRegistry {
 				while (keys.hasNext()) {
 					String key = (String) keys.next();
 					String path = modules.getString(key);
-					String ma = alias;
+					String ma = moduleAlias;
 
 					if (!ma.endsWith("/")) {
 						ma += "/";
@@ -171,6 +173,21 @@ public class WebResourcesRegistry {
 					String key = (String) keys.next();
 					Object object = bundleShim.get(key);
 					shim.put(key, object);
+				}
+			}
+		}
+
+		// collect css definitions
+		{
+			JSONArray css = root.optJSONArray("css");
+			if (css != null) {
+				for (int i = 0; i < css.length(); i++) {
+					String cssPath = css.getString(i);
+					if (!moduleAlias.startsWith("/")) {
+						// prepend module alias except the app module which has no alias
+						cssPath = moduleAlias + "/" + cssPath;
+					}
+					cssPaths.put(cssPath);
 				}
 			}
 		}
@@ -224,5 +241,9 @@ public class WebResourcesRegistry {
 
 	public JSONObject getShimConfig() {
 		return shim;
+	}
+
+	public JSONArray getCssPaths() {
+		return cssPaths;
 	}
 }
