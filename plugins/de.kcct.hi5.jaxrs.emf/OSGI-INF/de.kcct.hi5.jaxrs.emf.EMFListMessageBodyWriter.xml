@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.kcct.hi5.jaxrs.emf.EMFListMessageBodyWriter">
+   <service>
+      <provide interface="javax.ws.rs.ext.MessageBodyWriter"/>
+   </service>
+   <implementation class="de.kcct.hi5.jaxrs.emf.EMFListMessageBodyWriter"/>
+</scr:component>

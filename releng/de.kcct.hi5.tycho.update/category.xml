@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.kcct.hi5.feature_0.0.0.qualifier.jar" id="de.kcct.hi5.feature" version="0.8.0.qualifier">
+      <category name="de.kcct.hi5.category"/>
+   </feature>
+   <category-def name="de.kcct.hi5.category" label="Hi5 Eclipse 4 Web API"/>
+</site>

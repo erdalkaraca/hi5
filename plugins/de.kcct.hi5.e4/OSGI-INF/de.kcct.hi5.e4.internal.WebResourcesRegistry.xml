@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.kcct.hi5.e4.internal.WebResourcesRegistry">
+   <service>
+      <provide interface="de.kcct.hi5.e4.internal.WebResourcesRegistry"/>
+   </service>
+   <reference bind="setHttpService" interface="org.osgi.service.http.HttpService" name="HttpService"/>
+   <reference bind="setJaxRsComponentsRegistry" interface="de.kcct.hi5.jaxrs.JaxRSComponentsRegistry" name="JaxRsComponentsRegistry"/>
+   <reference bind="setLogService" interface="org.osgi.service.log.LogService" name="LogService"/>
+   <implementation class="de.kcct.hi5.e4.internal.WebResourcesRegistry"/>
+</scr:component>

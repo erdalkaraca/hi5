@@ -1,18 +1,18 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.metadocks.hi5</groupId>
-    <artifactId>de.metadocks.hi5.features</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <groupId>de.kcct.hi5</groupId>
+    <artifactId>de.kcct.hi5.features</artifactId>
+    <version>0.8.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>de.metadocks.hi5</groupId>
-        <artifactId>de.metadocks.hi5.tycho.root</artifactId>
-        <version>0.7.0-SNAPSHOT</version>
+        <groupId>de.kcct.hi5</groupId>
+        <artifactId>de.kcct.hi5.tycho.root</artifactId>
+        <version>0.8.0-SNAPSHOT</version>
     </parent>
 
     <modules>
-        <module>de.metadocks.hi5.feature</module>
-        <module>de.metadocks.hi5.demo.feature</module>
+        <module>de.kcct.hi5.feature</module>
+        <module>de.kcct.hi5.demo.feature</module>
     </modules>
 </project>

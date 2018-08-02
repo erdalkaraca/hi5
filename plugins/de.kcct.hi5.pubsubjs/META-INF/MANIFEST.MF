@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pubsubjs
+Bundle-SymbolicName: de.kcct.hi5.pubsubjs
+Bundle-Version: 1.5.7.qualifier
+Bundle-Vendor: Morgan Roderick (wrapped by Hi5 project)

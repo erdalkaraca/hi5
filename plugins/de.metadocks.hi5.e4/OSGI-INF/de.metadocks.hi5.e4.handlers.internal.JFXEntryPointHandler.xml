@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="de.metadocks.hi5.e4.handlers.internal.JFXEntryPointHandler">
-   <property name="hi5.entrypoint.handler" value="jfx"/>
-   <service>
-      <provide interface="de.metadocks.hi5.e4.EntryPointHandler"/>
-   </service>
-   <implementation class="de.metadocks.hi5.e4.handlers.internal.JFXEntryPointHandler"/>
-</scr:component>

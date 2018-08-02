@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hi5 Jersey Binding
+Bundle-SymbolicName: de.kcct.hi5.jaxrs.jersey
+Bundle-Version: 0.7.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: de.kcct.hi5.jaxrs,
+ javax.inject;version="1.0.0",
+ javax.servlet.http;version="3.1.0",
+ javax.ws.rs;version="2.0.1",
+ javax.ws.rs.container;version="2.0.1",
+ javax.ws.rs.core;version="2.0.1",
+ org.glassfish.hk2.api;version="2.4.0",
+ org.glassfish.hk2.utilities.binding;version="2.4.0",
+ org.glassfish.jersey;version="2.14.0",
+ org.glassfish.jersey.process;version="2.22.2",
+ org.glassfish.jersey.process.internal;version="2.14.0",
+ org.glassfish.jersey.server;version="2.14.0",
+ org.glassfish.jersey.server.model;version="2.22.2",
+ org.glassfish.jersey.servlet;version="2.14.0",
+ org.json,
+ org.osgi.service.component.annotations;version="1.2.0"
+Export-Package: de.kcct.hi5.jaxrs.jersey
+Service-Component: OSGI-INF/de.kcct.hi5.jaxrs.jersey.JerseyJaxRSBindingFactory.xml
