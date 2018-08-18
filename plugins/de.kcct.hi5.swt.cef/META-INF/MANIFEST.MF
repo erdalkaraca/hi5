@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CEF SWT Integration
+Bundle-SymbolicName: de.kcct.hi5.swt.cef
+Bundle-Version: 0.8.0.qualifier
+Automatic-Module-Name: de.kcct.hi5.cefswt
+Bundle-RequiredExecutionEnvironment: JavaSE-9
+Require-Bundle: org.eclipse.swt.chromium,
+ org.eclipse.swt
+Bundle-ActivationPolicy: lazy
+Import-Package: de.kcct.hi5.e4
+Service-Component: OSGI-INF/de.kcct.hi5.swt.cef.CEFSWTEntryPointHandlerFactory.xml

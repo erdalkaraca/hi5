@@ -22,7 +22,8 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 import de.kcct.hi5.e4.EntryPointHandler;
-import de.kcct.hi5.e4.handlers.internal.HeadlessEntryPointHandler;
+import de.kcct.hi5.e4.EntryPointHandlerFactory;
+import de.kcct.hi5.e4.handlers.internal.HeadlessEntryPointHandlerFactory;
 
 public class E4EquinoxApp implements IApplication {
 
@@ -46,13 +47,15 @@ public class E4EquinoxApp implements IApplication {
 		String port = System.getProperty("org.osgi.service.http.port", "80");
 		String urlStr = String.format("http://%s:%s%s", server, port, alias);
 		URL url = new URL(urlStr);
-		String entryPointHandler = context.getBrandingProperty(EntryPointHandler.KEY);
+		String entryPointHandler = context.getBrandingProperty(EntryPointHandlerFactory.KEY);
 		if (entryPointHandler == null) {
-			entryPointHandler = HeadlessEntryPointHandler.HEADLESS;
+			entryPointHandler = System.getProperty(EntryPointHandlerFactory.KEY,
+					HeadlessEntryPointHandlerFactory.HEADLESS);
 		}
-		String filter = String.format("(%s=%s)", EntryPointHandler.KEY, entryPointHandler);
-		handler = getService(bundleContext, EntryPointHandler.class, filter);
-		handler.start(context, url);
+		String filter = String.format("(%s=%s)", EntryPointHandlerFactory.KEY, entryPointHandler);
+		EntryPointHandlerFactory factory = getService(bundleContext, EntryPointHandlerFactory.class, filter);
+		handler = factory.create();
+		handler.start(context::getBrandingProperty, url);
 		resReg.unregisterAll(entryPoint);
 		return IApplication.EXIT_OK;
 	}

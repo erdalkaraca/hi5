@@ -2,31 +2,36 @@ package de.kcct.hi5.e4.handlers.internal;
 
 import java.net.URL;
 
-import org.eclipse.equinox.app.IApplicationContext;
 import org.osgi.service.component.annotations.Component;
 
 import de.kcct.hi5.e4.EntryPointHandler;
+import de.kcct.hi5.e4.EntryPointHandlerFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-@Component(property = EntryPointHandler.KEY + "=" + JFXEntryPointHandler.JFX)
-public class JFXEntryPointHandler implements EntryPointHandler {
-	public static final String JFX = "jfx";
+@Component(property = EntryPointHandlerFactory.KEY + "=" + JFXEntryPointHandlerFactory.JFX)
+public class JFXEntryPointHandlerFactory implements EntryPointHandlerFactory {
+	public static final String JFX = "jfx-webview";
 	private static URL url;
 	private static String title;
 
 	@Override
-	public void start(IApplicationContext context, URL url) {
-		this.title = title;
-		this.url = url;
-		Application.launch(JFXApp.class);
-	}
+	public EntryPointHandler create() {
+		return new EntryPointHandler() {
 
-	@Override
-	public void stop() {
+			@Override
+			public void start(Context context, URL url) {
+				JFXEntryPointHandlerFactory.url = url;
+				Application.launch(JFXApp.class);
+			}
+
+			@Override
+			public void stop() {
+			}
+		};
 	}
 
 	public static class JFXApp extends Application {
