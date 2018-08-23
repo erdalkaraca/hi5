@@ -14,6 +14,6 @@
     <modules>
         <module>de.kcct.hi5.tycho.update</module>
         <module>de.kcct.hi5.tycho.target</module>
-        <module>de.kcct.hi5.tycho.product</module>
+<!--         <module>de.kcct.hi5.tycho.product</module> -->
     </modules>
 </project>
