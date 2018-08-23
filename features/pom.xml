@@ -13,6 +13,5 @@
 
     <modules>
         <module>de.kcct.hi5.feature</module>
-        <module>de.kcct.hi5.demo.feature</module>
     </modules>
 </project>

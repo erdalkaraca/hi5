@@ -34,9 +34,5 @@
 		<module>de.kcct.hi5.pubsubjs</module>
 		<module>de.kcct.hi5.org.jquery</module>
 		<module>de.kcct.hi5.org.requirejs</module>
-		
-		<module>de.kcct.hi5.demo.app</module>
-		<module>de.kcct.hi5.demo.library</module>
-		<module>de.kcct.hi5.demo.model</module>
 	</modules>
 </project>
