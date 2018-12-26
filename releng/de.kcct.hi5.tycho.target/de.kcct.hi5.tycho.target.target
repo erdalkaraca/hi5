@@ -64,7 +64,7 @@
             <repository location="http://download.eclipse.org/eclipse/updates/4.8"/>
         </location>
 	    <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-		    <unit id="org.eclipse.swt.chromium.feature.feature.group" version="0.3.0.201807050240"/>
+		    <unit id="org.eclipse.swt.chromium.feature.feature.group" version="0.7.0.201811300653"/>
 		    <repository location="http://dl.maketechnology.io/chromium-swt/rls/repository"/>
 	    </location>
 	    <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
