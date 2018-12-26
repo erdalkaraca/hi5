@@ -54,6 +54,7 @@ define(
 			}
 
 			function loadPartContents($partContainer, url) {
+			    	$partContainer.html("<span class='fa fa-spinner w3-spin w3-jumbo w3-center'></span>");
 				$partContainer.load(url, function() {
 					$partContainer.removeAttr("hi5-contents-url");
 					$("*[ui-init]", $partContainer).each(function() {
