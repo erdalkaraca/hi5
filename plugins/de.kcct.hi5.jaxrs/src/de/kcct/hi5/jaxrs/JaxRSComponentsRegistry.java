@@ -1,12 +1,12 @@
 package de.kcct.hi5.jaxrs;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.core.Application;
@@ -102,31 +102,32 @@ public class JaxRSComponentsRegistry {
 		jaxRsComponents.remove(feature);
 	}
 
-	public String registerRestServices(HttpService httpService, String alias, HttpContext delegateHttpContext,
+	public Set<String> registerRestServices(HttpService httpService, String wsAlias, HttpContext delegateHttpContext,
 			Bundle bundle) throws ServletException, NamespaceException {
 		ServiceReference<?>[] registeredServices = bundle.getRegisteredServices();
 
 		if (registeredServices == null) {
-			return null;
+			return Collections.emptySet();
 		}
 
 		BundleContext bundleContext = bundle.getBundleContext();
 		Set<Object> services = new HashSet<>();
 
+		Set<String> servicePaths = new HashSet<>();
 		for (ServiceReference<?> serviceReference : registeredServices) {
 			Object service = bundleContext.getService(serviceReference);
 
-			if (service.getClass().isAnnotationPresent(Path.class)
-					|| service.getClass().isAnnotationPresent(Produces.class)) {
+			Path pathAnnot = service.getClass().getAnnotation(Path.class);
+			if (pathAnnot != null) {
 				services.add(service);
+				servicePaths.add(pathAnnot.value());
 			}
 		}
 
 		if (services.isEmpty()) {
-			return null;
+			return Collections.emptySet();
 		}
 
-		String wsAlias = alias + "/ws";
 		Application application = new Application() {
 			public Set<Object> getSingletons() {
 				return services;
@@ -134,6 +135,6 @@ public class JaxRSComponentsRegistry {
 		};
 		HttpServlet servlet = jaxRsFactory.createServlet(application, jaxRsComponents);
 		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
-		return wsAlias;
+		return servicePaths;
 	}
 }

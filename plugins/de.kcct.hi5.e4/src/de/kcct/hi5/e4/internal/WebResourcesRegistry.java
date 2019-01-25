@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.servlet.ServletException;
@@ -121,10 +122,20 @@ public class WebResourcesRegistry {
 			httpService.registerResources(alias, webResource, delegateHttpContext);
 			registeredResources.add(alias);
 			bundleNameToAlias.put(bundle.getSymbolicName(), alias);
-			String wsAlias = jaxRsComponentsRegistry.registerRestServices(httpService, alias, delegateHttpContext,
-					bundle);
-			if (wsAlias != null) {
+			String wsAlias = alias + "/ws";
+			Set<String> servicePaths = jaxRsComponentsRegistry.registerRestServices(httpService, wsAlias,
+					delegateHttpContext, bundle);
+			if (!servicePaths.isEmpty()) {
 				registeredResources.add(wsAlias);
+				for (String path : servicePaths) {
+					String moduleName = moduleAlias + path;
+					// remove leading slashes due to entry point modules
+					if (moduleName.startsWith("//")) {
+						moduleName = moduleName.substring(2);
+					}
+					String requirejsPath = wsAlias + path + "/api";
+					pathsConfig.put(moduleName, requirejsPath);
+				}
 			}
 		} catch (NamespaceException | ServletException e) {
 			logService.log(LogService.LOG_ERROR, e.getMessage(), e);

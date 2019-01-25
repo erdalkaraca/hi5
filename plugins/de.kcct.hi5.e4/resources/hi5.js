@@ -1,5 +1,5 @@
 define(
-		[ 'jquery', 'api!hi5:model', 'pubsubjs' ],
+		[ 'jquery', 'hi5/model', 'pubsubjs' ],
 		function(jquery, hi5Api) {
 			var hi5 = {
 				version : "0.7.0"
