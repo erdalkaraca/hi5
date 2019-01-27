@@ -78,12 +78,11 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 
 import de.kcct.hi5.e4.ModelRequestProcessor;
-import de.kcct.hi5.jaxrs.JSApiProvider;
 
 @SuppressWarnings("restriction")
 @Component(service = E4Runtime.class)
 @Path("/model")
-public class E4Runtime implements JSApiProvider {
+public class E4Runtime {
 	private static final Logger LOG = Logger.getLogger(E4Runtime.class.getName());
 	private static final String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
 

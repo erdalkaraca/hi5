@@ -3,7 +3,7 @@ package de.kcct.hi5.jaxrs.jersey;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -56,11 +56,13 @@ public class JerseyJaxRSBindingFactory implements JaxRsServletFactory {
 				.map(singleton -> {
 					Path path = singleton.getClass().getAnnotation(javax.ws.rs.Path.class);
 					Resource.Builder resourceBuilder = Resource.builder(path.value());
-					resourceBuilder.addChildResource(JSApiProvider.API_JS).addMethod(GET.class.getSimpleName())
-							.produces(JSApiProvider.APPLICATION_JAVASCRIPT)
+					resourceBuilder.addChildResource(JSApiProvider.API_JS)//
+							.addMethod(GET.class.getSimpleName())//
+							.produces(JSApiProvider.APPLICATION_JAVASCRIPT)//
 							.handledBy(new Inflector<ContainerRequestContext, String>() {
 
 								@Override
+								@PermitAll
 								public String apply(ContainerRequestContext data) {
 									try {
 										return JSApiProvider.createJSStubs(data.getUriInfo(), singleton.getClass());
