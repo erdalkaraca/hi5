@@ -4,5 +4,9 @@ public interface EntryPointHandlerFactory {
 
 	String KEY = "hi5.entrypoint.handler";
 
-	EntryPointHandler create();
+	EntryPointHandler create(Context context);
+
+	interface Context {
+		String getProperty(String key, String defaultValue);
+	}
 }

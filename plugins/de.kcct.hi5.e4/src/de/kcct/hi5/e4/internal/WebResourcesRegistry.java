@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +39,13 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
-import org.osgi.service.log.LogService;
 
 import de.kcct.hi5.jaxrs.JaxRSComponentsRegistry;
 
 @Component(service = WebResourcesRegistry.class, immediate = true)
 public class WebResourcesRegistry {
 
-	private LogService logService;
+	private static final Logger LOG = Logger.getLogger(WebResourcesRegistry.class.getName());
 	private HttpService httpService;
 	private JaxRSComponentsRegistry jaxRsComponentsRegistry;
 
@@ -57,11 +58,6 @@ public class WebResourcesRegistry {
 	@Reference(unbind = "-")
 	public void setHttpService(HttpService httpService) {
 		this.httpService = httpService;
-	}
-
-	@Reference(unbind = "-")
-	public void setLogService(LogService logService) {
-		this.logService = logService;
 	}
 
 	@Reference(unbind = "-")
@@ -84,14 +80,12 @@ public class WebResourcesRegistry {
 			try {
 				check(entryPoint, bundle);
 			} catch (IOException | JSONException e) {
-				logService.log(LogService.LOG_ERROR,
-						"Error occurred while scanning bundle: " + bundle.getSymbolicName(), e);
+				LOG.log(Level.SEVERE, "Error occurred while scanning bundle: " + bundle.getSymbolicName(), e);
 				continue;
 			}
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void check(String entryPoint, Bundle bundle) throws IOException, JSONException {
 		URL packageJson = bundle.getEntry("hi5.json");
 
@@ -101,8 +95,13 @@ public class WebResourcesRegistry {
 
 		String source = IOUtils.toString(packageJson);
 		JSONObject root = new JSONObject(source);
-		String webResource = root.optString("resources", "resources");
 		String moduleAlias = root.optString("alias", bundle.getSymbolicName());
+		collectModuleResources(entryPoint, bundle, root, moduleAlias);
+		collectModuleMetadata(root, moduleAlias);
+	}
+
+	private void collectModuleResources(String entryPoint, Bundle bundle, JSONObject root, String moduleAlias)
+			throws JSONException {
 		String alias = moduleAlias;
 
 		if (!alias.startsWith("/")) {
@@ -117,41 +116,23 @@ public class WebResourcesRegistry {
 			alias = alias.substring(0, alias.length() - 1);
 		}
 
-		HttpContext delegateHttpContext = createHttpContext(bundle);
 		try {
-			httpService.registerResources(alias, webResource, delegateHttpContext);
+			String webResource = root.optString("resources", "resources");
+			HttpContext delegateHttpContext = createHttpContext(bundle, webResource);
 			registeredResources.add(alias);
 			bundleNameToAlias.put(bundle.getSymbolicName(), alias);
-			String wsAlias = alias + "/ws";
-			Set<String> servicePaths = jaxRsComponentsRegistry.registerRestServices(httpService, wsAlias,
+			String wsAlias = alias;
+			Set<String> servicePaths = jaxRsComponentsRegistry.registerRestServices(httpService, entryPoint, wsAlias,
 					delegateHttpContext, bundle);
-			if (!servicePaths.isEmpty()) {
-				registeredResources.add(wsAlias);
-				for (String path : servicePaths) {
-					String moduleName = moduleAlias + path;
-					// remove leading slashes due to entry point modules
-					if (moduleName.startsWith("//")) {
-						moduleName = moduleName.substring(2);
-					}
-					String requirejsPath = wsAlias + path + "/api";
-					pathsConfig.put(moduleName, requirejsPath);
-				}
-			}
+			LOG.fine("registered REST services: " + servicePaths);
 		} catch (NamespaceException | ServletException e) {
-			logService.log(LogService.LOG_ERROR, e.getMessage(), e);
+			LOG.log(Level.SEVERE, "Collecting module resources failed for module " + bundle.getSymbolicName(), e);
 		}
+	}
 
-		// register main module path
-		{
-			String path = root.optString("path");
-
-			if (!path.isEmpty()) {
-				String requirejsPath = moduleAlias + "/" + trimJSExtension(path);
-				pathsConfig.put(moduleAlias, requirejsPath);
-			}
-		}
-
-		// register additional modules
+	@SuppressWarnings("rawtypes")
+	private void collectModuleMetadata(JSONObject root, String moduleAlias) throws JSONException {
+		// register modules
 		{
 			JSONObject modules = root.optJSONObject("modules");
 
@@ -165,6 +146,10 @@ public class WebResourcesRegistry {
 
 					if (!ma.endsWith("/")) {
 						ma += "/";
+					}
+
+					if ("/".equals(ma)) {
+						ma = "";
 					}
 
 					String requirejsPath = ma + trimJSExtension(path);
@@ -221,7 +206,7 @@ public class WebResourcesRegistry {
 		});
 	}
 
-	public static HttpContext createHttpContext(Bundle bundle) {
+	public static HttpContext createHttpContext(Bundle bundle, String webResource) {
 		HttpContext delegate = new HttpContext() {
 
 			@Override
@@ -231,7 +216,8 @@ public class WebResourcesRegistry {
 
 			@Override
 			public URL getResource(String name) {
-				return bundle.getResource(name);
+				String fullPath = webResource + "/" + name;
+				return bundle.getResource(fullPath);
 			}
 
 			@Override

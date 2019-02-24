@@ -5,6 +5,5 @@
    </service>
    <reference bind="setHttpService" interface="org.osgi.service.http.HttpService" name="HttpService"/>
    <reference bind="setJaxRsComponentsRegistry" interface="de.kcct.hi5.jaxrs.JaxRSComponentsRegistry" name="JaxRsComponentsRegistry"/>
-   <reference bind="setLogService" interface="org.osgi.service.log.LogService" name="LogService"/>
    <implementation class="de.kcct.hi5.e4.internal.WebResourcesRegistry"/>
 </scr:component>

@@ -3,10 +3,12 @@ package de.kcct.hi5.jaxrs;
 import java.util.Set;
 
 import javax.servlet.http.HttpServlet;
-import javax.ws.rs.core.Application;
+
+import org.osgi.service.http.HttpContext;
 
 public interface JaxRsServletFactory {
 
-	HttpServlet createServlet(Application application, Set<Object> jaxRsComponents);
+	HttpServlet createServlet(String alias, HttpContext httpContext, Set<Object> applicationSingletonServices,
+			Set<Object> jaxRsComponents);
 
 }

@@ -8,6 +8,7 @@ Bundle-ActivationPolicy: lazy
 Import-Package: de.kcct.hi5.jaxrs,
  javax.annotation.security;version="1.2.0",
  javax.inject;version="1.0.0",
+ javax.servlet;version="3.1.0",
  javax.servlet.http;version="3.1.0",
  javax.ws.rs;version="2.0.1",
  javax.ws.rs.container;version="2.0.1",
@@ -15,12 +16,14 @@ Import-Package: de.kcct.hi5.jaxrs,
  org.glassfish.hk2.api;version="2.4.0",
  org.glassfish.hk2.utilities.binding;version="2.4.0",
  org.glassfish.jersey;version="2.14.0",
+ org.glassfish.jersey.internal.util.collection;version="2.22.2",
  org.glassfish.jersey.process;version="2.22.2",
  org.glassfish.jersey.process.internal;version="2.14.0",
  org.glassfish.jersey.server;version="2.14.0",
  org.glassfish.jersey.server.model;version="2.22.2",
  org.glassfish.jersey.servlet;version="2.14.0",
  org.json,
- org.osgi.service.component.annotations;version="1.2.0"
+ org.osgi.service.component.annotations;version="1.2.0",
+ org.osgi.service.http;version="1.2.1"
 Export-Package: de.kcct.hi5.jaxrs.jersey
 Service-Component: OSGI-INF/de.kcct.hi5.jaxrs.jersey.JerseyJaxRSBindingFactory.xml

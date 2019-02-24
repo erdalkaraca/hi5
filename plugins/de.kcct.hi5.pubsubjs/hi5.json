@@ -1,5 +1,7 @@
 {
 	"resources": "resources",
 	"alias": "pubsubjs",
-	"path" : "pubsub.js"
+    "modules": {
+        "pubsubjs" : "pubsub.js"
+	}
 }

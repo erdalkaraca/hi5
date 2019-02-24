@@ -1,6 +1,12 @@
 {
-	"resources": "resources",
-	"alias": "hi5",
-	"path": "hi5",
-	"version": "none"
+    "resources": "resources",
+    "alias": "/",
+    "modules": {
+        "hi5": "hi5.js"
+    },
+    "shim": {
+        "hi5": {
+            "deps": ["jquery", "pubsubjs"]
+        }
+    }
 }

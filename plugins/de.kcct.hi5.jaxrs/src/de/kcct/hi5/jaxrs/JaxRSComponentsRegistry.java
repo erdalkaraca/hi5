@@ -1,6 +1,5 @@
 package de.kcct.hi5.jaxrs;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.DynamicFeature;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
@@ -102,12 +100,12 @@ public class JaxRSComponentsRegistry {
 		jaxRsComponents.remove(feature);
 	}
 
-	public Set<String> registerRestServices(HttpService httpService, String wsAlias, HttpContext delegateHttpContext,
-			Bundle bundle) throws ServletException, NamespaceException {
+	public Set<String> registerRestServices(HttpService httpService, String entryPoint, String wsAlias,
+			HttpContext delegateHttpContext, Bundle bundle) throws ServletException, NamespaceException {
 		ServiceReference<?>[] registeredServices = bundle.getRegisteredServices();
 
 		if (registeredServices == null) {
-			return Collections.emptySet();
+			registeredServices = new ServiceReference<?>[0];
 		}
 
 		BundleContext bundleContext = bundle.getBundleContext();
@@ -120,21 +118,16 @@ public class JaxRSComponentsRegistry {
 			Path pathAnnot = service.getClass().getAnnotation(Path.class);
 			if (pathAnnot != null) {
 				services.add(service);
-				servicePaths.add(pathAnnot.value());
+				String path = pathAnnot.value();
+				servicePaths.add(path);
 			}
 		}
 
-		if (services.isEmpty()) {
-			return Collections.emptySet();
-		}
-
-		Application application = new Application() {
-			public Set<Object> getSingletons() {
-				return services;
-			}
-		};
-		HttpServlet servlet = jaxRsFactory.createServlet(application, jaxRsComponents);
+		HttpServlet servlet = jaxRsFactory.createServlet(wsAlias, delegateHttpContext, services, jaxRsComponents);
 		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
+//		if (!services.isEmpty()) {
+//		}
+
 		return servicePaths;
 	}
 }

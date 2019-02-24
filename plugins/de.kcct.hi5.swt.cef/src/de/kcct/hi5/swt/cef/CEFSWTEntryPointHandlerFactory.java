@@ -17,12 +17,13 @@ public class CEFSWTEntryPointHandlerFactory implements EntryPointHandlerFactory 
 	public static final String CEFSWT = "swt-cef";
 
 	@Override
-	public EntryPointHandler create() {
+	public EntryPointHandler create(Context context) {
 		return new EntryPointHandler() {
 			private boolean exit = false;
 
 			@Override
-			public void start(Context context, URL url) {
+			public void start() {
+				URL url = calcURL(context);
 				Display display = new Display();
 				Shell shell = new Shell(display);
 				shell.setSize(1366, 768);

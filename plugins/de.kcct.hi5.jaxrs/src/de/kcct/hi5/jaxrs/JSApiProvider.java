@@ -20,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.UriInfo;
 
@@ -90,11 +91,24 @@ public interface JSApiProvider {
 			settings.put("method", httpMethod.getSimpleName());
 
 			if (produces != null) {
-				settings.put("contentType", produces.value()[0]);
+				String value = produces.value()[0];
+				String dataType = null;
+				if (value.endsWith("xml")) {
+					dataType = "xml";
+				} else if (MediaType.TEXT_PLAIN.equals(value)) {
+					dataType = "text";
+				} else if (MediaType.TEXT_HTML.equals(value)) {
+					dataType = "html";
+				} else if (MediaType.APPLICATION_JSON.equals(value)) {
+					dataType = "json";
+				}
+				if (dataType != null) {
+					settings.put("dataType", dataType);
+				}
 			}
 
 			if (consumes != null && httpMethod != GET.class) {
-				settings.put("dataType", consumes.value()[0]);
+				settings.put("contentType", consumes.value()[0]);
 			}
 
 			// map each settings object to a javascript method stub by
@@ -106,7 +120,7 @@ public interface JSApiProvider {
 		// param string if available
 		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
 				+ "var u='" + url + "';\n"//
-				+ "function ax(s,o){o=o||{};s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
+				+ "function ax(s,o){o=o||{};if(o.data&&typeof o.data=='object')o.data=JSON.stringify(o.data); s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
 				// + "if(typeof
 				// o.data!=='string')o.data=JSON.stringify(o.data);"//
 				+ "$.ajax($.extend(s,o))};\n"//

@@ -48,4 +48,5 @@ Service-Component: OSGI-INF/de.kcct.hi5.e4.handlers.internal.HeadlessEntryPointH
  OSGI-INF/de.kcct.hi5.e4.handlers.internal.JFXEntryPointHandlerFactory.xml,
  OSGI-INF/de.kcct.hi5.e4.internal.RequireJSService.xml,
  OSGI-INF/de.kcct.hi5.e4.internal.E4EquinoxAppHandler.xml,
- OSGI-INF/de.kcct.hi5.e4.internal.E4Runtime.xml
+ OSGI-INF/de.kcct.hi5.e4.internal.E4Runtime.xml,
+ OSGI-INF/de.kcct.hi5.e4.internal.AppsService.xml

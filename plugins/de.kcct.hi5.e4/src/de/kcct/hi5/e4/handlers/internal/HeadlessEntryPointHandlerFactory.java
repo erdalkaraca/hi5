@@ -1,6 +1,5 @@
 package de.kcct.hi5.e4.handlers.internal;
 
-import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 
 import org.osgi.service.component.annotations.Component;
@@ -14,10 +13,10 @@ public class HeadlessEntryPointHandlerFactory implements EntryPointHandlerFactor
 	private CountDownLatch stopLatch = new CountDownLatch(1);
 
 	@Override
-	public EntryPointHandler create() {
+	public EntryPointHandler create(Context context) {
 		return new EntryPointHandler() {
 			@Override
-			public void start(Context context, URL entryPoint) {
+			public void start() {
 				// just wait until framework shuts down
 				try {
 					stopLatch.await();

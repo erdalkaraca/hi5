@@ -19,11 +19,12 @@ public class JFXEntryPointHandlerFactory implements EntryPointHandlerFactory {
 	private static String title;
 
 	@Override
-	public EntryPointHandler create() {
+	public EntryPointHandler create(Context context) {
 		return new EntryPointHandler() {
 
 			@Override
-			public void start(Context context, URL url) {
+			public void start() {
+				URL url = calcURL(context);
 				JFXEntryPointHandlerFactory.url = url;
 				Application.launch(JFXApp.class);
 			}
