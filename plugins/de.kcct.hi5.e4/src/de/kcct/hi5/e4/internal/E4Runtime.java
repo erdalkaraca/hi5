@@ -243,7 +243,7 @@ public class E4Runtime {
 		IEclipseContext serviceContext = EclipseContextFactory.getServiceContext(getBundleContext());
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		serviceContext.set(IExtensionRegistry.class, registry);
-		ReflectionContributionFactory contributionFactory = new ReflectionContributionFactory(registry);
+		ReflectionContributionFactory contributionFactory = new ReflectionContributionFactory();
 		serviceContext.set(IContributionFactory.class, contributionFactory);
 		return serviceContext;
 	}
