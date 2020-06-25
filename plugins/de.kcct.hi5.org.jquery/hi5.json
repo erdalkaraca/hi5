@@ -2,6 +2,6 @@
 	"resources": "resources",
 	"alias": "jquery",
 	"modules": {
-        "jquery" : "jquery-1.12.4.min.js"
+        "jquery" : "jquery-3.5.1.min.js"
 	}
 }
