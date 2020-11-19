@@ -78,6 +78,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 
 import de.kcct.hi5.e4.ModelRequestProcessor;
+import de.kcct.hi5.internal.WebResourcesRegistry;
 
 @SuppressWarnings("restriction")
 @Component(service = E4Runtime.class)

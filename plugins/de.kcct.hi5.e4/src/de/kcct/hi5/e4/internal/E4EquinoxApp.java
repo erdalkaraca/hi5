@@ -23,6 +23,7 @@ import org.osgi.framework.ServiceReference;
 import de.kcct.hi5.e4.EntryPointHandler;
 import de.kcct.hi5.e4.EntryPointHandlerFactory;
 import de.kcct.hi5.e4.handlers.internal.HeadlessEntryPointHandlerFactory;
+import de.kcct.hi5.internal.WebResourcesRegistry;
 
 public class E4EquinoxApp implements IApplication {
 
@@ -34,7 +35,7 @@ public class E4EquinoxApp implements IApplication {
 		BundleContext bundleContext = bundle.getBundleContext();
 		WebResourcesRegistry resReg = getService(bundleContext, WebResourcesRegistry.class, null);
 		String entryPoint = context.getBrandingProperty("entryPoint");
-		String base = "/" + entryPoint;
+		String base = entryPoint == null ? "" : "/" + entryPoint;
 		resReg.registerResources(base);
 		E4Runtime e4runtime = getService(bundleContext, E4Runtime.class, null);
 		e4runtime.createE4Workbench(context);

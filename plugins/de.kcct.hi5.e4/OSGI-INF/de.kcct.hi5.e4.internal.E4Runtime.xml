@@ -3,6 +3,6 @@
    <service>
       <provide interface="de.kcct.hi5.e4.internal.E4Runtime"/>
    </service>
-   <reference cardinality="1..1" field="resReg" interface="de.kcct.hi5.e4.internal.WebResourcesRegistry" name="resReg"/>
+   <reference cardinality="1..1" field="resReg" interface="de.kcct.hi5.internal.WebResourcesRegistry" name="resReg"/>
    <implementation class="de.kcct.hi5.e4.internal.E4Runtime"/>
 </scr:component>

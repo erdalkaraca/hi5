@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.common,
  org.json,
  org.apache.commons.io,
+ de.kcct.hi5,
  de.kcct.hi5.org.requirejs;bundle-version="2.2.0",
  de.kcct.hi5.org.jquery;bundle-version="1.12.4",
  de.kcct.hi5.com.w3schools.w3css;bundle-version="2.7.0",
@@ -14,8 +15,7 @@ Require-Bundle: org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.osgi,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.di,
- de.kcct.hi5.jaxrs
+ org.eclipse.e4.ui.di
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation.security;version="1.2.0",
  javax.servlet;version="3.1.0",
@@ -44,8 +44,5 @@ Export-Package: de.kcct.hi5.e4,
  de.kcct.hi5.e4.internal
 Bundle-Vendor: Erdal Karaca
 Service-Component: OSGI-INF/de.kcct.hi5.e4.handlers.internal.HeadlessEntryPointHandlerFactory.xml,
- OSGI-INF/de.kcct.hi5.e4.internal.WebResourcesRegistry.xml,
- OSGI-INF/de.kcct.hi5.e4.internal.RequireJSService.xml,
  OSGI-INF/de.kcct.hi5.e4.internal.E4EquinoxAppHandler.xml,
- OSGI-INF/de.kcct.hi5.e4.internal.E4Runtime.xml,
- OSGI-INF/de.kcct.hi5.e4.internal.AppsService.xml
+ OSGI-INF/de.kcct.hi5.e4.internal.E4Runtime.xml

@@ -1,9 +1,6 @@
 {
     "resources": "resources",
-    "alias": "/",
-    "modules": {
-        "hi5": "hi5.js"
-    },
+    "alias": "e4",
     "shim": {
         "hi5": {
             "deps": ["jquery", "pubsubjs"]
