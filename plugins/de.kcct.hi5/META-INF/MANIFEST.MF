@@ -4,19 +4,18 @@ Bundle-Name: Hi5
 Bundle-SymbolicName: de.kcct.hi5
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: de.kcct.hi5
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: javax.annotation.security;version="1.2.0",
+Import-Package: javax.annotation.security,
  javax.servlet,
  javax.servlet.http,
- javax.ws.rs;version="2.0.1",
- javax.ws.rs.container;version="2.0.1",
- javax.ws.rs.core;version="2.0.1",
- javax.ws.rs.ext;version="2.0.1",
+ javax.ws.rs,
+ javax.ws.rs.container,
+ javax.ws.rs.core,
+ javax.ws.rs.ext,
  org.apache.commons.io,
  org.json,
  org.osgi.framework;version="1.9.0",
  org.osgi.service.cm;version="1.6.0",
- org.osgi.service.component.annotations,
+ org.osgi.service.component.annotations;resolution:=optional,
  org.osgi.service.http;version="1.2.1"
 Service-Component: OSGI-INF/de.kcct.hi5.internal.AppsService.xml,
  OSGI-INF/de.kcct.hi5.internal.RequireJSService.xml,
