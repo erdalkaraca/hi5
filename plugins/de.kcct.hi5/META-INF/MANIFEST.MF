@@ -28,3 +28,4 @@ Export-Package: de.kcct.hi5,
  de.kcct.hi5.internal,
  de.kcct.hi5.jaxrs
 Require-Bundle: de.kcct.hi5.org.requirejs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
