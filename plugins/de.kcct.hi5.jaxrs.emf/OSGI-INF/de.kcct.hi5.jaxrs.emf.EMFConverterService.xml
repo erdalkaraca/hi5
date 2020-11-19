@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" immediate="true" name="de.kcct.hi5.jaxrs.emf.EMFConverterService">
+   <service>
+      <provide interface="de.kcct.hi5.jaxrs.emf.EMFConverterService"/>
+   </service>
+   <implementation class="de.kcct.hi5.jaxrs.emf.EMFConverterService"/>
+</scr:component>

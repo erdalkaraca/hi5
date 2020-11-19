@@ -240,8 +240,7 @@ define(
         }
 
         function getState(modelElement, key) {
-            let entry = modelElement.persistedState.filter(ps => key == ps.key);
-            return entry !== undefined && entry.length > 0 ? entry[0].value : undefined;
+            return modelElement.persistedState[key];
         }
 
         function toHTML($uiContainer, modelElement) {

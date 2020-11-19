@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="de.kcct.hi5.jaxrs.emf.EMFMessageBodyWriter">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.3.0" immediate="true" name="de.kcct.hi5.jaxrs.emf.EMFMessageBodyWriter">
    <service>
       <provide interface="javax.ws.rs.ext.MessageBodyWriter"/>
    </service>
+   <reference cardinality="1..1" field="converterService" interface="de.kcct.hi5.jaxrs.emf.EMFConverterService" name="converterService"/>
    <implementation class="de.kcct.hi5.jaxrs.emf.EMFMessageBodyWriter"/>
 </scr:component>

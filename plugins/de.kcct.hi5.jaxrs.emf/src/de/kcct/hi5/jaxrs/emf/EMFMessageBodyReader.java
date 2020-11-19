@@ -22,17 +22,16 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.texo.json.JSONEMFConverter;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
-@Component(service = { MessageBodyReader.class, EMFMessageBodyReader.class }, immediate = true)
+@Component(immediate = true)
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class EMFMessageBodyReader implements MessageBodyReader<EObject> {
+	@Reference
+	private EMFConverterService converterService;
 
 	@Override
 	public boolean isReadable(Class<?> arg0, Type arg1, Annotation[] arg2, MediaType arg3) {
@@ -40,19 +39,9 @@ public class EMFMessageBodyReader implements MessageBodyReader<EObject> {
 	}
 
 	@Override
-	public EObject readFrom(Class<EObject> arg0, Type arg1, Annotation[] arg2, MediaType arg3,
-			MultivaluedMap<String, String> arg4, InputStream arg5) throws IOException, WebApplicationException {
-		String string = IOUtils.toString(arg5);
-		JSONObject json = null;
-
-		try {
-			json = new JSONObject(string);
-		} catch (JSONException e) {
-			throw new WebApplicationException(e);
-		}
-
-		JSONEMFConverter converter = new JSONEMFConverter();
-		EObject eo = converter.convert(json);
-		return eo;
+	public EObject readFrom(Class<EObject> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+			throws IOException, WebApplicationException {
+		return converterService.toEObject(type, entityStream);
 	}
 }
