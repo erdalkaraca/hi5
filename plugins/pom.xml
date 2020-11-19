@@ -26,8 +26,8 @@
 	</dependencies>
 
 	<modules>
+		<module>de.kcct.hi5</module>
 		<module>de.kcct.hi5.e4</module>
-		<module>de.kcct.hi5.jaxrs</module>
 		<module>de.kcct.hi5.jaxrs.emf</module>
 		<module>de.kcct.hi5.jaxrs.jersey</module>
 		<module>de.kcct.hi5.com.w3schools.w3css</module>
