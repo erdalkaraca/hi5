@@ -1,9 +1,3 @@
 {
-    "resources": "resources",
-    "alias": "e4",
-    "shim": {
-        "hi5": {
-            "deps": ["jquery", "pubsubjs"]
-        }
-    }
+    "alias": "e4"
 }

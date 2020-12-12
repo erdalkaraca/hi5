@@ -16,35 +16,42 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
-import de.kcct.hi5.AppProvider;
+import de.kcct.hi5.PageProvider;
 
-@Component(immediate = true, service = AppsService.class)
+@Component(immediate = true, service = PagesService.class)
 @Path("/")
-public class AppsService {
+public class PagesService {
 
-	private Map<String, AppProvider> appProviders = new HashMap<>();
+	private Map<String, PageProvider> appProviders = new HashMap<>();
 
 	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-	public void addAppProvider(AppProvider provider, Map<String, Object> props) {
+	public void addAppProvider(PageProvider provider, Map<String, Object> props) {
 		String name = (String) props.get("name");
 		appProviders.put(name, provider);
 	}
 
-	public void removeAppProvider(AppProvider provider) {
+	public void removeAppProvider(PageProvider provider) {
 		appProviders.entrySet().stream().filter(e -> e.getValue() == provider).forEach(e -> {
 			appProviders.remove(e.getKey());
 		});
 	}
 
 	@GET
-	@Path("/app-{id}")
+	@Path("/page-{id}")
 	@PermitAll
 	public Response getPage(ContainerRequestContext ctx, @PathParam("id") String id) {
-		AppProvider appProvider = appProviders.get(id);
+		PageProvider appProvider = appProviders.get(id);
 		if (appProvider == null) {
 			throw new NotFoundException("App not found: " + id);
 		}
 
 		return appProvider.respond(ctx).build();
+	}
+	
+	@GET
+	@Path("/app-{id}")
+	@PermitAll
+	public Response getApp(ContainerRequestContext ctx, @PathParam("id") String id) {
+		return getPage(ctx, id);
 	}
 }

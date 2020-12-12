@@ -125,9 +125,6 @@ public class JaxRSComponentsRegistry {
 
 		HttpServlet servlet = jaxRsFactory.createServlet(wsAlias, delegateHttpContext, services, jaxRsComponents);
 		httpService.registerServlet(wsAlias, servlet, null, delegateHttpContext);
-//		if (!services.isEmpty()) {
-//		}
-
 		return servicePaths;
 	}
 }

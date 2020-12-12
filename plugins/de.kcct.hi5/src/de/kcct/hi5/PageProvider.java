@@ -3,7 +3,7 @@ package de.kcct.hi5;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-public interface AppProvider {
+public interface PageProvider {
 
 	ResponseBuilder respond(ContainerRequestContext ctx);
 }

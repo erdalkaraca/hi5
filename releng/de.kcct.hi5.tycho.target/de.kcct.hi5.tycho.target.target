@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
 <target name="hi5-target" sequenceNumber="47">
     <locations>
         <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
@@ -97,11 +98,13 @@
         </location>
 	    <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 		    <repository location="https://download.eclipse.org/releases/2020-03"/>
-		    <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-		    <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
-		    <unit id="org.eclipse.emf.query.sdk.feature.group" version="0.0.0"/>
-		    <unit id="org.eclipse.emf.transaction.sdk.feature.group" version="0.0.0"/>
-		    <unit id="org.eclipse.emf.validation.sdk.feature.group" version="0.0.0"/>
+		    <unit id="org.eclipse.emf.sdk.feature.group" version="2.21.0.v20200205-0529"/>
+		    <unit id="org.eclipse.equinox.sdk.feature.group" version="3.20.100.v20200303-1901"/>
+		    <unit id="org.eclipse.emf.query.sdk.feature.group" version="1.12.0.201805030653"/>
+		    <unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.12.0.201805140824"/>
+		    <unit id="org.eclipse.emf.validation.sdk.feature.group" version="1.12.1.201812070911"/>
+		    <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="5.2.0.v20200311-1912"/>
+		    <unit id="org.eclipse.net4j.sdk.feature.group" version="4.9.0.v20200311-1912"/>
 	    </location>
 	    <location includeAllPlatforms="true" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 		    <repository location="http://download.eclipse.org/eclipse/updates/4.15"/>
