@@ -113,17 +113,14 @@ public interface JSApiProvider {
 
 			// map each settings object to a javascript method stub by
 			// delegating to the aj function
-			sb.append(String.format("%s:function(o){ax(%s,o);},\n", method.getName(), settings.toString()));
+			sb.append(String.format("%s:function(o){io.ax(u,%s,o);},\n", method.getName(), settings.toString()));
 		}
 
+		
 		// transform the "params: {key='value'}" object into a query
 		// param string if available
-		String moduleDefinition = String.format("define(['jquery'],function($){\n"//
+		String moduleDefinition = String.format("define(['hi5-io'],function(io){\n"//
 				+ "var u='" + url + "';\n"//
-				+ "function ax(s,o){o=o||{};if(o.data&&typeof o.data=='object')o.data=JSON.stringify(o.data); s.url=u+s.url;if(o.params)s.url=s.url+'?'+$.param(o.params);"//
-				// + "if(typeof
-				// o.data!=='string')o.data=JSON.stringify(o.data);"//
-				+ "$.ajax($.extend(s,o))};\n"//
 				+ "return {\n%s}});", sb.toString());
 		return moduleDefinition;
 	}

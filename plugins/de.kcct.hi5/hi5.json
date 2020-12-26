@@ -2,7 +2,8 @@
     "resources": "resources",
     "alias": "/",
     "modules": {
-        "hi5": "hi5.js"
+        "hi5": "hi5.js",
+		"hi5-io": "hi5-io.js"
     },
     "shim": {
         "hi5": {
