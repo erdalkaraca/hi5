@@ -106,7 +106,7 @@ public class WebResourcesRegistry {
 				root = new JSONObject();
 			}
 		}
-		
+
 		if (moduleAlias == null) {
 			return;
 		}
@@ -153,21 +153,22 @@ public class WebResourcesRegistry {
 
 			if (modules != null) {
 				Iterator keys = modules.keys();
+				String ma = moduleAlias;
+
+				if (!ma.endsWith("/")) {
+					ma += "/";
+				}
+
+				if ("/".equals(ma)) {
+					ma = "";
+				}
 
 				while (keys.hasNext()) {
 					String key = (String) keys.next();
 					String path = modules.getString(key);
-					String ma = moduleAlias;
+					boolean isExternal = path.startsWith("http");
 
-					if (!ma.endsWith("/")) {
-						ma += "/";
-					}
-
-					if ("/".equals(ma)) {
-						ma = "";
-					}
-
-					String requirejsPath = ma + trimJSExtension(path);
+					String requirejsPath = (isExternal ? "" : ma) + trimJSExtension(path);
 					pathsConfig.put(key, requirejsPath);
 				}
 			}
