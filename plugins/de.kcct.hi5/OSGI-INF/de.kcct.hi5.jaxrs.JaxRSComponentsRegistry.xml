@@ -10,5 +10,6 @@
    <reference bind="addMessageBodyReader" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyReader" name="MessageBodyReader" policy="dynamic" unbind="removeMessageBodyReader"/>
    <reference bind="addMessageBodyWriter" cardinality="0..n" interface="javax.ws.rs.ext.MessageBodyWriter" name="MessageBodyWriter" policy="dynamic" unbind="removeMessageBodyWriter"/>
    <reference bind="addParamConverterProvider" cardinality="0..n" interface="javax.ws.rs.ext.ParamConverterProvider" name="ParamConverterProvider" policy="dynamic" unbind="removeParamConverterProvider"/>
+   <reference bind="addWriterInterceptor" cardinality="0..n" interface="javax.ws.rs.ext.WriterInterceptor" name="WriterInterceptor" policy="dynamic" unbind="removeWriterInterceptor"/>
    <implementation class="de.kcct.hi5.jaxrs.JaxRSComponentsRegistry"/>
 </scr:component>

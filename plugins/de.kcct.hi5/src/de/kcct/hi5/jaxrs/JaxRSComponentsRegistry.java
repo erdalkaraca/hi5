@@ -12,6 +12,7 @@ import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.ParamConverterProvider;
+import javax.ws.rs.ext.WriterInterceptor;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -98,6 +99,17 @@ public class JaxRSComponentsRegistry {
 
 	public void removeDynamicFeature(DynamicFeature feature) {
 		jaxRsComponents.remove(feature);
+	}
+	
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+	public void addWriterInterceptor(WriterInterceptor interceptor) {
+		jaxRsComponents.add(interceptor);
+
+		// TODO handle dynamic JAX-RS component registration
+	}
+
+	public void removeWriterInterceptor(WriterInterceptor interceptor) {
+		jaxRsComponents.remove(interceptor);
 	}
 
 	public Set<String> registerRestServices(HttpService httpService, String entryPoint, String wsAlias,

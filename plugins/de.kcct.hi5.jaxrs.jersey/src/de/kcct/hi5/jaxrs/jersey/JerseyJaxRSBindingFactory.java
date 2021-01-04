@@ -14,8 +14,10 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Application;
 
+import org.glassfish.jersey.message.GZipEncoder;
 import org.glassfish.jersey.process.Inflector;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.EncodingFilter;
 import org.glassfish.jersey.server.model.Resource;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.json.JSONException;
@@ -36,7 +38,9 @@ public class JerseyJaxRSBindingFactory implements JaxRsServletFactory {
 			}
 		};
 		ResourceConfig config = ResourceConfig.forApplication(application);
+		EncodingFilter.enableFor(config, GZipEncoder.class);
 		config.registerInstances(jaxRsComponents.toArray());
+		
 
 		List<Resource> resources = new ArrayList<>();
 		{
