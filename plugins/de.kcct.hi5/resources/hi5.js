@@ -25,12 +25,11 @@ define(
 
             // the menu panel which will be shown if the menu trigger is
             // pressed
-            $e.addClass("w3-sidenav w3-white w3-card-2 w3-animate-right");
+            $e.addClass("w3-sidenav w3-white w3-card-2 w3-animate-right w3-round");
             $e.hide();
             $e.css("right", "0");
 
-            var $closeItem = $("<a href='javascript:void(0)' class='w3-closenav w3-light-grey'>" +
-                "Close<span class='w3-right w3-large w3-margin-right'>&times;</span></a>");
+            var $closeItem = $("<span class='w3-button w3-block w3-left-align w3-closenav w3-light-grey w3-hover-red w3-large'>&times;</span>");
             $e.prepend($closeItem);
             $closeItem.click(function () {
                 $e.hide();
@@ -172,7 +171,7 @@ define(
         }
 
         function processDirectItem($e, hideParentOnClick, showLabel) {
-            var $a = $("<div class='w3-btn w3-white w3-round w3-margin-left w3-margin-righ w3-hover'></div>");
+            var $a = $("<div class='w3-button w3-block w3-left-align w3-white w3-round w3-hover-blue'></div>");
 
             var label = $e.attr("label");
             if (showLabel) {
