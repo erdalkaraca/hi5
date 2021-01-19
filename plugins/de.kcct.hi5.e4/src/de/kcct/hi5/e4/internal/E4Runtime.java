@@ -11,7 +11,6 @@
 package de.kcct.hi5.e4.internal;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -19,16 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.MediaType;
 
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -72,17 +63,14 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kcct.hi5.e4.ModelRequestProcessor;
 import de.kcct.hi5.internal.WebResourcesRegistry;
 
 @SuppressWarnings("restriction")
 @Component(service = E4Runtime.class)
-@Path("/model")
 public class E4Runtime {
 	private static final Logger LOG = Logger.getLogger(E4Runtime.class.getName());
 	private static final String CONTEXT_INITIALIZED = "org.eclipse.ui.contextInitialized";
@@ -92,34 +80,12 @@ public class E4Runtime {
 	private Object lcManager;
 	private ServiceTracker<?, Location> locationTracker;
 	private IModelResourceHandler handler;
-	private ModelRequestProcessor modelRequestProcessor;
 	private Map<String, MApplicationElement> index = new HashMap<String, MApplicationElement>();
 
 	@Reference
 	private WebResourcesRegistry resReg;
 
 	public E4Workbench createE4Workbench(IApplicationContext applicationContext) {
-		String modelRequestProcessorValue = applicationContext.getBrandingProperty("modelRequestProcessor");
-		if (modelRequestProcessorValue != null) {
-			BundleContext bundleContext = applicationContext.getBrandingBundle().getBundleContext();
-			try {
-				Collection<ServiceReference<ModelRequestProcessor>> serviceReferences = bundleContext
-						.getServiceReferences(ModelRequestProcessor.class,
-								"(component.name=" + modelRequestProcessorValue + ")");
-				if (serviceReferences != null && !serviceReferences.isEmpty()) {
-					ServiceReference<ModelRequestProcessor> next = serviceReferences.iterator().next();
-					modelRequestProcessor = bundleContext.getService(next);
-				}
-			} catch (InvalidSyntaxException e) {
-				LOG.log(Level.SEVERE, "Could not instantiate model request processor: " + modelRequestProcessorValue,
-						e);
-			}
-
-			if (modelRequestProcessor == null) {
-				LOG.log(Level.SEVERE, "Could not find model request processor: " + modelRequestProcessorValue);
-			}
-		}
-
 		args = (String[]) applicationContext.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 
 		IEclipseContext appContext = createDefaultContext();
@@ -355,7 +321,7 @@ public class E4Runtime {
 	/**
 	 * @return the instance Location service
 	 */
-	public Location getInstanceLocation() {
+	private Location getInstanceLocation() {
 		if (locationTracker == null) {
 			Filter filter = null;
 			try {
@@ -422,16 +388,6 @@ public class E4Runtime {
 		return index.get(id);
 	}
 
-	public MApplicationElement process(ContainerRequestContext reqCtx, String modelId) {
-		MApplicationElement modelElement = getModelElement(modelId);
-
-		if (modelRequestProcessor != null) {
-			modelElement = modelRequestProcessor.process(reqCtx, modelElement);
-		}
-
-		return modelElement;
-	}
-
 	private void process(MApplicationElement modelElement) {
 		// use a set to collect all updates to the model as changing it directly may
 		// lead to concurrent mod exceptions
@@ -480,12 +436,5 @@ public class E4Runtime {
 
 		String alias = bundleAlias;
 		pendingUpdates.add(() -> appElement.getPersistedState().put("bundlePath", alias));
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/get-model-element")
-	public MApplicationElement getModelElement(ContainerRequestContext reqCtx, @QueryParam("id") String id) {
-		return process(reqCtx, id);
 	}
 }

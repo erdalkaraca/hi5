@@ -1,6 +1,4 @@
-define(
-    ['e4/model/api.js'],
-    function (hi5Api) {
+define([], () => {
         var hi5 = {};
         var grammar = {};
 
@@ -10,12 +8,10 @@ define(
 
         grammar["TrimmedWindow"] = function ($e) {
             handleUIElements($e);
-            handleUIElements($e, ".Menu");
-            handleUIElements($e, ".TrimBar");
         };
 
         grammar["Menu"] = function ($e) {
-            var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right w3-margin-right'>&#9776;</span>");
+            var $menuTrigger = $("<span class='w3-opennav w3-xlarge w3-right w3-white w3-opacity w3-round'>&#9776;</span>");
             $menuTrigger.click(function () {
                 // show the menu panel configured below
                 $e.show();
@@ -28,6 +24,7 @@ define(
             $e.addClass("w3-sidenav w3-white w3-card-2 w3-animate-right w3-round");
             $e.hide();
             $e.css("right", "0");
+            $e.css("top", "0");
 
             var $closeItem = $("<span class='w3-button w3-block w3-left-align w3-closenav w3-light-grey w3-hover-red w3-large'>&times;</span>");
             $e.prepend($closeItem);
@@ -74,20 +71,16 @@ define(
                 stackElementsType = $e.children().eq(0).attr("etype");
             }
 
-            var $ul = $("<ul class='w3-navbar w3-white'></ul>");
+            var $ul = $("<div class='w3-bar w3-green'></div>");
             $e.children("." + stackElementsType).hide().each(
                 function () {
                     var $p = $(this);
-                    var $a = $("<a href='#'>" + $p.attr("label") +
-                        "</a>");
-
+                    var $li = $("<div class='w3-bar-item w3-hover-blue'>" + $p.attr("label") + "</div>");
                     var iconSpanHtml = getIconSpanHtml($p, $p
                         .attr("iconuri"));
                     if (iconSpanHtml) {
-                        $a.prepend(iconSpanHtml);
+                        $li.prepend(iconSpanHtml);
                     }
-
-                    var $li = $("<li></li>");
                     var clickHandler = function () {
                         var $pers = $e
                             .children("." + stackElementsType);
@@ -104,17 +97,16 @@ define(
                                 .attr("elementid"));
                         }
                     };
-                    $a.click(clickHandler);
+                    $li.click(clickHandler);
                     // install click handler also for stack element
                     // to allow to programmatically show it
                     // $p.click(clickHandler);
-                    $li.append($a);
                     $ul.append($li);
                 });
             $e.prepend($ul);
             handleUIElements($e);
             // select first stack element
-            $ul.find("a").eq(0).trigger('click');
+            $ul.find("w3-bar-item").eq(0).trigger('click');
         };
 
         grammar["PerspectiveStack"] = function ($e) {
@@ -145,6 +137,18 @@ define(
         grammar["TrimBar"] = function ($e) {
             var dir = $e.attr("direction");
             handleUIElements($e);
+        };
+
+        grammar["TrimContribution"] = function ($e) {
+            handleUIElements($e, ".ToolControl");
+        };
+        grammar["ToolControl"] = function ($e) {
+            var url = toUrl($e, $e.attr("resourcename"));
+            if ($e.index() == 1 || !$e.parent().hasClass("PartStack")) {
+                loadPartContents($e, url);
+            } else {
+                $e.attr("hi5-contents-url", url);
+            }
         };
 
         grammar["ToolBar"] = function ($e) {
@@ -263,11 +267,26 @@ define(
 
             let $div = $(div);
             $uiContainer.append($div);
+
+			if (modelElement.trimBars) {
+				modelElement.trimBars.filter(trim => trim.side === "Top" || trim.side == undefined)
+					.forEach(trim => {
+                    	toHTML($div, trim);
+					});
+            }
             if (modelElement.children) {
-                for (var i = 0; i < modelElement.children.length; i++) {
-                    let childElement = modelElement.children[i];
+				modelElement.children.forEach(childElement => {
                     toHTML($div, childElement);
-                }
+				});
+            }
+			if (modelElement.mainMenu) {
+				toHTML($div, modelElement.mainMenu);
+            }
+			if (modelElement.trimBars) {
+				modelElement.trimBars.filter(trim => trim.side === "Bottom")
+					.forEach(trim => {
+                    	toHTML($div, trim);
+					});
             }
             return $div;
         }
@@ -275,20 +294,9 @@ define(
         var PartService = function ($context) {
             this.$context = $context;
         };
-        PartService.prototype.loadUIElement = function (id, fn) {
-            let $uiContainer = this.$context;
-            hi5Api.getModelElement({
-                params: {
-                    id: id
-                },
-                success: function (model) {
-                    let $root = toHTML($uiContainer, model);
-                    applyRule($root);
-                    if (typeof fn === 'function') {
-                        fn();
-                    }
-                }
-            });
+        PartService.prototype.renderModel = function (model) {
+            let $root = toHTML(this.$context, model);
+            applyRule($root);
         };
         PartService.prototype.showPerspective = function (id, callback) {
             $(document).find(".Perspective[elementid='" + id + "']").each(
