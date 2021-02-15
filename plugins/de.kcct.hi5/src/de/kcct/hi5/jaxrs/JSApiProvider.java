@@ -113,7 +113,7 @@ public interface JSApiProvider {
 
 			// map each settings object to a javascript method stub by
 			// delegating to the aj function
-			sb.append(String.format("%s:function(o){io.ax(u,%s,o);},\n", method.getName(), settings.toString()));
+			sb.append(String.format("%s:o=>{io.ax(u,%s,o);},\n", method.getName(), settings.toString()));
 		}
 
 		

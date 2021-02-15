@@ -23,12 +23,8 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emfjson.jackson.module.EMFModule;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component(immediate = true)
 @Provider
