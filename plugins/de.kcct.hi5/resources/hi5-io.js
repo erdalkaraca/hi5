@@ -1,15 +1,14 @@
 define(['jquery'], function($) {
 	let module = {};
-	module.ax = function(u, s, o) {
-		o = o || {};
-		if (o.data && typeof o.data == 'object') {
-			o.data = JSON.stringify(o.data);
+	module.ax = function(method, dataType, contentType, url, o) {
+		const opts = {method, dataType, contentType, url, ...o};
+		if (opts.data && typeof opts.data == 'object') {
+			opts.data = JSON.stringify(o.data);
 		}
-		s.url = u + s.url;
-		if (o.params) {
-			s.url = s.url + '?' + $.param(o.params);
+		if (opts.params) {
+			opts.url = opts.url + '?' + $.param(opts.params);
 		}
-		$.ajax($.extend(s, o))
+		return $.ajax(opts);
 	};
 	return module;
 });

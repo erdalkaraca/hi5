@@ -25,7 +25,6 @@ import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.UriInfo;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public interface JSApiProvider {
 
@@ -85,14 +84,12 @@ public interface JSApiProvider {
 				}
 			}
 
-			JSONObject settings = new JSONObject();
-			String methodUrl = path.value();
-			settings.put("url", methodUrl);
-			settings.put("method", httpMethod.getSimpleName());
+			String resourceUrl = url + path.value();
+			String dataType = "";
+			String contentType = "";
 
 			if (produces != null) {
 				String value = produces.value()[0];
-				String dataType = null;
 				if (value.endsWith("xml")) {
 					dataType = "xml";
 				} else if (MediaType.TEXT_PLAIN.equals(value)) {
@@ -102,25 +99,23 @@ public interface JSApiProvider {
 				} else if (MediaType.APPLICATION_JSON.equals(value)) {
 					dataType = "json";
 				}
-				if (dataType != null) {
-					settings.put("dataType", dataType);
-				}
 			}
 
 			if (consumes != null && httpMethod != GET.class) {
-				settings.put("contentType", consumes.value()[0]);
+				contentType = consumes.value()[0];
 			}
 
 			// map each settings object to a javascript method stub by
 			// delegating to the aj function
-			sb.append(String.format("%s:o=>{io.ax(u,%s,o);},\n", method.getName(), settings.toString()));
+			sb.append(String.format(//
+					"%s:o=>io.ax('%s','%s','%s','%s',o),\n", //
+					method.getName(), httpMethod.getSimpleName(), dataType, contentType, resourceUrl//
+			));
 		}
 
-		
 		// transform the "params: {key='value'}" object into a query
 		// param string if available
-		String moduleDefinition = String.format("define(['hi5-io'],function(io){\n"//
-				+ "var u='" + url + "';\n"//
+		String moduleDefinition = String.format("define(['hi5-io'],function(io){"//
 				+ "return {\n%s}});", sb.toString());
 		return moduleDefinition;
 	}
